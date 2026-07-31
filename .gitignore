@@ -1,2 +1,11 @@
 .worktrees/
+tools/
+node_modules/
+vendor/
+server/config.php
+server/storage/rate-*.json
+test-results/
+playwright-report/
+.tmp/
+.env
 

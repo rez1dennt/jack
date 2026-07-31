@@ -1,0 +1,13 @@
+{
+  "name": "jack-industrial-landing",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:js": "node --test tests/js/*.test.mjs",
+    "test:e2e": "playwright test",
+    "test": "npm run test:js && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
+  }
+}
