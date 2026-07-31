@@ -48,6 +48,40 @@ test('optimized imagery and vector icons are served without missing assets', asy
   expect(failedAssets).toEqual([]);
 });
 
+test('lead form masks input, validates errors, and submits a normalized phone', async ({ page }) => {
+  let submittedBody;
+
+  await page.route('**/api/csrf.php', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ token: 'test-csrf' }) });
+  });
+  await page.route('**/api/lead.php', async (route) => {
+    submittedBody = JSON.parse(route.request().postData() ?? '{}');
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) });
+  });
+
+  await page.goto('/');
+  const form = page.locator('#consultation-form');
+  const phone = form.locator('[name="phone"]');
+
+  await phone.fill('89991234567');
+  await expect(phone).toHaveValue('+7 (999) 123-45-67');
+  for (let index = 0; index < 11; index += 1) await phone.press('Backspace');
+  await expect(phone).toHaveValue('');
+
+  await form.locator('button[type="submit"]').click();
+  await expect(form.locator('#name-error')).toContainText('Укажите имя');
+  await expect(form.locator('#phone-error')).toContainText('Введите телефон');
+
+  await form.locator('[name="name"]').fill('Анна');
+  await phone.fill('9991234567');
+  await form.locator('[name="consent"]').check();
+  await form.locator('button[type="submit"]').click();
+
+  await expect(form.locator('.form-status')).toContainText('Спасибо');
+  expect(submittedBody.phone).toBe('79991234567');
+  expect(submittedBody.csrf_token).toBe('test-csrf');
+});
+
 test('desktop uses the reference grid composition', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/');

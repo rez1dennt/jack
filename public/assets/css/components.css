@@ -284,6 +284,20 @@ tbody th {
   font-size: var(--font-size-sm);
 }
 
+.form-status[data-state="success"] {
+  color: var(--color-text-inverse);
+}
+
+.form-status[data-state="error"] {
+  color: var(--color-text-inverse);
+  font-weight: 600;
+}
+
+.lead-form button[aria-busy="true"] {
+  cursor: wait;
+  opacity: 0.72;
+}
+
 .social-links {
   display: flex;
   gap: var(--space-3);

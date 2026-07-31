@@ -1,0 +1,182 @@
+const PHONE_DIGIT_LIMIT = 11;
+
+export function normalizeRuPhone(value = '') {
+  const rawDigits = String(value).replace(/\D/g, '');
+  if (!rawDigits) return '';
+
+  let digits;
+  if (rawDigits.startsWith('8')) {
+    digits = `7${rawDigits.slice(1)}`;
+  } else if (rawDigits.startsWith('7')) {
+    digits = rawDigits;
+  } else {
+    digits = `7${rawDigits}`;
+  }
+
+  return digits.slice(0, PHONE_DIGIT_LIMIT);
+}
+
+export function formatRuPhone(value = '') {
+  const normalized = normalizeRuPhone(value);
+  if (!normalized) return '';
+
+  const national = normalized.slice(1);
+  let formatted = '+7';
+
+  if (national.length > 0) formatted += ` (${national.slice(0, 3)}`;
+  if (national.length >= 3) formatted += ')';
+  if (national.length > 3) formatted += ` ${national.slice(3, 6)}`;
+  if (national.length > 6) formatted += `-${national.slice(6, 8)}`;
+  if (national.length > 8) formatted += `-${national.slice(8, 10)}`;
+
+  return formatted;
+}
+
+export function isCompleteRuPhone(value = '') {
+  return /^7\d{10}$/.test(normalizeRuPhone(value));
+}
+
+export function validateLeadValues({ name = '', phone = '', consent = false } = {}) {
+  const errors = {};
+  if (String(name).trim().length < 2) errors.name = 'Укажите имя — минимум 2 символа.';
+  if (!isCompleteRuPhone(phone)) errors.phone = 'Введите телефон полностью.';
+  if (!consent) errors.consent = 'Подтвердите согласие на обработку данных.';
+  return errors;
+}
+
+function moveCaretToEnd(input) {
+  const end = input.value.length;
+  input.setSelectionRange?.(end, end);
+}
+
+export function initPhoneMask(input) {
+  if (!input) return () => {};
+
+  const handleInput = () => {
+    input.value = formatRuPhone(input.value);
+    moveCaretToEnd(input);
+  };
+
+  const handleKeydown = (event) => {
+    if (event.key !== 'Backspace' || input.selectionStart !== input.selectionEnd || input.selectionStart === 0) return;
+
+    const caret = input.selectionStart;
+    let digitIndex = caret - 1;
+    while (digitIndex >= 0 && !/\d/.test(input.value[digitIndex])) digitIndex -= 1;
+    if (digitIndex < 0) return;
+
+    event.preventDefault();
+    input.value = formatRuPhone(`${input.value.slice(0, digitIndex)}${input.value.slice(digitIndex + 1)}`);
+    moveCaretToEnd(input);
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  };
+
+  input.addEventListener('input', handleInput);
+  input.addEventListener('keydown', handleKeydown);
+
+  return () => {
+    input.removeEventListener('input', handleInput);
+    input.removeEventListener('keydown', handleKeydown);
+  };
+}
+
+function showFieldError(form, name, message = '') {
+  const control = form.elements.namedItem(name);
+  const error = form.querySelector(`#${name}-error`);
+  if (control instanceof HTMLElement) {
+    control.toggleAttribute('aria-invalid', Boolean(message));
+  }
+  if (error) error.textContent = message;
+}
+
+async function getCsrfToken(fetchImpl) {
+  const response = await fetchImpl('/api/csrf.php', {
+    method: 'GET',
+    credentials: 'same-origin',
+    headers: { Accept: 'application/json' }
+  });
+  if (!response.ok) throw new Error('csrf');
+  const data = await response.json();
+  if (!data.token) throw new Error('csrf');
+  return data.token;
+}
+
+export function initLeadForm(form, { fetchImpl = globalThis.fetch?.bind(globalThis) } = {}) {
+  if (!form || !fetchImpl) return () => {};
+
+  const phoneInput = form.elements.namedItem('phone');
+  const submitButton = form.querySelector('[type="submit"]');
+  const status = form.querySelector('.form-status');
+  const disposeMask = initPhoneMask(phoneInput);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const values = {
+      name: form.elements.namedItem('name')?.value ?? '',
+      phone: phoneInput?.value ?? '',
+      consent: Boolean(form.elements.namedItem('consent')?.checked)
+    };
+    const errors = validateLeadValues(values);
+
+    showFieldError(form, 'name', errors.name);
+    showFieldError(form, 'phone', errors.phone);
+    showFieldError(form, 'consent', errors.consent);
+    if (status) {
+      status.textContent = '';
+      status.dataset.state = '';
+    }
+
+    const firstErrorName = ['name', 'phone', 'consent'].find((name) => errors[name]);
+    if (firstErrorName) {
+      form.elements.namedItem(firstErrorName)?.focus();
+      return;
+    }
+
+    submitButton?.setAttribute('disabled', '');
+    submitButton?.setAttribute('aria-busy', 'true');
+    if (status) status.textContent = 'Отправляем заявку…';
+
+    try {
+      const csrfToken = await getCsrfToken(fetchImpl);
+      const payload = {
+        name: values.name.trim(),
+        phone: normalizeRuPhone(values.phone),
+        consent: true,
+        company_website: form.elements.namedItem('company_website')?.value ?? '',
+        csrf_token: csrfToken
+      };
+      const response = await fetchImpl('/api/lead.php', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || result.ok !== true) throw new Error(result.message || 'submit');
+
+      form.reset();
+      if (phoneInput) phoneInput.value = '';
+      if (status) {
+        status.textContent = 'Спасибо! Заявка отправлена, мы скоро свяжемся с вами.';
+        status.dataset.state = 'success';
+      }
+    } catch {
+      if (status) {
+        status.textContent = 'Не удалось отправить заявку. Позвоните нам или попробуйте ещё раз.';
+        status.dataset.state = 'error';
+      }
+    } finally {
+      submitButton?.removeAttribute('disabled');
+      submitButton?.removeAttribute('aria-busy');
+    }
+  };
+
+  form.addEventListener('submit', handleSubmit);
+  return () => {
+    disposeMask();
+    form.removeEventListener('submit', handleSubmit);
+  };
+}
