@@ -46,6 +46,26 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .capabilities {
+    block-size: auto;
+    padding-block: var(--space-5);
+  }
+
+  .capabilities .container {
+    block-size: auto;
+    display: block;
+  }
+
+  .capabilities .section-title {
+    margin-block-end: var(--space-5);
+  }
+
+  .capability {
+    min-block-size: 8.5rem;
+    gap: var(--space-4);
+    padding: var(--space-5);
+  }
+
   .capability:nth-child(3) {
     border-inline-end: 0;
   }

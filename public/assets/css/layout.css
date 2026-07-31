@@ -195,12 +195,19 @@
 }
 
 .capabilities {
-  padding-block: var(--space-5) var(--space-6);
+  block-size: var(--capabilities-desktop-height);
+  padding-block: var(--capabilities-padding-block);
+}
+
+.capabilities .container {
+  block-size: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
 .section-title {
-  margin-block-end: var(--space-6);
-  font-size: var(--font-size-3xl);
+  margin-block-end: var(--space-2);
+  font-size: var(--font-size-2xl);
   text-align: center;
   text-transform: uppercase;
 }
@@ -211,12 +218,12 @@
 }
 
 .capability {
-  min-block-size: 8.5rem;
+  min-block-size: 0;
   display: grid;
   place-items: center;
   align-content: center;
-  gap: var(--space-4);
-  padding: var(--space-5);
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-6);
   text-align: center;
   border-inline-end: var(--border-thin) solid var(--color-border-subtle);
 }
@@ -238,7 +245,7 @@
 
 .applications__grid {
   display: grid;
-  grid-template-columns: minmax(19rem, 0.95fr) minmax(24rem, 1fr) minmax(22rem, 1.1fr);
+  grid-template-columns: var(--applications-columns);
   align-items: stretch;
 }
 

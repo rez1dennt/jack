@@ -244,9 +244,40 @@ test('desktop uses the reference grid composition', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/');
 
-  await expect(page.locator('.hero__inner')).toHaveCSS('display', 'grid');
+  await expect(page.locator('.hero__inner')).toHaveCSS('position', 'relative');
   await expect(page.locator('.problem-solution')).toHaveCSS('display', 'grid');
   await expect(page.locator('.capabilities__grid')).toHaveCSS('display', 'grid');
+});
+
+test('compact desktop sections match the approved proportions and use check markers', async ({ page }) => {
+  await page.setViewportSize({ width: 1900, height: 1000 });
+  await page.goto('/');
+
+  const metrics = await page.evaluate(() => {
+    const capabilities = document.querySelector('.capabilities').getBoundingClientRect();
+    const applications = document.querySelector('.applications__grid').getBoundingClientRect();
+    const applicationStyle = getComputedStyle(document.querySelector('.applications__grid'));
+    const markerStyle = getComputedStyle(document.querySelector('.check-list li'), '::before');
+    const columns = applicationStyle.gridTemplateColumns
+      .split(' ')
+      .map((value) => Number.parseFloat(value));
+
+    return {
+      capabilitiesHeight: Math.round(capabilities.height),
+      applicationsWidth: Math.round(applications.width),
+      columnRatios: columns.map((value) => value / applications.width),
+      markerMask: markerStyle.maskImage || markerStyle.webkitMaskImage,
+      markerBackgroundImage: markerStyle.backgroundImage
+    };
+  });
+
+  expect(metrics.capabilitiesHeight).toBe(180);
+  expect(metrics.applicationsWidth).toBe(1440);
+  expect(metrics.columnRatios[0]).toBeCloseTo(0.3, 2);
+  expect(metrics.columnRatios[1]).toBeCloseTo(0.35, 2);
+  expect(metrics.columnRatios[2]).toBeCloseTo(0.35, 2);
+  expect(metrics.markerMask).toContain('check-circle.svg');
+  expect(metrics.markerBackgroundImage).toBe('none');
 });
 
 for (const width of [1440, 1024, 768, 390, 320]) {
