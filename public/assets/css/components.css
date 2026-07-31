@@ -111,6 +111,41 @@
   color: currentColor;
 }
 
+[data-icon] {
+  flex: 0 0 auto;
+  background-color: currentColor;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+}
+
+[data-icon="time"] { mask-image: url("../icons/time.svg"); -webkit-mask-image: url("../icons/time.svg"); }
+[data-icon="warning"] { mask-image: url("../icons/warning.svg"); -webkit-mask-image: url("../icons/warning.svg"); }
+[data-icon="growth"] { mask-image: url("../icons/growth.svg"); -webkit-mask-image: url("../icons/growth.svg"); }
+[data-icon="monitor"] { mask-image: url("../icons/monitor.svg"); -webkit-mask-image: url("../icons/monitor.svg"); }
+[data-icon="templates"] { mask-image: url("../icons/templates.svg"); -webkit-mask-image: url("../icons/templates.svg"); }
+[data-icon="laser"] { mask-image: url("../icons/laser.svg"); -webkit-mask-image: url("../icons/laser.svg"); }
+[data-icon="thread"] { mask-image: url("../icons/thread.svg"); -webkit-mask-image: url("../icons/thread.svg"); }
+[data-icon="layers"] { mask-image: url("../icons/layers.svg"); -webkit-mask-image: url("../icons/layers.svg"); }
+[data-icon="shield"] { mask-image: url("../icons/shield.svg"); -webkit-mask-image: url("../icons/shield.svg"); }
+[data-icon="headset"] { mask-image: url("../icons/headset.svg"); -webkit-mask-image: url("../icons/headset.svg"); }
+[data-icon="training"] { mask-image: url("../icons/training.svg"); -webkit-mask-image: url("../icons/training.svg"); }
+[data-icon="custom"] { mask-image: url("../icons/custom.svg"); -webkit-mask-image: url("../icons/custom.svg"); }
+[data-icon="download"] { mask-image: url("../icons/download.svg"); -webkit-mask-image: url("../icons/download.svg"); }
+[data-icon="vk"] { mask-image: url("../icons/vk.svg"); -webkit-mask-image: url("../icons/vk.svg"); }
+[data-icon="youtube"] { mask-image: url("../icons/youtube.svg"); -webkit-mask-image: url("../icons/youtube.svg"); }
+[data-icon="telegram"] { mask-image: url("../icons/telegram.svg"); -webkit-mask-image: url("../icons/telegram.svg"); }
+
+.button [data-icon],
+.social-links [data-icon] {
+  display: block;
+  inline-size: var(--space-5);
+  block-size: var(--space-5);
+}
+
 .icon-slot {
   inline-size: var(--space-12);
   block-size: var(--space-12);

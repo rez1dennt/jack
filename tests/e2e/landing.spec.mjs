@@ -30,6 +30,24 @@ test('all reference sections and legal links exist', async ({ page }) => {
   await expect(footer.getByRole('link', { name: 'Согласие на обработку персональных данных', exact: true })).toHaveAttribute('href', '/consent.html');
 });
 
+test('optimized imagery and vector icons are served without missing assets', async ({ page }) => {
+  const failedAssets = [];
+
+  page.on('response', (response) => {
+    const url = response.url();
+    if ((url.includes('/assets/images/') || url.includes('/assets/icons/')) && response.status() >= 400) {
+      failedAssets.push(`${response.status()} ${url}`);
+    }
+  });
+
+  await page.goto('/');
+  await page.locator('footer').scrollIntoViewIfNeeded();
+  await page.waitForLoadState('networkidle');
+
+  await expect(page.locator('.hero__media img')).toHaveJSProperty('naturalWidth', 1600);
+  expect(failedAssets).toEqual([]);
+});
+
 test('desktop uses the reference grid composition', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/');
