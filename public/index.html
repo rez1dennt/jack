@@ -221,37 +221,50 @@
     </section>
 
     <section class="specifications" id="equipment" aria-labelledby="specifications-title">
-      <div class="container specifications__grid">
-        <div class="specifications__table-wrap">
-          <h2 id="specifications-title">Технические характеристики</h2>
-          <div class="table-scroll" tabindex="0" aria-label="Таблица прокручивается по горизонтали на узком экране">
-            <table>
-              <caption class="sr-only">Сравнение Jack MS-100A и Jack JK-T2210</caption>
-              <thead><tr><th scope="col">Параметры</th><th scope="col">Jack MS-100A</th><th scope="col">Jack JK-T2210</th></tr></thead>
-              <tbody>
-                <tr><th scope="row">Поле шитья</th><td>220 × 100 мм</td><td>300 × 200 мм</td></tr>
-                <tr><th scope="row">Макс. скорость шитья</th><td>До 2 700 ст/мин</td><td>До 2 500 ст/мин</td></tr>
-                <tr><th scope="row">Тип привода</th><td>Серво</td><td>Серво</td></tr>
-                <tr><th scope="row">Толщина материала</th><td>Средние и тяжёлые ткани</td><td>Средние и тяжёлые ткани</td></tr>
-                <tr><th scope="row">Тип стежка</th><td>Челночный стежок</td><td>Челночный стежок</td></tr>
-                <tr><th scope="row">Память</th><td>До 999 шаблонов</td><td>До 999 шаблонов</td></tr>
-                <tr><th scope="row">Питание</th><td>220 В, 50/60 Гц</td><td>220 В, 50/60 Гц</td></tr>
-                <tr><th scope="row">Потребление воздуха</th><td>0.5 МПа, 1.8 л/мин</td><td>0.5 МПа, 1.8 л/мин</td></tr>
-                <tr><th scope="row">Вес</th><td>270 кг</td><td>310 кг</td></tr>
-                <tr><th scope="row">Габариты</th><td>1200 × 1100 × 1300 мм</td><td>1400 × 1200 × 1300 мм</td></tr>
-              </tbody>
-            </table>
+      <div class="container">
+        <div class="specifications__panel">
+          <div class="specifications__grid">
+            <div class="specifications__table-wrap">
+              <h2 id="specifications-title">Технические <span>характеристики</span></h2>
+              <div class="table-scroll" tabindex="0" aria-label="Таблица прокручивается по горизонтали на узком экране">
+                <table>
+                  <caption class="sr-only">Сравнение Jack MS-100A и Jack JK-T2210</caption>
+                  <thead><tr><th scope="col">Параметры</th><th scope="col">Jack MS-100A</th><th scope="col">Jack JK-T2210</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row"><span class="spec-parameter"><span data-icon="frame" aria-hidden="true"></span><span>Поле шитья</span></span></th><td>220 × 100 мм</td><td>300 × 200 мм</td></tr>
+                    <tr><th scope="row"><span class="spec-parameter"><span data-icon="speed" aria-hidden="true"></span><span>Макс. скорость шитья</span></span></th><td>До 2 700 ст/мин</td><td>До 2 500 ст/мин</td></tr>
+                    <tr><th scope="row"><span class="spec-parameter"><span data-icon="motor" aria-hidden="true"></span><span>Тип привода</span></span></th><td>Серво</td><td>Серво</td></tr>
+                    <tr><th scope="row"><span class="spec-parameter"><span data-icon="layers" aria-hidden="true"></span><span>Толщина материала</span></span></th><td>Средние и тяжёлые ткани</td><td>Средние и тяжёлые ткани</td></tr>
+                    <tr><th scope="row"><span class="spec-parameter"><span data-icon="stitch" aria-hidden="true"></span><span>Тип стежка</span></span></th><td>Челночный стежок</td><td>Челночный стежок</td></tr>
+                    <tr><th scope="row"><span class="spec-parameter"><span data-icon="templates" aria-hidden="true"></span><span>Память</span></span></th><td>До 999 шаблонов</td><td>До 999 шаблонов</td></tr>
+                    <tr><th scope="row"><span class="spec-parameter"><span data-icon="plug" aria-hidden="true"></span><span>Питание</span></span></th><td>220 В, 50/60 Гц</td><td>220 В, 50/60 Гц</td></tr>
+                    <tr><th scope="row"><span class="spec-parameter"><span data-icon="air" aria-hidden="true"></span><span>Потребление воздуха</span></span></th><td>0.5 МПа, 1.8 л/мин</td><td>0.5 МПа, 1.8 л/мин</td></tr>
+                    <tr><th scope="row"><span class="spec-parameter"><span data-icon="weight" aria-hidden="true"></span><span>Вес</span></span></th><td>270 кг</td><td>310 кг</td></tr>
+                    <tr><th scope="row"><span class="spec-parameter"><span data-icon="dimensions" aria-hidden="true"></span><span>Габариты</span></span></th><td>1200 × 1100 × 1300 мм</td><td>1400 × 1200 × 1300 мм</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="specifications__note">*Характеристики могут отличаться в зависимости от модификации и комплектации.</p>
+            </div>
+            <div class="specifications__product">
+              <picture>
+                <source srcset="/assets/images/spec-machine.avif" type="image/avif">
+                <source srcset="/assets/images/spec-machine.webp" type="image/webp">
+                <img src="/assets/images/spec-machine.png" width="1000" height="750" alt="Промышленный шаблонный автомат Jack MS-100A" loading="lazy" decoding="async">
+              </picture>
+              <div class="product-benefits" aria-label="Преимущества Jack MS-100A">
+                <article class="product-benefit"><span data-icon="target" aria-hidden="true"></span><h3>Высокая точность</h3><p>Идеальная строчка даже на сложных материалах</p></article>
+                <article class="product-benefit"><span data-icon="speed" aria-hidden="true"></span><h3>Скорость и стабильность</h3><p>До 2 700 ст/мин без потери качества</p></article>
+                <article class="product-benefit"><span data-icon="shield" aria-hidden="true"></span><h3>Надёжность</h3><p>Проверенные компоненты и долгий срок службы</p></article>
+                <article class="product-benefit"><span data-icon="settings" aria-hidden="true"></span><h3>Простое управление</h3><p>Интуитивный интерфейс и удобная настройка</p></article>
+              </div>
+              <a class="button button--primary button--download" href="/assets/docs/jack-ms-100a.pdf" download>
+                <span data-icon="download" aria-hidden="true"></span>
+                <span class="specifications__download-copy"><strong>Скачать технический лист (PDF)</strong><small>Подробные характеристики и руководство</small></span>
+                <span data-icon="pdf" aria-hidden="true"></span>
+              </a>
+            </div>
           </div>
-        </div>
-        <div class="specifications__product">
-          <picture>
-            <source srcset="/assets/images/spec-machine.avif" type="image/avif">
-            <source srcset="/assets/images/spec-machine.webp" type="image/webp">
-            <img src="/assets/images/spec-machine.png" width="1000" height="750" alt="Промышленный шаблонный автомат Jack MS-100A" loading="lazy" decoding="async">
-          </picture>
-          <a class="button button--primary button--download" href="/assets/docs/jack-ms-100a.pdf" download>
-            <span data-icon="download" aria-hidden="true"></span>Скачать технический лист (PDF)
-          </a>
         </div>
       </div>
     </section>

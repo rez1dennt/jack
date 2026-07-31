@@ -14,7 +14,18 @@ const iconNames = [
   'shield',
   'headset',
   'training',
-  'custom'
+  'custom',
+  'settings',
+  'frame',
+  'speed',
+  'motor',
+  'stitch',
+  'plug',
+  'air',
+  'weight',
+  'dimensions',
+  'target',
+  'pdf'
 ];
 
 test('reference interface icons share one 48px line-icon contract', async () => {

@@ -302,6 +302,40 @@ test('capabilities reproduce the five-card reference composition', async ({ page
   }
 });
 
+test('specifications reproduce the table, product benefits, and download panel', async ({ page }) => {
+  await page.setViewportSize({ width: 1900, height: 1100 });
+  await page.goto('/');
+
+  await expect(page.locator('.spec-parameter')).toHaveCount(10);
+  await expect(page.locator('.spec-parameter [data-icon]')).toHaveCount(10);
+  await expect(page.locator('.product-benefit')).toHaveCount(4);
+  await expect(page.locator('.product-benefit h3')).toHaveText([
+    'Высокая точность',
+    'Скорость и стабильность',
+    'Надёжность',
+    'Простое управление'
+  ]);
+  await expect(page.locator('.specifications__download-copy small')).toHaveText('Подробные характеристики и руководство');
+
+  const geometry = await page.evaluate(() => {
+    const container = document.querySelector('.specifications > .container').getBoundingClientRect();
+    const panel = document.querySelector('.specifications__panel').getBoundingClientRect();
+    return {
+      container: { left: Math.round(container.left), width: Math.round(container.width) },
+      panelWidth: Math.round(panel.width),
+      radius: getComputedStyle(document.querySelector('.specifications__panel')).borderRadius,
+      columns: getComputedStyle(document.querySelector('.specifications__grid')).gridTemplateColumns.split(' ').length
+    };
+  });
+
+  expect(geometry).toEqual({
+    container: { left: 230, width: 1440 },
+    panelWidth: 1440,
+    radius: '12px',
+    columns: 2
+  });
+});
+
 test('applications keep the approved proportions and use check markers', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 1000 });
   await page.goto('/');

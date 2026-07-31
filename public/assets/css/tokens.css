@@ -94,6 +94,7 @@
   --font-heading: "Roboto Condensed Local", "Arial Narrow", Arial, sans-serif;
   --font-body: "Inter Local", Arial, sans-serif;
   --font-size-xs: 0.75rem;
+  --font-size-2xs: 0.6875rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
   --font-size-lg: 1.125rem;
@@ -145,6 +146,9 @@
   --capability-card-min-height: 25rem;
   --capability-icon-shell-size: 5.5rem;
   --applications-columns: 30% 35% 35%;
+  --spec-product-media-min-height: 22rem;
+  --spec-download-width: 82%;
+  --spec-product-background: radial-gradient(circle at 50% 36%, transparent 0 34%, var(--color-border-subtle) 34.2% 34.4%, transparent 34.6% 45%, var(--color-border-subtle) 45.2% 45.4%, transparent 45.6%), var(--color-surface-elevated);
 
   --duration-fast: 140ms;
   --duration-base: 220ms;
