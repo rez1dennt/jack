@@ -270,35 +270,53 @@
     </section>
 
     <section class="lead-section" id="lead-form" aria-labelledby="lead-title">
-      <picture class="lead-section__media" aria-hidden="true">
-        <source srcset="/assets/images/cta-operator.avif" type="image/avif">
-        <source srcset="/assets/images/cta-operator.webp" type="image/webp">
-        <img src="/assets/images/cta-operator.jpg" width="1000" height="750" alt="" loading="lazy" decoding="async">
-      </picture>
-      <div class="lead-section__copy">
-        <h2 id="lead-title">Готовы узнать, как Jack<br>может ускорить ваше производство?</h2>
-        <p>Оставьте заявку — наш специалист свяжется с вами<br>и подберёт оптимальное решение.</p>
+      <div class="container">
+        <div class="lead-panel">
+          <picture class="lead-section__media" aria-hidden="true">
+            <source srcset="/assets/images/cta-operator.avif" type="image/avif">
+            <source srcset="/assets/images/cta-operator.webp" type="image/webp">
+            <img src="/assets/images/cta-operator.jpg" width="1000" height="750" alt="" loading="lazy" decoding="async">
+          </picture>
+
+          <div class="lead-section__inner">
+            <div class="lead-section__copy">
+              <span class="lead-section__eyebrow">Расчёт проекта</span>
+              <h2 id="lead-title">Ускорьте производство с Jack</h2>
+              <p>Опишите задачу. Специалист подберёт конфигурацию оборудования под ваши операции и материалы.</p>
+              <ul class="lead-section__points" aria-label="Преимущества консультации">
+                <li class="lead-section__point"><span data-icon="check-circle" aria-hidden="true"></span>Бесплатная консультация</li>
+                <li class="lead-section__point"><span data-icon="check-circle" aria-hidden="true"></span>Подбор под задачу</li>
+              </ul>
+            </div>
+
+            <form class="lead-form" id="consultation-form" novalidate>
+              <div class="lead-form__header">
+                <h3>Получить консультацию</h3>
+                <p>Оставьте контакты для связи со специалистом</p>
+              </div>
+              <label class="field">
+                <span class="field__label">Ваше имя</span>
+                <input name="name" autocomplete="name" maxlength="80" placeholder="Алексей" aria-describedby="name-error" required>
+                <span class="field__error" id="name-error"></span>
+              </label>
+              <label class="field">
+                <span class="field__label">Телефон</span>
+                <input name="phone" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" aria-describedby="phone-hint phone-error" required>
+                <span class="field__hint" id="phone-hint">Российский мобильный или городской номер</span>
+                <span class="field__error" id="phone-error"></span>
+              </label>
+              <label class="consent-check">
+                <input name="consent" type="checkbox" aria-describedby="consent-error" required>
+                <span>Я даю <a href="/consent.html">согласие на обработку персональных данных</a></span>
+              </label>
+              <span class="field__error consent-check__error" id="consent-error"></span>
+              <input class="honeypot" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <button class="button button--primary" type="submit">Обсудить задачу</button>
+              <p class="form-status" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
       </div>
-      <form class="lead-form" id="consultation-form" novalidate>
-        <label class="field">
-          <span class="sr-only">Ваше имя</span>
-          <input name="name" autocomplete="name" maxlength="80" placeholder="Ваше имя" aria-describedby="name-error" required>
-          <span class="field__error" id="name-error"></span>
-        </label>
-        <label class="field">
-          <span class="sr-only">Телефон</span>
-          <input name="phone" inputmode="tel" autocomplete="tel" placeholder="Телефон" aria-describedby="phone-error" required>
-          <span class="field__error" id="phone-error"></span>
-        </label>
-        <label class="consent-check">
-          <input name="consent" type="checkbox" aria-describedby="consent-error" required>
-          <span>Я даю <a href="/consent.html">согласие на обработку персональных данных</a></span>
-        </label>
-        <span class="field__error" id="consent-error"></span>
-        <input class="honeypot" name="company_website" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <button class="button button--dark" type="submit">Получить консультацию</button>
-        <p class="form-status" role="status" aria-live="polite"></p>
-      </form>
     </section>
   </main>
 

@@ -338,6 +338,38 @@ test('specifications reproduce the table, product benefits, and download panel',
   });
 });
 
+test('Industrial Control Room CTA exposes the approved copy and form contract', async ({ page }) => {
+  await page.goto('/');
+
+  const section = page.locator('.lead-section');
+  const panel = section.locator('.lead-panel');
+  const form = section.locator('#consultation-form');
+
+  await expect(section.locator(':scope > .container')).toHaveCount(1);
+  await expect(panel).toHaveCount(1);
+  await expect(panel.locator('.lead-section__media')).toHaveCount(1);
+  await expect(section.locator('.lead-section__eyebrow')).toHaveText('Расчёт проекта');
+  await expect(section.getByRole('heading', { level: 2 })).toHaveText('Ускорьте производство с Jack');
+  await expect(section.locator('.lead-section__copy > p')).toHaveText(
+    'Опишите задачу. Специалист подберёт конфигурацию оборудования под ваши операции и материалы.'
+  );
+  await expect(section.locator('.lead-section__point')).toHaveText([
+    'Бесплатная консультация',
+    'Подбор под задачу'
+  ]);
+  await expect(section.locator('.lead-section__point [data-icon="check-circle"]')).toHaveCount(2);
+
+  await expect(form.locator('.lead-form__header h3')).toHaveText('Получить консультацию');
+  await expect(form.locator('.lead-form__header p')).toHaveText('Оставьте контакты для связи со специалистом');
+  await expect(form.locator('.field__label')).toHaveText(['Ваше имя', 'Телефон']);
+  await expect(form.locator('[name="name"]')).toHaveAttribute('aria-describedby', 'name-error');
+  await expect(form.locator('[name="phone"]')).toHaveAttribute('aria-describedby', 'phone-hint phone-error');
+  await expect(form.locator('[name="consent"]')).toHaveAttribute('aria-describedby', 'consent-error');
+  await expect(form.getByRole('button', { name: 'Обсудить задачу' })).toHaveCount(1);
+  await expect(form.locator('[name="company_website"]')).toHaveCount(1);
+  await expect(form.locator('.form-status')).toHaveAttribute('aria-live', 'polite');
+});
+
 test('controls and redesigned panels share the approved soft geometry', async ({ page }) => {
   await page.goto('/');
   const geometry = await page.evaluate(() => ({
