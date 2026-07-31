@@ -199,26 +199,43 @@ test('desktop uses the approved 1440px container and local sans-serif typography
   expect(metrics.containerLeft).toBe(230);
 });
 
-test('hero uses a background composition on desktop and stacks media below copy on mobile', async ({ page }) => {
+test('hero media spans the viewport while copy stays on the 1440px grid', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 900 });
   await page.goto('/');
 
   const desktop = await page.evaluate(() => {
+    const hero = document.querySelector('.hero').getBoundingClientRect();
     const inner = document.querySelector('.hero__inner').getBoundingClientRect();
     const mediaElement = document.querySelector('.hero__media');
     const media = mediaElement.getBoundingClientRect();
     const title = getComputedStyle(document.querySelector('.hero h1'));
     return {
-      inner: { width: Math.round(inner.width), height: Math.round(inner.height) },
-      media: { width: Math.round(media.width), height: Math.round(media.height) },
+      hero: {
+        left: Math.round(hero.left),
+        right: Math.round(hero.right),
+        width: Math.round(hero.width),
+        height: Math.round(hero.height)
+      },
+      inner: {
+        left: Math.round(inner.left),
+        width: Math.round(inner.width),
+        height: Math.round(inner.height)
+      },
+      media: {
+        left: Math.round(media.left),
+        right: Math.round(media.right),
+        width: Math.round(media.width),
+        height: Math.round(media.height)
+      },
       mediaPosition: getComputedStyle(mediaElement).position,
       titleSize: title.fontSize,
       titleLineHeight: Number.parseFloat(title.lineHeight)
     };
   });
 
-  expect(desktop.inner).toEqual({ width: 1440, height: 440 });
-  expect(desktop.media).toEqual({ width: 1440, height: 440 });
+  expect(desktop.hero).toEqual({ left: 0, right: 1900, width: 1900, height: 440 });
+  expect(desktop.inner).toEqual({ left: 230, width: 1440, height: 440 });
+  expect(desktop.media).toEqual({ left: 0, right: 1900, width: 1900, height: 440 });
   expect(desktop.mediaPosition).toBe('absolute');
   expect(desktop.titleSize).toBe('46px');
   expect(desktop.titleLineHeight).toBeCloseTo(49.68, 1);
@@ -226,18 +243,20 @@ test('hero uses a background composition on desktop and stacks media below copy 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
   const mobile = await page.evaluate(() => {
-    const copy = document.querySelector('.hero__content').getBoundingClientRect();
+    const inner = document.querySelector('.hero__inner').getBoundingClientRect();
     const mediaElement = document.querySelector('.hero__media');
     const media = mediaElement.getBoundingClientRect();
     return {
       mediaPosition: getComputedStyle(mediaElement).position,
-      copyBottom: Math.round(copy.bottom),
-      mediaTop: Math.round(media.top)
+      innerBottom: Math.round(inner.bottom),
+      mediaTop: Math.round(media.top),
+      mediaWidth: Math.round(media.width)
     };
   });
 
   expect(mobile.mediaPosition).toBe('relative');
-  expect(mobile.mediaTop).toBeGreaterThanOrEqual(mobile.copyBottom);
+  expect(mobile.mediaTop).toBeGreaterThanOrEqual(mobile.innerBottom);
+  expect(mobile.mediaWidth).toBe(390);
 });
 
 test('desktop uses the reference grid composition', async ({ page }) => {

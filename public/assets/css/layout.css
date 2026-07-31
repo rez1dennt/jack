@@ -53,22 +53,12 @@
 .hero {
   position: relative;
   min-block-size: var(--hero-height);
+  overflow: hidden;
+  isolation: isolate;
   background: var(--color-surface-page);
 }
 
-.hero::before {
-  content: none;
-}
-
-.hero__inner {
-  position: relative;
-  min-block-size: var(--hero-height);
-  display: block;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.hero__inner::after {
+.hero::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -77,9 +67,15 @@
   pointer-events: none;
 }
 
-.hero__content {
+.hero__inner {
   position: relative;
   z-index: 2;
+  min-block-size: var(--hero-height);
+  display: block;
+}
+
+.hero__content {
+  position: relative;
   inline-size: var(--hero-copy-width);
   padding: var(--space-16);
 }

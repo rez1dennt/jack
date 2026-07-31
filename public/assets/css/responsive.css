@@ -235,6 +235,7 @@
 
   .hero {
     min-block-size: 0;
+    overflow: visible;
   }
 
   .hero__inner {
@@ -243,7 +244,7 @@
     overflow: visible;
   }
 
-  .hero__inner::after {
+  .hero::after {
     content: none;
   }
 
@@ -269,9 +270,9 @@
   .hero__media {
     position: relative;
     inset: auto;
-    inline-size: calc(100% + (var(--page-gutter) * 2));
+    inline-size: 100%;
     block-size: 17rem;
-    margin-inline: calc(var(--page-gutter) * -1);
+    margin-inline: 0;
   }
 
   .hero__media img {
