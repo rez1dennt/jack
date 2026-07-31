@@ -358,6 +358,10 @@ test('Industrial Control Room CTA exposes the approved copy and form contract', 
     'Подбор под задачу'
   ]);
   await expect(section.locator('.lead-section__point [data-icon="check-circle"]')).toHaveCount(2);
+  expect(await section.locator('.lead-section__point [data-icon="check-circle"]').first().evaluate((node) => {
+    const style = getComputedStyle(node);
+    return style.maskImage || style.webkitMaskImage;
+  })).toContain('check-circle.svg');
 
   await expect(form.locator('.lead-form__header h3')).toHaveText('Получить консультацию');
   await expect(form.locator('.lead-form__header p')).toHaveText('Оставьте контакты для связи со специалистом');
@@ -493,6 +497,7 @@ test('major sections use the approved 1440px grid and responsive desktop spacing
     const reasons = rect('.reasons');
     const specifications = rect('.specifications');
     const lead = rect('.lead-section');
+    const footer = rect('.site-footer');
     const gap = (before, after) => Math.round(after.top - before.bottom);
 
     return {
@@ -507,7 +512,8 @@ test('major sections use the approved 1440px grid and responsive desktop spacing
         capabilitiesToApplications: gap(capabilities, applications),
         applicationsToReasons: gap(applications, reasons),
         reasonsToSpecifications: gap(reasons, specifications),
-        specificationsToLead: gap(specifications, lead)
+        specificationsToLead: gap(specifications, lead),
+        leadToFooter: gap(lead, footer)
       }
     };
   });
@@ -520,7 +526,8 @@ test('major sections use the approved 1440px grid and responsive desktop spacing
     capabilitiesToApplications: 24,
     applicationsToReasons: 24,
     reasonsToSpecifications: 24,
-    specificationsToLead: 24
+    specificationsToLead: 24,
+    leadToFooter: 24
   });
 });
 

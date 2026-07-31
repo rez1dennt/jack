@@ -493,6 +493,7 @@
 }
 
 .lead-section {
+  margin-block-end: var(--section-gap);
   color: var(--color-text-inverse);
 }
 

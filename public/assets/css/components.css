@@ -146,6 +146,7 @@
 [data-icon="dimensions"] { mask-image: url("../icons/dimensions.svg"); -webkit-mask-image: url("../icons/dimensions.svg"); }
 [data-icon="target"] { mask-image: url("../icons/target.svg"); -webkit-mask-image: url("../icons/target.svg"); }
 [data-icon="pdf"] { mask-image: url("../icons/pdf.svg"); -webkit-mask-image: url("../icons/pdf.svg"); }
+[data-icon="check-circle"] { mask-image: url("../icons/check-circle.svg"); -webkit-mask-image: url("../icons/check-circle.svg"); }
 [data-icon="vk"] { mask-image: url("../icons/vk.svg"); -webkit-mask-image: url("../icons/vk.svg"); }
 [data-icon="youtube"] { mask-image: url("../icons/youtube.svg"); -webkit-mask-image: url("../icons/youtube.svg"); }
 [data-icon="telegram"] { mask-image: url("../icons/telegram.svg"); -webkit-mask-image: url("../icons/telegram.svg"); }
