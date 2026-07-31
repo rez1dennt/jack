@@ -82,6 +82,43 @@ test('lead form masks input, validates errors, and submits a normalized phone', 
   expect(submittedBody.csrf_token).toBe('test-csrf');
 });
 
+test('mobile menu opens accessibly without shifting the page and closes by Escape', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const button = page.locator('[data-menu-button]');
+  const panel = page.locator('[data-menu-panel]');
+  const anchorBefore = await page.locator('.header-cta').boundingBox();
+
+  await button.click();
+  await expect(button).toHaveAttribute('aria-expanded', 'true');
+  await expect(panel).toHaveAttribute('data-open', 'true');
+  await expect(page.locator('[data-menu-overlay]')).toBeVisible();
+  await expect(page.locator('body')).toHaveCSS('overflow', 'hidden');
+  await expect(panel.locator('a').first()).toBeFocused();
+
+  const anchorAfter = await page.locator('.header-cta').boundingBox();
+  expect(Math.abs((anchorBefore?.x ?? 0) - (anchorAfter?.x ?? 0))).toBeLessThanOrEqual(1);
+
+  await page.keyboard.press('Escape');
+  await expect(button).toHaveAttribute('aria-expanded', 'false');
+  await expect(panel).not.toHaveAttribute('data-open', 'true');
+  await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
+  await expect(button).toBeFocused();
+});
+
+test('cookie choice is stored and suppresses the banner on return', async ({ page }) => {
+  await page.goto('/');
+  const banner = page.locator('[data-cookie-banner]');
+  await expect(banner).toBeVisible();
+  await page.locator('[data-cookie-necessary]').click();
+  await expect(banner).toBeHidden();
+  expect(await page.evaluate(() => localStorage.getItem('jack_cookie_preference_v1'))).toBe('necessary');
+
+  await page.reload();
+  await expect(banner).toBeHidden();
+});
+
 test('desktop uses the reference grid composition', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/');

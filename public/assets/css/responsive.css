@@ -128,6 +128,7 @@
     block-size: var(--border-thin);
     display: block;
     background: currentColor;
+    transition: rotate var(--duration-base) var(--ease-out), translate var(--duration-base) var(--ease-out), opacity var(--duration-base) var(--ease-out);
   }
 
   .menu-button__lines {
@@ -147,6 +148,26 @@
 
   .menu-button__lines::after {
     inset-block-start: var(--space-2);
+  }
+
+  [data-menu-open="true"] .menu-button {
+    position: relative;
+    z-index: 53;
+    color: var(--color-text-inverse);
+  }
+
+  [data-menu-open="true"] .menu-button__lines {
+    background: transparent;
+  }
+
+  [data-menu-open="true"] .menu-button__lines::before {
+    inset-block-start: 0;
+    rotate: 45deg;
+  }
+
+  [data-menu-open="true"] .menu-button__lines::after {
+    inset-block-start: 0;
+    rotate: -45deg;
   }
 
   .site-nav {

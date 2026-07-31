@@ -337,6 +337,10 @@ tbody th {
   box-shadow: var(--shadow-overlay);
 }
 
+.cookie-banner[hidden] {
+  display: none;
+}
+
 .cookie-banner h2 {
   margin-block-end: var(--space-1);
   font-family: var(--font-body);

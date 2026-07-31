@@ -1,3 +1,7 @@
 import { initLeadForm } from './form.js';
+import { initMenu } from './menu.js';
+import { initCookieBanner } from './cookies.js';
 
 initLeadForm(document.querySelector('#consultation-form'));
+initMenu(document.querySelector('[data-menu-root]'));
+initCookieBanner(document.querySelector('[data-cookie-banner]'));
