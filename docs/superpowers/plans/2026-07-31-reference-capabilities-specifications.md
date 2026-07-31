@@ -174,8 +174,7 @@ For cards `02–05`, insert exactly these title/description pairs:
 Add/adjust these tokens in `tokens.css`:
 
 ```css
---radius-sm: 0.5rem;
---radius-md: 0.75rem;
+--radius-card: 0.75rem;
 --shadow-card: 0 0.5rem 1.75rem rgb(17 24 32 / 7%);
 --capability-card-min-height: 25rem;
 --capability-icon-shell-size: 5.5rem;
@@ -193,7 +192,7 @@ Implement the desktop layout in `layout.css`/`components.css`:
 .capabilities__ornament::after { content: ""; inline-size: var(--space-16); block-size: var(--border-thin); background: currentColor; }
 .capabilities__ornament span { inline-size: var(--space-6); block-size: var(--space-6); }
 .capabilities__grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-4); }
-.capability { position: relative; min-block-size: var(--capability-card-min-height); display: flex; flex-direction: column; align-items: center; padding: var(--space-7) var(--space-5); overflow: hidden; border: var(--border-thin) solid var(--color-border-subtle); border-radius: var(--radius-md); background: var(--color-surface-elevated); box-shadow: var(--shadow-card); text-align: center; }
+.capability { position: relative; min-block-size: var(--capability-card-min-height); display: flex; flex-direction: column; align-items: center; padding: var(--space-7) var(--space-5); overflow: hidden; border: var(--border-thin) solid var(--color-border-subtle); border-radius: var(--radius-card); background: var(--color-surface-elevated); box-shadow: var(--shadow-card); text-align: center; }
 .capability__icon-shell { inline-size: var(--capability-icon-shell-size); block-size: var(--capability-icon-shell-size); display: grid; place-items: center; margin-block-end: var(--space-6); border-radius: 50%; background: var(--color-action-primary-soft); box-shadow: var(--shadow-whisper); }
 .capability__rule { inline-size: var(--space-7); block-size: var(--border-thin); margin-block-end: var(--space-6); background: var(--color-action-primary); }
 .capability__title { margin-block-end: var(--space-6); font-family: var(--font-body); font-size: var(--font-size-base); line-height: 1.45; }
@@ -373,7 +372,7 @@ Use the following structural contract:
 
 ```css
 .specifications { padding-block: var(--space-8); }
-.specifications__panel { padding: var(--space-8); border: var(--border-thin) solid var(--color-border-subtle); border-radius: var(--radius-md); background: var(--color-surface-subtle); box-shadow: var(--shadow-card); }
+.specifications__panel { padding: var(--space-8); border: var(--border-thin) solid var(--color-border-subtle); border-radius: var(--radius-card); background: var(--color-surface-subtle); box-shadow: var(--shadow-card); }
 .specifications__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: var(--space-8); align-items: stretch; }
 .specifications h2 { margin-block-end: var(--space-7); text-align: start; text-transform: uppercase; }
 .specifications h2 span { color: var(--color-accent-foreground); }
@@ -381,8 +380,8 @@ Use the following structural contract:
 .spec-parameter { display: inline-flex; align-items: center; gap: var(--space-3); }
 .spec-parameter [data-icon] { flex: 0 0 auto; inline-size: var(--space-5); block-size: var(--space-5); color: var(--color-accent-foreground); }
 .specifications__note { margin: var(--space-8) 0 0; color: var(--color-text-secondary); font-size: var(--font-size-xs); }
-.specifications__product { position: relative; display: grid; grid-template-rows: minmax(22rem, 1fr) auto auto; gap: var(--space-4); padding: var(--space-4); overflow: hidden; border-radius: var(--radius-md); background: radial-gradient(circle at 50% 38%, var(--color-surface-page) 0 34%, transparent 35%), var(--color-surface-elevated); }
-.product-benefits { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-radius: var(--radius-md); background: var(--color-surface-page); box-shadow: var(--shadow-card); }
+.specifications__product { position: relative; display: grid; grid-template-rows: minmax(22rem, 1fr) auto auto; gap: var(--space-4); padding: var(--space-4); overflow: hidden; border-radius: var(--radius-card); background: radial-gradient(circle at 50% 38%, var(--color-surface-page) 0 34%, transparent 35%), var(--color-surface-elevated); }
+.product-benefits { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-radius: var(--radius-card); background: var(--color-surface-page); box-shadow: var(--shadow-card); }
 .product-benefit { padding: var(--space-5) var(--space-3); text-align: center; border-inline-end: var(--border-thin) solid var(--color-border-subtle); }
 .product-benefit:last-child { border-inline-end: 0; }
 .product-benefit [data-icon] { inline-size: var(--space-8); block-size: var(--space-8); margin: 0 auto var(--space-3); color: var(--color-accent-foreground); }
@@ -464,6 +463,13 @@ npx playwright test tests/e2e/landing.spec.mjs --grep "approved soft geometry" -
 Expected: FAIL if any control still computes to the old `4px` or `6px` radius.
 
 - [ ] **Step 3: Route all in-scope controls to the shared radius tokens**
+
+First update the shared tokens and retire the temporary card-only token:
+
+```css
+--radius-sm: 0.5rem;
+--radius-md: 0.75rem;
+```
 
 Ensure these selectors use `var(--radius-sm)`:
 
