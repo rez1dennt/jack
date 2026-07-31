@@ -45,6 +45,29 @@ test('footer matches the approved contact navigation help and legal contract', a
   await expect(footer.getByRole('link', { name: 'Согласие на обработку персональных данных' })).toHaveAttribute('href', '/consent.html');
 });
 
+test('footer spans the viewport while its content stays on the 1440px grid', async ({ page }) => {
+  await page.setViewportSize({ width: 1900, height: 1100 });
+  await page.goto('/');
+
+  const geometry = await page.evaluate(() => {
+    const footer = document.querySelector('.site-footer').getBoundingClientRect();
+    const grid = document.querySelector('.site-footer__grid').getBoundingClientRect();
+    const help = document.querySelector('.footer-help').getBoundingClientRect();
+    return {
+      footer: { left: Math.round(footer.left), width: Math.round(footer.width) },
+      grid: { left: Math.round(grid.left), width: Math.round(grid.width) },
+      helpHeight: Math.round(help.height)
+    };
+  });
+
+  expect(geometry.footer).toEqual({ left: 0, width: 1900 });
+  expect(geometry.grid).toEqual({ left: 230, width: 1440 });
+  expect(geometry.helpHeight).toBeGreaterThanOrEqual(88);
+
+  await page.getByRole('link', { name: /Нужна помощь/i }).click();
+  await expect(page.locator('#consultation-form')).toBeInViewport();
+});
+
 test('optimized imagery and vector icons are served without missing assets', async ({ page }) => {
   const failedAssets = [];
 

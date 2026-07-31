@@ -171,6 +171,17 @@
   --lead-form-border: rgb(255 255 255 / 72%);
   --lead-form-control-border: var(--primitive-gray-300);
   --lead-form-shadow: 0 1.5rem 3.75rem rgb(0 0 0 / 28%);
+  --footer-min-height: 32rem;
+  --footer-surface: var(--primitive-ink-950);
+  --footer-panel-surface: rgb(255 255 255 / 5%);
+  --footer-panel-surface-hover: rgb(255 255 255 / 9%);
+  --footer-border: rgb(255 255 255 / 15%);
+  --footer-border-strong: rgb(197 8 19 / 72%);
+  --footer-muted: var(--primitive-gray-300);
+  --footer-image-opacity: 0.58;
+  --footer-image-width: 56%;
+  --footer-overlay: linear-gradient(90deg, rgb(17 24 32 / 100%) 0%, rgb(17 24 32 / 96%) 38%, rgb(17 24 32 / 68%) 62%, rgb(17 24 32 / 24%) 100%);
+  --footer-grid-columns: minmax(0, 1fr) minmax(0, 0.72fr) minmax(0, 1.45fr);
 
   --duration-fast: 140ms;
   --duration-base: 220ms;
