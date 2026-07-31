@@ -57,6 +57,7 @@
 
   --primitive-red-700: #c50813;
   --primitive-red-800: #a90710;
+  --primitive-red-400: #ff4d57;
   --primitive-red-300: #ff858b;
   --primitive-red-100: #fff0f1;
   --primitive-ink-950: #111820;
@@ -149,6 +150,7 @@
   --problem-card-radius: var(--radius-md);
   --problem-card-shadow: 0 1rem 3rem rgb(17 24 32 / 12%);
   --problem-panel-surface: linear-gradient(145deg, var(--primitive-red-800), var(--color-action-primary));
+  --problem-panel-fallback: var(--primitive-red-800);
   --problem-panel-divider: rgb(255 255 255 / 18%);
   --problem-icon-surface: rgb(111 0 9 / 26%);
   --problem-panel-decoration: rgb(101 0 8 / 18%);
@@ -173,10 +175,11 @@
   --lead-form-shadow: 0 1.5rem 3.75rem rgb(0 0 0 / 28%);
   --footer-min-height: 32rem;
   --footer-surface: var(--primitive-ink-950);
-  --footer-panel-surface: rgb(255 255 255 / 5%);
-  --footer-panel-surface-hover: rgb(255 255 255 / 9%);
+  --footer-panel-surface: var(--primitive-ink-900);
+  --footer-panel-surface-hover: var(--primitive-ink-700);
   --footer-border: rgb(255 255 255 / 15%);
   --footer-border-strong: rgb(197 8 19 / 72%);
+  --footer-accent: var(--primitive-red-400);
   --footer-muted: var(--primitive-gray-300);
   --footer-image-opacity: 0.58;
   --footer-image-width: 56%;

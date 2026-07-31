@@ -45,6 +45,51 @@ test('footer matches the approved contact navigation help and legal contract', a
   await expect(footer.getByRole('link', { name: 'Согласие на обработку персональных данных' })).toHaveAttribute('href', '/consent.html');
 });
 
+test('footer accent text keeps WCAG AA contrast on the industrial background', async ({ page }) => {
+  await page.goto('/');
+
+  const contrast = await page.evaluate(() => {
+    const parseRgb = (value) => value.match(/[\d.]+/g).slice(0, 3).map(Number);
+    const luminance = (rgb) => rgb
+      .map((channel) => channel / 255)
+      .map((channel) => channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4)
+      .reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
+    const year = document.querySelector('.site-footer__year');
+    const footer = document.querySelector('.site-footer');
+    const foreground = luminance(parseRgb(getComputedStyle(year).color));
+    const background = luminance(parseRgb(getComputedStyle(footer).backgroundColor));
+    return (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05);
+  });
+
+  expect(contrast).toBeGreaterThanOrEqual(4.5);
+});
+
+test('solution action keeps WCAG AA contrast when dark tokens are active', async ({ page }) => {
+  await page.goto('/');
+
+  const contrast = await page.evaluate(() => {
+    const action = document.querySelector('.button--solution');
+    action.style.transition = 'none';
+    document.documentElement.dataset.theme = 'dark';
+    const parseRgb = (value) => value.match(/[\d.]+/g).slice(0, 3).map(Number);
+    const luminance = (rgb) => rgb
+      .map((channel) => channel / 255)
+      .map((channel) => channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4)
+      .reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
+    const foreground = luminance(parseRgb(getComputedStyle(action).color));
+    const background = luminance(parseRgb(getComputedStyle(document.querySelector('.solution-panel')).backgroundColor));
+    return (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05);
+  });
+
+  expect(contrast).toBeGreaterThanOrEqual(4.5);
+});
+
+test('problem panel exposes a solid red fallback behind its gradient', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.locator('.problem-panel')).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+});
+
 test('footer spans the viewport while its content stays on the 1440px grid', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 1100 });
   await page.goto('/');
@@ -697,7 +742,7 @@ test('applications result panel replaces the case CTA with three measurable outc
   expect(mobileOrder[1]).toBeLessThan(mobileOrder[2]);
 });
 
-for (const width of [1440, 1024, 768, 390, 320]) {
+for (const width of [1440, 1024, 768, 390, 320, 280]) {
   test(`landing has no overflow at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/');

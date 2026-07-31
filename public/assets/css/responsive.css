@@ -256,7 +256,7 @@
 
   .hero h1 {
     max-inline-size: 18ch;
-    font-size: clamp(2.2rem, 10.3vw, 3.3rem);
+    font-size: clamp(var(--font-size-3xl), 10.3vw, 3.3rem);
     line-height: 1.08;
   }
 
