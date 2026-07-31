@@ -3,7 +3,7 @@ tools/
 node_modules/
 vendor/
 server/config.php
-server/storage/rate-*.json
+server/storage/*.json
 test-results/
 playwright-report/
 .tmp/
