@@ -108,6 +108,23 @@ export function initLeadForm(form, { fetchImpl = globalThis.fetch?.bind(globalTh
   const submitButton = form.querySelector('[type="submit"]');
   const status = form.querySelector('.form-status');
   const disposeMask = initPhoneMask(phoneInput);
+  let csrfToken = '';
+  let csrfRequest = getCsrfToken(fetchImpl)
+    .then((token) => {
+      csrfToken = token;
+      return token;
+    })
+    .catch(() => '');
+
+  const acquireCsrfToken = async () => {
+    if (csrfToken) return csrfToken;
+    csrfToken = await csrfRequest;
+    if (csrfToken) return csrfToken;
+
+    csrfRequest = getCsrfToken(fetchImpl);
+    csrfToken = await csrfRequest;
+    return csrfToken;
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -137,7 +154,7 @@ export function initLeadForm(form, { fetchImpl = globalThis.fetch?.bind(globalTh
     if (status) status.textContent = 'Отправляем заявку…';
 
     try {
-      const csrfToken = await getCsrfToken(fetchImpl);
+      const csrfToken = await acquireCsrfToken();
       const payload = {
         name: values.name.trim(),
         phone: normalizeRuPhone(values.phone),
@@ -155,7 +172,30 @@ export function initLeadForm(form, { fetchImpl = globalThis.fetch?.bind(globalTh
         body: JSON.stringify(payload)
       });
       const result = await response.json().catch(() => ({}));
-      if (!response.ok || result.ok !== true) throw new Error(result.message || 'submit');
+      if (!response.ok || result.ok !== true) {
+        if (response.status === 422 && result.errors && typeof result.errors === 'object') {
+          for (const name of ['name', 'phone', 'consent']) {
+            showFieldError(form, name, typeof result.errors[name] === 'string' ? result.errors[name] : '');
+          }
+          if (status) {
+            status.textContent = 'Проверьте поля формы и отправьте заявку ещё раз.';
+            status.dataset.state = 'error';
+          }
+          const firstServerError = ['name', 'phone', 'consent'].find((name) => result.errors[name]);
+          form.elements.namedItem(firstServerError)?.focus();
+          return;
+        }
+
+        if (response.status === 429) {
+          if (status) {
+            status.textContent = 'Слишком много попыток. Пожалуйста, подождите 10 минут.';
+            status.dataset.state = 'error';
+          }
+          return;
+        }
+
+        throw new Error(result.message || 'submit');
+      }
 
       form.reset();
       if (phoneInput) phoneInput.value = '';
