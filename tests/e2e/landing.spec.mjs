@@ -273,7 +273,9 @@ test('capabilities reproduce the five-card reference composition', async ({ page
   await page.goto('/');
 
   await expect(page.locator('.capability')).toHaveCount(5);
-  await expect(page.locator('.capability__number')).toHaveText(['01', '02', '03', '04', '05']);
+  expect(await page.locator('.capability__number').evaluateAll(
+    (nodes) => nodes.map((node) => node.dataset.number)
+  )).toEqual(['01', '02', '03', '04', '05']);
   await expect(page.locator('.capability__description')).toHaveCount(5);
   await expect(page.locator('.capabilities__heading-accent')).toHaveText(/умеет/i);
 

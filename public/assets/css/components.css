@@ -61,7 +61,7 @@
 .button--dark:hover {
   --button-background: var(--color-text-primary);
   --button-border: var(--color-text-primary);
-  color: var(--color-text-inverse);
+  color: var(--color-surface-page);
 }
 
 .button__play {
@@ -235,7 +235,7 @@ thead th:nth-child(2) {
 }
 
 thead th:nth-child(3) {
-  background: var(--color-border-control);
+  background: var(--color-surface-inverse);
   color: var(--color-text-inverse);
 }
 

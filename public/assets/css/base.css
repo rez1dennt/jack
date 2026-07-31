@@ -43,7 +43,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-action-primary);
+  color: var(--color-accent-foreground);
 }
 
 h1,
