@@ -94,7 +94,7 @@
   }
 }
 
-@media (max-width: 47.9375rem) {
+@media (max-width: 48rem) {
   :root {
     --page-gutter: var(--space-4);
     --header-height: 4.5rem;
@@ -235,6 +235,10 @@
   .hero h1 {
     max-inline-size: 18ch;
     font-size: clamp(2.2rem, 10.3vw, 3.3rem);
+  }
+
+  .hero h1 span {
+    white-space: normal;
   }
 
   .hero__lead br {

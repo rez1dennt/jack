@@ -284,6 +284,10 @@ tbody th {
   font-size: var(--font-size-sm);
 }
 
+.form-status:empty {
+  min-block-size: 0;
+}
+
 .form-status[data-state="success"] {
   color: var(--color-text-inverse);
 }

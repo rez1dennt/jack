@@ -52,7 +52,7 @@
 
 .hero {
   position: relative;
-  min-block-size: clamp(29rem, 42vw, 38rem);
+  min-block-size: clamp(27.5rem, 31vw, 30rem);
   overflow: hidden;
   background:
     radial-gradient(circle at 76% 18%, rgb(255 255 255 / 90%), transparent 36%),
@@ -72,7 +72,7 @@
 .hero__inner {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(26rem, 0.92fr) minmax(34rem, 1.35fr);
+  grid-template-columns: minmax(33rem, 0.95fr) minmax(34rem, 1.25fr);
   align-items: center;
   min-block-size: inherit;
 }
@@ -84,7 +84,7 @@
 }
 
 .hero h1 {
-  max-inline-size: 17ch;
+  max-inline-size: 26ch;
   margin-block-end: var(--space-7);
   font-size: var(--font-size-display);
   line-height: 1.08;
@@ -93,6 +93,8 @@
 }
 
 .hero h1 span {
+  display: inline-block;
+  white-space: nowrap;
   color: var(--color-action-primary);
 }
 
@@ -126,7 +128,7 @@
 .problem-solution {
   display: grid;
   grid-template-columns: minmax(19rem, 0.78fr) minmax(24rem, 0.95fr) minmax(23rem, 1.05fr);
-  min-block-size: 27rem;
+  min-block-size: 22rem;
   border-block: var(--border-thin) solid var(--color-border-subtle);
 }
 
@@ -145,7 +147,7 @@
 .solution-panel__content {
   inline-size: min(100% - (var(--space-8) * 2), 31rem);
   margin-inline: auto;
-  padding-block: var(--space-12);
+  padding-block: var(--space-8);
 }
 
 .problem-panel h2,
@@ -164,7 +166,7 @@
 }
 
 .problem-solution__media {
-  min-block-size: 27rem;
+  min-block-size: 22rem;
   overflow: hidden;
   background: var(--color-surface-subtle);
 }
@@ -189,7 +191,7 @@
 }
 
 .capabilities {
-  padding-block: var(--space-8) var(--space-10);
+  padding-block: var(--space-5) var(--space-6);
 }
 
 .section-title {
@@ -205,7 +207,7 @@
 }
 
 .capability {
-  min-block-size: 10.5rem;
+  min-block-size: 8.5rem;
   display: grid;
   place-items: center;
   align-content: center;
@@ -227,18 +229,18 @@
 }
 
 .applications {
-  padding-block: var(--space-6);
+  padding-block: var(--space-4);
 }
 
 .applications__grid {
   display: grid;
-  grid-template-columns: minmax(19rem, 0.85fr) minmax(28rem, 1.25fr) minmax(22rem, 1fr);
+  grid-template-columns: minmax(19rem, 0.95fr) minmax(24rem, 1fr) minmax(22rem, 1.1fr);
   align-items: stretch;
 }
 
 .applications__list,
 .case-card {
-  padding: var(--space-8);
+  padding: var(--space-6);
 }
 
 .applications__media {
@@ -272,7 +274,7 @@
 }
 
 .reasons {
-  padding-block: var(--space-6) var(--space-8);
+  padding-block: var(--space-4);
 }
 
 .reasons__grid {
@@ -285,7 +287,7 @@
   grid-template-columns: auto 1fr;
   align-items: center;
   gap: var(--space-5);
-  min-block-size: 7rem;
+  min-block-size: 5.5rem;
   padding-inline: var(--space-6);
   border-inline-end: var(--border-thin) solid var(--color-border-subtle);
 }
@@ -301,8 +303,12 @@
   line-height: 1.4;
 }
 
+.reasons .section-title {
+  margin-block-end: var(--space-4);
+}
+
 .specifications {
-  padding-block: var(--space-8) var(--space-5);
+  padding-block: var(--space-6) var(--space-4);
 }
 
 .specifications__grid {
@@ -330,7 +336,8 @@
 }
 
 .specifications__product picture {
-  min-block-size: 22rem;
+  inline-size: min(100%, 30rem);
+  min-block-size: 19rem;
 }
 
 .specifications__product img {
@@ -343,24 +350,27 @@
   display: grid;
   grid-template-columns: minmax(16rem, 0.7fr) minmax(27rem, 1.35fr) minmax(20rem, 0.95fr);
   align-items: center;
-  min-block-size: 16rem;
+  min-block-size: 12.5rem;
   background: linear-gradient(115deg, var(--color-action-primary-hover), var(--color-action-primary));
   color: var(--color-text-inverse);
 }
 
 .lead-section__media {
+  position: relative;
   align-self: stretch;
   overflow: hidden;
 }
 
 .lead-section__media img {
+  position: absolute;
+  inset: 0;
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;
 }
 
 .lead-section__copy {
-  padding: var(--space-8) var(--space-10);
+  padding: var(--space-4) var(--space-8);
 }
 
 .lead-section__copy h2 {
@@ -376,8 +386,13 @@
 
 .lead-form {
   display: grid;
-  gap: var(--space-3);
-  padding: var(--space-6) var(--space-10) var(--space-6) 0;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-8) var(--space-2) 0;
+}
+
+.lead-form .field input,
+.lead-form .button {
+  min-block-size: 2.25rem;
 }
 
 .site-footer {

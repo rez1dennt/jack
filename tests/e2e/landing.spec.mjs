@@ -48,6 +48,16 @@ test('optimized imagery and vector icons are served without missing assets', asy
   expect(failedAssets).toEqual([]);
 });
 
+test('technical sheet is a real downloadable PDF', async ({ page, request }) => {
+  await page.goto('/');
+  await expect(page.getByRole('link', { name: 'Скачать технический лист (PDF)' })).toHaveAttribute('download', '');
+
+  const response = await request.get('/assets/docs/jack-ms-100a.pdf');
+  expect(response.status()).toBe(200);
+  expect(response.headers()['content-type']).toContain('application/pdf');
+  expect((await response.body()).subarray(0, 4).toString()).toBe('%PDF');
+});
+
 test('lead form masks input, validates errors, and submits a normalized phone', async ({ page }) => {
   let submittedBody;
 
