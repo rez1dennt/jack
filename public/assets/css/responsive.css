@@ -18,6 +18,10 @@
 }
 
 @media (max-width: 64rem) {
+  :root {
+    --section-gap: 1.25rem;
+  }
+
   .site-header__inner {
     grid-template-columns: 1fr auto auto;
   }
@@ -110,6 +114,7 @@
   :root {
     --page-gutter: var(--space-4);
     --header-height: 4.5rem;
+    --section-gap: 1rem;
   }
 
   .site-header {

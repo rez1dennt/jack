@@ -125,6 +125,14 @@
   object-position: center right;
 }
 
+.problem-solution-section,
+.capabilities,
+.applications,
+.reasons,
+.specifications {
+  margin-block-end: var(--section-gap);
+}
+
 .problem-solution {
   display: grid;
   grid-template-columns: minmax(19rem, 0.78fr) minmax(24rem, 0.95fr) minmax(23rem, 1.05fr);

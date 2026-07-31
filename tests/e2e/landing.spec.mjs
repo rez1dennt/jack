@@ -299,6 +299,53 @@ test('compact desktop sections match the approved proportions and use check mark
   expect(metrics.markerBackgroundImage).toBe('none');
 });
 
+test('major sections use the approved 1440px grid and responsive desktop spacing', async ({ page }) => {
+  await page.setViewportSize({ width: 1900, height: 1100 });
+  await page.goto('/');
+
+  await expect(page.locator('.problem-solution-section')).toHaveCount(1);
+
+  const geometry = await page.evaluate(() => {
+    const rect = (selector) => document.querySelector(selector).getBoundingClientRect();
+    const hero = rect('.hero');
+    const problemOuter = rect('.problem-solution-section');
+    const problem = rect('.problem-solution');
+    const capabilities = rect('.capabilities');
+    const applications = rect('.applications');
+    const reasons = rect('.reasons');
+    const specifications = rect('.specifications');
+    const lead = rect('.lead-section');
+    const gap = (before, after) => Math.round(after.top - before.bottom);
+
+    return {
+      problem: { left: Math.round(problem.left), width: Math.round(problem.width) },
+      applications: {
+        left: Math.round(rect('.applications__grid').left),
+        width: Math.round(rect('.applications__grid').width)
+      },
+      gaps: {
+        heroToProblem: gap(hero, problemOuter),
+        problemToCapabilities: gap(problemOuter, capabilities),
+        capabilitiesToApplications: gap(capabilities, applications),
+        applicationsToReasons: gap(applications, reasons),
+        reasonsToSpecifications: gap(reasons, specifications),
+        specificationsToLead: gap(specifications, lead)
+      }
+    };
+  });
+
+  expect(geometry.problem).toEqual({ left: 230, width: 1440 });
+  expect(geometry.applications).toEqual({ left: 230, width: 1440 });
+  expect(geometry.gaps).toEqual({
+    heroToProblem: 0,
+    problemToCapabilities: 24,
+    capabilitiesToApplications: 24,
+    applicationsToReasons: 24,
+    reasonsToSpecifications: 24,
+    specificationsToLead: 24
+  });
+});
+
 for (const width of [1440, 1024, 768, 390, 320]) {
   test(`landing has no overflow at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });

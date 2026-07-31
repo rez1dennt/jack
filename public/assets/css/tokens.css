@@ -128,6 +128,7 @@
   --container: 90rem;
   --page-gutter: clamp(1rem, 4vw, 2.5rem);
   --section-space: clamp(3rem, 6vw, 5.5rem);
+  --section-gap: 1.5rem;
   --header-height: 5.5rem;
   --hero-height: 27.5rem;
   --hero-copy-width: 42.5rem;
