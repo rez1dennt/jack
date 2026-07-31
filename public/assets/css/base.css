@@ -20,7 +20,6 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-body,
 button,
 input {
   font: inherit;

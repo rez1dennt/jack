@@ -174,6 +174,31 @@ test('cookie choice is stored and suppresses the banner on return', async ({ pag
   await expect(banner).toBeHidden();
 });
 
+test('desktop uses the approved 1440px container and local sans-serif typography', async ({ page }) => {
+  await page.setViewportSize({ width: 1900, height: 900 });
+  await page.goto('/');
+
+  const metrics = await page.evaluate(() => {
+    const body = getComputedStyle(document.body);
+    const heroInner = document.querySelector('.hero__inner').getBoundingClientRect();
+    const nav = getComputedStyle(document.querySelector('.site-nav a'));
+    return {
+      bodyFamily: body.fontFamily,
+      bodyLineHeight: body.lineHeight,
+      navFamily: nav.fontFamily,
+      containerWidth: Math.round(heroInner.width),
+      containerLeft: Math.round(heroInner.left)
+    };
+  });
+
+  expect(metrics.bodyFamily).toContain('Inter Local');
+  expect(metrics.bodyFamily).not.toContain('Times New Roman');
+  expect(metrics.navFamily).toContain('Inter Local');
+  expect(metrics.bodyLineHeight).not.toBe('normal');
+  expect(metrics.containerWidth).toBe(1440);
+  expect(metrics.containerLeft).toBe(230);
+});
+
 test('desktop uses the reference grid composition', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/');
