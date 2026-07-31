@@ -422,6 +422,14 @@
     inline-size: calc(100% - (var(--space-4) * 2));
   }
 
+  .case-metrics {
+    gap: var(--space-2);
+  }
+
+  .case-metric dd {
+    overflow-wrap: anywhere;
+  }
+
   .legal-header .container {
     align-items: flex-start;
     flex-direction: column;

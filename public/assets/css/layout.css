@@ -285,7 +285,36 @@
 }
 
 .case-card p {
-  margin-block-end: var(--space-6);
+  margin-block-end: var(--space-5);
+}
+
+.case-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.case-metric {
+  min-inline-size: 0;
+  padding-block-start: var(--space-3);
+  border-block-start: calc(var(--border-thin) * 2) solid var(--color-action-primary);
+}
+
+.case-metric dt {
+  color: var(--color-action-primary);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.case-metric dd {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .reasons {

@@ -346,6 +346,64 @@ test('major sections use the approved 1440px grid and responsive desktop spacing
   });
 });
 
+test('applications result panel replaces the case CTA with three measurable outcomes', async ({ page }) => {
+  await page.setViewportSize({ width: 1900, height: 1000 });
+  await page.goto('/');
+
+  await expect(page.getByRole('link', { name: 'Читать кейс' })).toHaveCount(0);
+  await expect(page.locator('.case-card h2')).toHaveText('Результат внедрения');
+  await expect(page.locator('.case-metric dt')).toHaveText(['+35%', '×2', '3']);
+  await expect(page.locator('.case-metric dd')).toHaveText([
+    'к производительности',
+    'быстрее операция',
+    'оператора высвобождено'
+  ]);
+
+  const desktop = await page.evaluate(() => {
+    const grid = document.querySelector('.applications__grid').getBoundingClientRect();
+    const card = document.querySelector('.case-card').getBoundingClientRect();
+    return {
+      gridWidth: Math.round(grid.width),
+      cardRight: Math.round(card.right),
+      gridRight: Math.round(grid.right)
+    };
+  });
+
+  expect(desktop.gridWidth).toBe(1440);
+  expect(desktop.cardRight).toBe(desktop.gridRight);
+
+  await page.setViewportSize({ width: 1024, height: 900 });
+  await page.reload();
+
+  const tablet = await page.evaluate(() => {
+    const media = document.querySelector('.applications__media').getBoundingClientRect();
+    const card = document.querySelector('.case-card').getBoundingClientRect();
+    const grid = document.querySelector('.applications__grid').getBoundingClientRect();
+    return {
+      cardTop: Math.round(card.top),
+      mediaBottom: Math.round(media.bottom),
+      cardWidth: Math.round(card.width),
+      gridWidth: Math.round(grid.width)
+    };
+  });
+
+  expect(tablet.cardTop).toBeGreaterThanOrEqual(tablet.mediaBottom);
+  expect(tablet.cardWidth).toBe(tablet.gridWidth);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+
+  const mobileOrder = await page.evaluate(() => {
+    const list = document.querySelector('.applications__list').getBoundingClientRect();
+    const media = document.querySelector('.applications__media').getBoundingClientRect();
+    const card = document.querySelector('.case-card').getBoundingClientRect();
+    return [Math.round(list.top), Math.round(media.top), Math.round(card.top)];
+  });
+
+  expect(mobileOrder[0]).toBeLessThan(mobileOrder[1]);
+  expect(mobileOrder[1]).toBeLessThan(mobileOrder[2]);
+});
+
 for (const width of [1440, 1024, 768, 390, 320]) {
   test(`landing has no overflow at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
