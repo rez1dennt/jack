@@ -125,6 +125,10 @@
   object-position: center right;
 }
 
+.problem-solution-section {
+  padding-block-start: var(--hero-following-space);
+}
+
 .problem-solution-section,
 .capabilities,
 .applications,

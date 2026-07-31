@@ -373,6 +373,21 @@ test('problem and solution card exposes the approved copy and benefit structure'
   await expect(card.getByRole('link', { name: 'Узнать больше о решении' })).toHaveAttribute('href', '#equipment');
 });
 
+test('hero transition uses the approved responsive spacing', async ({ page }) => {
+  for (const [width, expectedGap] of [[1440, 48], [768, 32], [390, 24]]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+
+    const gap = await page.evaluate(() => {
+      const hero = document.querySelector('.hero').getBoundingClientRect();
+      const card = document.querySelector('.problem-solution').getBoundingClientRect();
+      return Math.round(card.top - hero.bottom);
+    });
+
+    expect(gap).toBe(expectedGap);
+  }
+});
+
 test('problem and solution card matches the approved desktop composition', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 1100 });
   await page.goto('/');

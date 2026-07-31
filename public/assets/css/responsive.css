@@ -20,6 +20,7 @@
 @media (max-width: 64rem) {
   :root {
     --section-gap: 1.25rem;
+    --hero-following-space: var(--space-8);
   }
 
   .site-header__inner {
@@ -465,6 +466,10 @@
 }
 
 @media (max-width: 30rem) {
+  :root {
+    --hero-following-space: var(--space-6);
+  }
+
   .solution-benefits {
     grid-template-columns: 1fr;
   }
