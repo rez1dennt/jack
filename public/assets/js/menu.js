@@ -12,10 +12,40 @@ export function initMenu(root) {
   const label = button?.querySelector('.sr-only');
   if (!button || !panel || !overlay) return () => {};
 
+  const backgroundTargets = [
+    document.querySelector('.skip-link'),
+    document.querySelector('main'),
+    document.querySelector('footer'),
+    document.querySelector('[data-cookie-banner]'),
+    root.querySelector('.site-header__contact'),
+    root.querySelector('.header-cta')
+  ].filter((element) => element instanceof HTMLElement);
+  const backgroundState = new Map();
+
   let isOpen = false;
   let previousOverflow = '';
   let previousPaddingRight = '';
-  let focusTimer;
+  let focusFrame = 0;
+
+  const setBackgroundInert = (inert) => {
+    for (const element of backgroundTargets) {
+      if (inert) {
+        backgroundState.set(element, {
+          inert: element.inert,
+          ariaHidden: element.getAttribute('aria-hidden')
+        });
+        element.inert = true;
+        element.setAttribute('aria-hidden', 'true');
+        continue;
+      }
+
+      const previous = backgroundState.get(element);
+      element.inert = previous?.inert ?? false;
+      if (previous?.ariaHidden === null || previous?.ariaHidden === undefined) element.removeAttribute('aria-hidden');
+      else element.setAttribute('aria-hidden', previous.ariaHidden);
+    }
+    if (!inert) backgroundState.clear();
+  };
 
   const unlockScroll = () => {
     restoreInlineStyle(document.body, 'overflow', previousOverflow);
@@ -34,13 +64,14 @@ export function initMenu(root) {
   const close = ({ returnFocus = true } = {}) => {
     if (!isOpen) return;
     isOpen = false;
-    window.clearTimeout(focusTimer);
+    window.cancelAnimationFrame(focusFrame);
     root.removeAttribute('data-menu-open');
     panel.removeAttribute('data-open');
     button.setAttribute('aria-expanded', 'false');
     overlay.hidden = true;
     if (label) label.textContent = 'Открыть меню';
     unlockScroll();
+    setBackgroundInert(false);
     if (returnFocus) button.focus({ preventScroll: true });
   };
 
@@ -48,16 +79,15 @@ export function initMenu(root) {
     if (isOpen) return;
     isOpen = true;
     lockScroll();
+    setBackgroundInert(true);
     root.setAttribute('data-menu-open', 'true');
     panel.setAttribute('data-open', 'true');
     button.setAttribute('aria-expanded', 'true');
     overlay.hidden = false;
     if (label) label.textContent = 'Закрыть меню';
-    const focusFirstItem = () => {
+    focusFrame = window.requestAnimationFrame(() => {
       if (isOpen) panel.querySelector('a, button')?.focus({ preventScroll: true });
-    };
-    panel.addEventListener('transitionend', focusFirstItem, { once: true });
-    focusTimer = window.setTimeout(focusFirstItem, 280);
+    });
   };
 
   const handleButton = () => {
@@ -74,7 +104,7 @@ export function initMenu(root) {
     }
     if (event.key !== 'Tab') return;
 
-    const focusable = [...panel.querySelectorAll('a[href], button:not([disabled])')];
+    const focusable = [button, ...panel.querySelectorAll('a[href], button:not([disabled])')];
     if (!focusable.length) return;
     const first = focusable[0];
     const last = focusable.at(-1);
@@ -92,7 +122,7 @@ export function initMenu(root) {
   };
 
   const handleResize = () => {
-    if (window.matchMedia('(min-width: 48rem)').matches) close({ returnFocus: false });
+    if (window.matchMedia('(min-width: 48.0625rem)').matches) close({ returnFocus: false });
   };
 
   button.addEventListener('click', handleButton);

@@ -11,6 +11,18 @@ for (const viewport of [
     await page.goto('/');
     await page.evaluate(() => localStorage.setItem('jack_cookie_preference_v1', 'necessary'));
     await page.reload();
+    await page.locator('img').evaluateAll(async (images) => {
+      await Promise.all(images.map(async (image) => {
+        image.loading = 'eager';
+        if (!image.complete || image.naturalWidth === 0) {
+          await new Promise((resolve, reject) => {
+            image.addEventListener('load', resolve, { once: true });
+            image.addEventListener('error', reject, { once: true });
+          });
+        }
+        await image.decode();
+      }));
+    });
     await page.locator('footer').scrollIntoViewIfNeeded();
     await page.waitForLoadState('networkidle');
     await page.evaluate(() => window.scrollTo(0, 0));

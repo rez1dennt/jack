@@ -1,5 +1,34 @@
 import { test, expect } from '@playwright/test';
 
+test('landing remains functional under the production CSP without unsafe inline scripts', async ({ page }) => {
+  const cspErrors = [];
+  page.on('console', (message) => {
+    if (/content security policy/i.test(message.text())) cspErrors.push(message.text());
+  });
+  await page.route('**/*', async (route) => {
+    if (route.request().resourceType() !== 'document') {
+      await route.continue();
+      return;
+    }
+
+    const response = await route.fetch();
+    await route.fulfill({
+      response,
+      headers: {
+        ...response.headers(),
+        'content-security-policy': "default-src 'self'; script-src 'self'; script-src-attr 'none'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+      }
+    });
+  });
+
+  await page.goto('/');
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await page.waitForLoadState('networkidle');
+  expect(cspErrors).toEqual([]);
+  await expect(page.locator('[data-cookie-banner]')).toBeVisible();
+  await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(2);
+});
+
 test('SEO metadata and semantic essentials are present', async ({ page }) => {
   await page.goto('/');
 

@@ -8,7 +8,7 @@ async function prepareForm(page, status, responseBody) {
       body: JSON.stringify({ token: 'test-csrf' })
     });
   });
-  await page.route('**/api/lead.php', async (route) => {
+  await page.route('**/api/submit.php', async (route) => {
     await route.fulfill({
       status,
       contentType: 'application/json',

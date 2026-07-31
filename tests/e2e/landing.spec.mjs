@@ -64,7 +64,7 @@ test('lead form masks input, validates errors, and submits a normalized phone', 
   await page.route('**/api/csrf.php', async (route) => {
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ token: 'test-csrf' }) });
   });
-  await page.route('**/api/lead.php', async (route) => {
+  await page.route('**/api/submit.php', async (route) => {
     submittedBody = JSON.parse(route.request().postData() ?? '{}');
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) });
   });
@@ -88,8 +88,33 @@ test('lead form masks input, validates errors, and submits a normalized phone', 
   await form.locator('button[type="submit"]').click();
 
   await expect(form.locator('.form-status')).toContainText('Спасибо');
-  expect(submittedBody.phone).toBe('79991234567');
+  expect(submittedBody.phone).toBe('+79991234567');
   expect(submittedBody.csrf_token).toBe('test-csrf');
+});
+
+test('phone mask supports middle deletion, selection replacement, clearing, and re-entry', async ({ page }) => {
+  await page.goto('/');
+  const phone = page.locator('#consultation-form [name="phone"]');
+
+  await phone.fill('89991234567');
+  await phone.evaluate((input) => input.setSelectionRange(11, 11));
+  await phone.press('Backspace');
+  await expect(phone).toHaveValue('+7 (999) 134-56-7');
+
+  await phone.fill('89991234567');
+  await phone.evaluate((input) => input.setSelectionRange(10, 10));
+  await phone.press('Delete');
+  await expect(phone).toHaveValue('+7 (999) 134-56-7');
+
+  await phone.fill('89991234567');
+  await phone.evaluate((input) => input.setSelectionRange(9, 12));
+  await phone.type('555');
+  await expect(phone).toHaveValue('+7 (999) 555-45-67');
+
+  await phone.fill('');
+  await expect(phone).toHaveValue('');
+  await phone.fill('+7 921 555 01 02');
+  await expect(phone).toHaveValue('+7 (921) 555-01-02');
 });
 
 test('mobile menu opens accessibly without shifting the page and closes by Escape', async ({ page }) => {
@@ -106,6 +131,12 @@ test('mobile menu opens accessibly without shifting the page and closes by Escap
   await expect(page.locator('[data-menu-overlay]')).toBeVisible();
   await expect(page.locator('body')).toHaveCSS('overflow', 'hidden');
   await expect(panel.locator('a').first()).toBeFocused();
+  await expect(page.locator('main')).toHaveJSProperty('inert', true);
+
+  await page.keyboard.press('Shift+Tab');
+  await expect(button).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(panel.locator('a').first()).toBeFocused();
 
   const anchorAfter = await page.locator('.header-cta').boundingBox();
   expect(Math.abs((anchorBefore?.x ?? 0) - (anchorAfter?.x ?? 0))).toBeLessThanOrEqual(1);
@@ -114,7 +145,21 @@ test('mobile menu opens accessibly without shifting the page and closes by Escap
   await expect(button).toHaveAttribute('aria-expanded', 'false');
   await expect(panel).not.toHaveAttribute('data-open', 'true');
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
+  await expect(page.locator('main')).toHaveJSProperty('inert', false);
   await expect(button).toBeFocused();
+});
+
+test('service, video, and social controls have meaningful behavior', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#service')).toHaveCount(1);
+
+  await page.getByRole('button', { name: 'Смотреть видео' }).click();
+  const dialog = page.getByRole('dialog', { name: 'Обзор шаблонного автомата Jack' });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole('button', { name: 'Закрыть обзор' }).click();
+  await expect(dialog).toBeHidden();
+
+  await expect(page.locator('.social-link--disabled')).toHaveCount(3);
 });
 
 test('cookie choice is stored and suppresses the banner on return', async ({ page }) => {

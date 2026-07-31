@@ -1,6 +1,6 @@
 const PHONE_DIGIT_LIMIT = 11;
 
-export function normalizeRuPhone(value = '') {
+function normalizeRuPhoneDigits(value = '') {
   const rawDigits = String(value).replace(/\D/g, '');
   if (!rawDigits) return '';
 
@@ -16,8 +16,13 @@ export function normalizeRuPhone(value = '') {
   return digits.slice(0, PHONE_DIGIT_LIMIT);
 }
 
+export function normalizeRuPhone(value = '') {
+  const digits = normalizeRuPhoneDigits(value);
+  return digits ? `+${digits}` : '';
+}
+
 export function formatRuPhone(value = '') {
-  const normalized = normalizeRuPhone(value);
+  const normalized = normalizeRuPhoneDigits(value);
   if (!normalized) return '';
 
   const national = normalized.slice(1);
@@ -33,7 +38,7 @@ export function formatRuPhone(value = '') {
 }
 
 export function isCompleteRuPhone(value = '') {
-  return /^7\d{10}$/.test(normalizeRuPhone(value));
+  return /^\+7\d{10}$/.test(normalizeRuPhone(value));
 }
 
 export function validateLeadValues({ name = '', phone = '', consent = false } = {}) {
@@ -44,30 +49,68 @@ export function validateLeadValues({ name = '', phone = '', consent = false } = 
   return errors;
 }
 
-function moveCaretToEnd(input) {
-  const end = input.value.length;
-  input.setSelectionRange?.(end, end);
+function canonicalDigitsBefore(value, caret) {
+  const stringValue = String(value);
+  const allDigits = stringValue.replace(/\D/g, '');
+  const precedingDigits = stringValue.slice(0, Math.max(0, caret)).replace(/\D/g, '').length;
+  if (!precedingDigits) return 0;
+
+  const hasExplicitCountryCode = allDigits.startsWith('7') || allDigits.startsWith('8');
+  return Math.min(PHONE_DIGIT_LIMIT, precedingDigits + (hasExplicitCountryCode ? 0 : 1));
+}
+
+function caretForCanonicalDigits(value, digitCount) {
+  if (digitCount <= 0) return 0;
+
+  let seen = 0;
+  for (let index = 0; index < value.length; index += 1) {
+    if (!/\d/.test(value[index])) continue;
+    seen += 1;
+    if (seen === digitCount) return index + 1;
+  }
+  return value.length;
+}
+
+function setCaretByDigitRange(input, startDigits, endDigits = startDigits) {
+  input.setSelectionRange?.(
+    caretForCanonicalDigits(input.value, startDigits),
+    caretForCanonicalDigits(input.value, endDigits)
+  );
 }
 
 export function initPhoneMask(input) {
   if (!input) return () => {};
 
   const handleInput = () => {
-    input.value = formatRuPhone(input.value);
-    moveCaretToEnd(input);
+    const rawValue = input.value;
+    const rawStart = input.selectionStart ?? rawValue.length;
+    const rawEnd = input.selectionEnd ?? rawStart;
+    const startDigits = canonicalDigitsBefore(rawValue, rawStart);
+    const endDigits = canonicalDigitsBefore(rawValue, rawEnd);
+    input.value = formatRuPhone(rawValue);
+    setCaretByDigitRange(input, startDigits, endDigits);
   };
 
   const handleKeydown = (event) => {
-    if (event.key !== 'Backspace' || input.selectionStart !== input.selectionEnd || input.selectionStart === 0) return;
+    if (!['Backspace', 'Delete'].includes(event.key) || input.selectionStart !== input.selectionEnd) return;
 
     const caret = input.selectionStart;
-    let digitIndex = caret - 1;
-    while (digitIndex >= 0 && !/\d/.test(input.value[digitIndex])) digitIndex -= 1;
-    if (digitIndex < 0) return;
+    const step = event.key === 'Backspace' ? -1 : 1;
+    let digitIndex = event.key === 'Backspace' ? caret - 1 : caret;
+    while (digitIndex >= 0 && digitIndex < input.value.length && !/\d/.test(input.value[digitIndex])) {
+      digitIndex += step;
+    }
+    if (digitIndex < 0 || digitIndex >= input.value.length) return;
+
+    if (event.key === 'Delete' && input.value[digitIndex] === '7') {
+      const nextNationalDigit = input.value.slice(digitIndex + 1).search(/\d/);
+      if (nextNationalDigit >= 0) digitIndex += nextNationalDigit + 1;
+    }
 
     event.preventDefault();
+    const caretDigits = canonicalDigitsBefore(input.value, Math.min(caret, digitIndex));
     input.value = formatRuPhone(`${input.value.slice(0, digitIndex)}${input.value.slice(digitIndex + 1)}`);
-    moveCaretToEnd(input);
+    setCaretByDigitRange(input, caretDigits);
     input.dispatchEvent(new Event('input', { bubbles: true }));
   };
 
@@ -162,7 +205,7 @@ export function initLeadForm(form, { fetchImpl = globalThis.fetch?.bind(globalTh
         company_website: form.elements.namedItem('company_website')?.value ?? '',
         csrf_token: csrfToken
       };
-      const response = await fetchImpl('/api/lead.php', {
+      const response = await fetchImpl('/api/submit.php', {
         method: 'POST',
         credentials: 'same-origin',
         headers: {

@@ -19,3 +19,12 @@ assert($limiter->consume('127.0.0.2', 5, 600) === true);
 
 $now += 601;
 assert($limiter->consume('127.0.0.1', 5, 600) === true);
+
+$now += 1_201;
+assert($limiter->consume('127.0.0.3', 5, 600) === true);
+assert(count(glob($directory . DIRECTORY_SEPARATOR . '*.json') ?: []) === 1);
+
+foreach (glob($directory . DIRECTORY_SEPARATOR . '*.json') ?: [] as $path) {
+    unlink($path);
+}
+rmdir($directory);

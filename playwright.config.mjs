@@ -8,7 +8,7 @@ export default defineConfig({
     trace: 'retain-on-failure'
   },
   webServer: {
-    command: 'php -c tools/php.ini -S 127.0.0.1:8080 -t public',
+    command: 'php -S 127.0.0.1:8080 -t public',
     url: 'http://127.0.0.1:8080/health.txt',
     reuseExistingServer: true
   },

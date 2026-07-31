@@ -22,7 +22,7 @@ final class MailerTransport
             : Closure::fromCallable($sender);
     }
 
-    /** @param array{name: string, phone: string} $lead */
+    /** @param array{name: string, phone: string, consent_at: string, consent_document_version: string} $lead */
     public function sendLead(array $lead): void
     {
         $mailer = new PHPMailer(true);
@@ -45,14 +45,18 @@ final class MailerTransport
 
         $safeName = htmlspecialchars($lead['name'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $safePhone = htmlspecialchars($lead['phone'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $safeConsentAt = htmlspecialchars($lead['consent_at'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $safeConsentVersion = htmlspecialchars($lead['consent_document_version'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $mailer->isHTML(true);
         $mailer->Subject = 'Новая заявка с сайта Jack Sewing';
         $mailer->Body = <<<HTML
             <h2>Новая заявка на консультацию</h2>
             <p><strong>Имя:</strong> {$safeName}</p>
             <p><strong>Телефон:</strong> {$safePhone}</p>
+            <p><strong>Согласие получено:</strong> {$safeConsentAt}</p>
+            <p><strong>Версия согласия:</strong> {$safeConsentVersion}</p>
             HTML;
-        $mailer->AltBody = "Новая заявка на консультацию\nИмя: {$lead['name']}\nТелефон: {$lead['phone']}";
+        $mailer->AltBody = "Новая заявка на консультацию\nИмя: {$lead['name']}\nТелефон: {$lead['phone']}\nСогласие получено: {$lead['consent_at']}\nВерсия согласия: {$lead['consent_document_version']}";
 
         ($this->sender)($mailer);
     }

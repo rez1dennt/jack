@@ -307,7 +307,8 @@ tbody th {
   gap: var(--space-3);
 }
 
-.social-links a {
+.social-links a,
+.social-link {
   inline-size: var(--target-min);
   block-size: var(--target-min);
   display: grid;
@@ -315,6 +316,66 @@ tbody th {
   border: var(--border-thin) solid rgb(255 255 255 / 36%);
   border-radius: 50%;
   background: rgb(255 255 255 / 8%);
+}
+
+.social-link--disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.video-dialog {
+  inline-size: min(calc(100% - (var(--space-6) * 2)), 58rem);
+  max-inline-size: none;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-page);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-overlay);
+}
+
+.video-dialog::backdrop {
+  background: rgb(17 24 32 / 72%);
+}
+
+.video-dialog__surface {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+}
+
+.video-dialog__media img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.video-dialog__content {
+  align-self: center;
+  padding: var(--space-8);
+}
+
+.video-dialog__content h2 {
+  margin-block-end: var(--space-4);
+  color: var(--color-action-primary);
+  font-size: var(--font-size-3xl);
+  text-transform: uppercase;
+}
+
+.video-dialog__close {
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-end: var(--space-3);
+  z-index: 1;
+  inline-size: var(--target-min);
+  block-size: var(--target-min);
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-surface-inverse);
+  color: var(--color-text-inverse);
+  font-size: var(--font-size-2xl);
+  line-height: 1;
+  cursor: pointer;
 }
 
 .social-links a:hover {

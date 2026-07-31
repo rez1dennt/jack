@@ -9,6 +9,21 @@ use JackLanding\RequestGuard;
 require dirname(__DIR__, 2) . '/server/bootstrap.php';
 
 try {
+    if (strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? '')) !== 'POST') {
+        header('Allow: POST');
+        jack_json_response(['ok' => false], 405);
+    }
+
+    $contentType = strtolower(trim(explode(';', (string) ($_SERVER['CONTENT_TYPE'] ?? ''))[0]));
+    if ($contentType !== 'application/json') {
+        jack_json_response(['ok' => false], 403);
+    }
+
+    $contentLength = filter_var($_SERVER['CONTENT_LENGTH'] ?? null, FILTER_VALIDATE_INT);
+    if ($contentLength !== false && $contentLength > 16_384) {
+        jack_json_response(['ok' => false], 413);
+    }
+
     jack_start_secure_session();
     $config = jack_load_config();
 
@@ -47,8 +62,14 @@ try {
         jack_json_response(['ok' => false, 'errors' => $validation['errors']], 422);
     }
 
+    $lead = [
+        ...$validation['data'],
+        'consent_at' => (new DateTimeImmutable('now'))->format(DATE_ATOM),
+        'consent_document_version' => JACK_CONSENT_DOCUMENT_VERSION,
+    ];
+
     $mailer = new MailerTransport(is_array($config['smtp'] ?? null) ? $config['smtp'] : []);
-    $mailer->sendLead($validation['data']);
+    $mailer->sendLead($lead);
     jack_json_response(['ok' => true]);
 } catch (JsonException) {
     jack_json_response(['ok' => false], 400);

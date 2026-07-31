@@ -70,7 +70,7 @@
       </div>
       <a class="button button--primary header-cta" href="#lead-form">Получить консультацию</a>
     </div>
-    <button class="menu-overlay" type="button" aria-label="Закрыть меню" data-menu-overlay hidden></button>
+    <button class="menu-overlay" type="button" aria-label="Закрыть меню" data-menu-overlay tabindex="-1" hidden></button>
   </header>
 
   <main id="main">
@@ -120,7 +120,7 @@
       </div>
     </section>
 
-    <section class="capabilities" aria-labelledby="capabilities-title">
+    <section class="capabilities" id="service" aria-labelledby="capabilities-title">
       <div class="container">
         <h2 class="section-title" id="capabilities-title">Что умеет</h2>
         <div class="capabilities__grid">
@@ -267,9 +267,9 @@
       <section>
         <h2>Мы в соцсетях</h2>
         <div class="social-links">
-          <a href="#" aria-label="ВКонтакте"><span data-icon="vk" aria-hidden="true"></span></a>
-          <a href="#" aria-label="YouTube"><span data-icon="youtube" aria-hidden="true"></span></a>
-          <a href="#" aria-label="Telegram"><span data-icon="telegram" aria-hidden="true"></span></a>
+          <span class="social-link social-link--disabled" role="img" aria-label="ВКонтакте — ссылка будет добавлена" title="Ссылка ВКонтакте будет добавлена"><span data-icon="vk" aria-hidden="true"></span></span>
+          <span class="social-link social-link--disabled" role="img" aria-label="YouTube — ссылка будет добавлена" title="Ссылка YouTube будет добавлена"><span data-icon="youtube" aria-hidden="true"></span></span>
+          <span class="social-link social-link--disabled" role="img" aria-label="Telegram — ссылка будет добавлена" title="Ссылка Telegram будет добавлена"><span data-icon="telegram" aria-hidden="true"></span></span>
         </div>
       </section>
     </div>
@@ -278,6 +278,22 @@
       <div><a href="/privacy.html">Политика конфиденциальности</a><a href="/consent.html">Согласие на обработку персональных данных</a></div>
     </div>
   </footer>
+
+  <dialog class="video-dialog" data-video-dialog aria-labelledby="video-dialog-title">
+    <div class="video-dialog__surface">
+      <button class="video-dialog__close" type="button" data-video-close aria-label="Закрыть обзор">×</button>
+      <picture class="video-dialog__media">
+        <source srcset="/assets/images/hero-machine.avif" type="image/avif">
+        <source srcset="/assets/images/hero-machine.webp" type="image/webp">
+        <img src="/assets/images/hero-machine.jpg" width="1600" height="900" alt="Шаблонный автомат Jack на производственном столе" loading="lazy" decoding="async">
+      </picture>
+      <div class="video-dialog__content">
+        <h2 id="video-dialog-title">Обзор шаблонного автомата Jack</h2>
+        <p>Посмотрите ключевые узлы и компоновку оборудования. Официальный видеообзор будет подключён после согласования правообладателем.</p>
+        <a class="button button--primary" href="#lead-form" data-video-close>Запросить консультацию</a>
+      </div>
+    </div>
+  </dialog>
 
   <aside class="cookie-banner" data-cookie-banner aria-labelledby="cookie-title" hidden>
     <div><h2 id="cookie-title">Настройки cookie</h2><p>Сайт использует только необходимые технологии хранения. Подробнее — в <a href="/privacy.html#cookies">политике</a>.</p></div>

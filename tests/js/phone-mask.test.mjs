@@ -9,10 +9,10 @@ import {
 } from '../../public/assets/js/form.js';
 
 test('normalizes Russian local, +7, and 8-prefixed phone input', () => {
-  assert.equal(normalizeRuPhone('999 123-45-67'), '79991234567');
-  assert.equal(normalizeRuPhone('+7 (999) 123-45-67'), '79991234567');
-  assert.equal(normalizeRuPhone('8 999 123 45 67'), '79991234567');
-  assert.equal(normalizeRuPhone('+7 (999) 123-45-67 000'), '79991234567');
+  assert.equal(normalizeRuPhone('999 123-45-67'), '+79991234567');
+  assert.equal(normalizeRuPhone('+7 (999) 123-45-67'), '+79991234567');
+  assert.equal(normalizeRuPhone('8 999 123 45 67'), '+79991234567');
+  assert.equal(normalizeRuPhone('+7 (999) 123-45-67 000'), '+79991234567');
 });
 
 test('formats progressively and allows complete deletion', () => {

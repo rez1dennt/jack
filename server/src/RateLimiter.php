@@ -27,7 +27,9 @@ final class RateLimiter
             throw new RuntimeException('Rate limiter storage is not writable.');
         }
 
+        $now = ($this->clock)();
         $hash = hash_hmac('sha256', $key, $this->secret);
+        $this->cleanupExpiredFiles($now, $windowSeconds, $hash);
         $path = $this->storagePath . DIRECTORY_SEPARATOR . $hash . '.json';
         $handle = fopen($path, 'c+');
         if ($handle === false) {
@@ -42,7 +44,6 @@ final class RateLimiter
             $contents = stream_get_contents($handle);
             $decoded = is_string($contents) && $contents !== '' ? json_decode($contents, true) : [];
             $timestamps = is_array($decoded) ? array_filter($decoded, 'is_int') : [];
-            $now = ($this->clock)();
             $cutoff = $now - $windowSeconds;
             $timestamps = array_values(array_filter($timestamps, static fn (int $timestamp): bool => $timestamp > $cutoff));
 
@@ -60,6 +61,28 @@ final class RateLimiter
         } finally {
             flock($handle, LOCK_UN);
             fclose($handle);
+        }
+    }
+
+    private function cleanupExpiredFiles(int $now, int $windowSeconds, string $currentHash): void
+    {
+        $paths = glob($this->storagePath . DIRECTORY_SEPARATOR . '*.json');
+        if ($paths === false) {
+            return;
+        }
+
+        $checked = 0;
+        foreach ($paths as $path) {
+            if ($checked++ >= 100 || basename($path, '.json') === $currentHash) {
+                continue;
+            }
+
+            $contents = @file_get_contents($path);
+            $decoded = is_string($contents) && $contents !== '' ? json_decode($contents, true) : [];
+            $timestamps = is_array($decoded) ? array_filter($decoded, 'is_int') : [];
+            if ($timestamps === [] || max($timestamps) <= $now - $windowSeconds) {
+                @unlink($path);
+            }
         }
     }
 }

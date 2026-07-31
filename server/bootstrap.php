@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
+const JACK_CONSENT_DOCUMENT_VERSION = '2026-07-31';
+
 function jack_start_secure_session(): void
 {
     if (session_status() === PHP_SESSION_ACTIVE) {

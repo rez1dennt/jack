@@ -29,6 +29,8 @@ $transport = new MailerTransport(
 $transport->sendLead([
     'name' => 'Анна <b>Иванова</b>',
     'phone' => '+7 (999) 123-45-67',
+    'consent_at' => '2026-07-31T18:00:00+04:00',
+    'consent_document_version' => '2026-07-31',
 ]);
 
 assert($captured instanceof PHPMailer);
@@ -45,6 +47,8 @@ assert($captured->getToAddresses()[0][1] === 'Менеджер');
 assert(str_contains($captured->Body, 'Анна &lt;b&gt;Иванова&lt;/b&gt;'));
 assert(!str_contains($captured->Body, '<b>Иванова</b>'));
 assert(str_contains($captured->AltBody, 'Анна <b>Иванова</b>'));
+assert(str_contains($captured->Body, '2026-07-31T18:00:00+04:00'));
+assert(str_contains($captured->Body, '2026-07-31'));
 assert(str_contains($captured->Subject, 'Новая заявка'));
 
 $invalidConfigRejected = false;
