@@ -268,12 +268,45 @@ test('desktop uses the reference grid composition', async ({ page }) => {
   await expect(page.locator('.capabilities__grid')).toHaveCSS('display', 'grid');
 });
 
-test('compact desktop sections match the approved proportions and use check markers', async ({ page }) => {
+test('capabilities reproduce the five-card reference composition', async ({ page }) => {
+  await page.setViewportSize({ width: 1900, height: 1100 });
+  await page.goto('/');
+
+  await expect(page.locator('.capability')).toHaveCount(5);
+  await expect(page.locator('.capability__number')).toHaveText(['01', '02', '03', '04', '05']);
+  await expect(page.locator('.capability__description')).toHaveCount(5);
+  await expect(page.locator('.capabilities__heading-accent')).toHaveText(/умеет/i);
+
+  const desktop = await page.evaluate(() => {
+    const section = document.querySelector('.capabilities .container').getBoundingClientRect();
+    const grid = document.querySelector('.capabilities__grid');
+    const card = document.querySelector('.capability');
+    return {
+      left: Math.round(section.left),
+      width: Math.round(section.width),
+      columns: getComputedStyle(grid).gridTemplateColumns.split(' ').length,
+      radius: getComputedStyle(card).borderRadius,
+      minHeight: Math.round(card.getBoundingClientRect().height)
+    };
+  });
+
+  expect(desktop).toMatchObject({ left: 230, width: 1440, columns: 5, radius: '12px' });
+  expect(desktop.minHeight).toBeGreaterThanOrEqual(400);
+
+  for (const [width, columns] of [[1024, 3], [768, 2], [390, 1]]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.reload();
+    expect(await page.locator('.capabilities__grid').evaluate(
+      (node) => getComputedStyle(node).gridTemplateColumns.split(' ').length
+    )).toBe(columns);
+  }
+});
+
+test('applications keep the approved proportions and use check markers', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 1000 });
   await page.goto('/');
 
   const metrics = await page.evaluate(() => {
-    const capabilities = document.querySelector('.capabilities').getBoundingClientRect();
     const applications = document.querySelector('.applications__grid').getBoundingClientRect();
     const applicationStyle = getComputedStyle(document.querySelector('.applications__grid'));
     const markerStyle = getComputedStyle(document.querySelector('.check-list li'), '::before');
@@ -282,7 +315,6 @@ test('compact desktop sections match the approved proportions and use check mark
       .map((value) => Number.parseFloat(value));
 
     return {
-      capabilitiesHeight: Math.round(capabilities.height),
       applicationsWidth: Math.round(applications.width),
       columnRatios: columns.map((value) => value / applications.width),
       markerMask: markerStyle.maskImage || markerStyle.webkitMaskImage,
@@ -290,7 +322,6 @@ test('compact desktop sections match the approved proportions and use check mark
     };
   });
 
-  expect(metrics.capabilitiesHeight).toBe(180);
   expect(metrics.applicationsWidth).toBe(1440);
   expect(metrics.columnRatios[0]).toBeCloseTo(0.3, 2);
   expect(metrics.columnRatios[1]).toBeCloseTo(0.35, 2);

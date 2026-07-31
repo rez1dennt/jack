@@ -2,7 +2,7 @@
   position: relative;
   z-index: 40;
   min-block-size: var(--header-height);
-  background: rgb(255 255 255 / 98%);
+  background: var(--color-surface-page);
   border-block-end: var(--border-thin) solid var(--color-border-subtle);
 }
 
@@ -92,7 +92,7 @@
 .hero h1 span {
   display: inline-block;
   white-space: nowrap;
-  color: var(--color-action-primary);
+  color: var(--color-accent-foreground);
 }
 
 .hero__lead {
@@ -164,7 +164,7 @@
 .case-card h2,
 .specifications h2 {
   margin-block-end: var(--space-8);
-  color: var(--color-action-primary);
+  color: var(--color-accent-foreground);
   font-size: var(--font-size-3xl);
   text-transform: uppercase;
 }
@@ -199,14 +199,7 @@
 }
 
 .capabilities {
-  block-size: var(--capabilities-desktop-height);
-  padding-block: var(--capabilities-padding-block);
-}
-
-.capabilities .container {
-  block-size: 100%;
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  padding-block: var(--space-16);
 }
 
 .section-title {
@@ -216,31 +209,104 @@
   text-transform: uppercase;
 }
 
+.capabilities__header {
+  margin-block-end: var(--space-12);
+  text-align: center;
+}
+
+.capabilities__heading {
+  margin-block-end: var(--space-5);
+  font-size: var(--font-size-4xl);
+  text-transform: uppercase;
+}
+
+.capabilities__heading-accent {
+  color: var(--color-accent-foreground);
+}
+
+.capabilities__ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  color: var(--color-accent-foreground);
+}
+
+.capabilities__ornament::before,
+.capabilities__ornament::after {
+  content: "";
+  inline-size: var(--space-16);
+  block-size: var(--border-thin);
+  background: currentColor;
+}
+
+.capabilities__ornament span {
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
+}
+
 .capabilities__grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-4);
 }
 
 .capability {
-  min-block-size: 0;
+  position: relative;
+  min-block-size: var(--capability-card-min-height);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-7) var(--space-5);
+  overflow: hidden;
+  border: var(--border-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-card);
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.capability__icon-shell {
+  inline-size: var(--capability-icon-shell-size);
+  block-size: var(--capability-icon-shell-size);
   display: grid;
   place-items: center;
-  align-content: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-6);
-  text-align: center;
-  border-inline-end: var(--border-thin) solid var(--color-border-subtle);
+  margin-block-end: var(--space-6);
+  border-radius: 50%;
+  background: var(--color-action-primary-soft);
+  box-shadow: var(--shadow-whisper);
 }
 
-.capability:last-child {
-  border-inline-end: 0;
+.capability__rule {
+  inline-size: var(--space-7);
+  block-size: var(--border-thin);
+  margin-block-end: var(--space-6);
+  background: var(--color-action-primary);
 }
 
-.capability p {
+.capability__title {
+  margin-block-end: var(--space-6);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: 1.45;
+}
+
+.capability__description {
   margin: 0;
+  color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
-  font-weight: 600;
-  line-height: 1.35;
+  line-height: 1.55;
+}
+
+.capability__number {
+  position: absolute;
+  inset-inline-end: var(--space-4);
+  inset-block-end: var(--space-3);
+  color: var(--color-border-subtle);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-4xl);
+  font-weight: 700;
+  line-height: 1;
 }
 
 .applications {
@@ -298,11 +364,11 @@
 .case-metric {
   min-inline-size: 0;
   padding-block-start: var(--space-3);
-  border-block-start: calc(var(--border-thin) * 2) solid var(--color-action-primary);
+  border-block-start: calc(var(--border-thin) * 2) solid var(--color-accent-foreground);
 }
 
 .case-metric dt {
-  color: var(--color-action-primary);
+  color: var(--color-accent-foreground);
   font-family: var(--font-heading);
   font-size: var(--font-size-2xl);
   font-weight: 700;
