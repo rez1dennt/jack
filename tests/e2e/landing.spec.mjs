@@ -354,6 +354,28 @@ test('problem and solution card matches the approved desktop composition', async
   expect(geometry.benefits.split(' ').length).toBe(2);
 });
 
+test('redesigned problem solution and footer stack safely across breakpoints', async ({ page }) => {
+  for (const width of [1024, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto('/');
+
+    const metrics = await page.evaluate(() => ({
+      overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+      problemColumns: getComputedStyle(document.querySelector('.problem-solution')).gridTemplateColumns.split(' ').length,
+      footerColumns: getComputedStyle(document.querySelector('.site-footer__grid')).gridTemplateColumns.split(' ').length,
+      benefitsColumns: getComputedStyle(document.querySelector('.solution-benefits')).gridTemplateColumns.split(' ').length
+    }));
+
+    expect(metrics.overflow).toBe(false);
+    if (width >= 1024) expect(metrics.problemColumns).toBe(2);
+    if (width <= 768) expect(metrics.problemColumns).toBe(1);
+    if (width <= 390) {
+      expect(metrics.footerColumns).toBe(1);
+      expect(metrics.benefitsColumns).toBe(1);
+    }
+  }
+});
+
 test('capabilities reproduce the five-card reference composition', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 1100 });
   await page.goto('/');
