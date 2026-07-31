@@ -7,5 +7,6 @@ server/storage/*.json
 test-results/
 playwright-report/
 .tmp/
+.superpowers/
 .env
 
