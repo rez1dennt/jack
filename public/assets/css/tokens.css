@@ -148,6 +148,20 @@
   --spec-product-media-min-height: 22rem;
   --spec-download-width: 82%;
   --spec-product-background: radial-gradient(circle at 50% 36%, transparent 0 34%, var(--color-border-subtle) 34.2% 34.4%, transparent 34.6% 45%, var(--color-border-subtle) 45.2% 45.4%, transparent 45.6%), var(--color-surface-elevated);
+  --lead-panel-min-height: 30rem;
+  --lead-panel-padding: clamp(var(--space-12), 4vw, var(--space-16));
+  --lead-form-width: 26.875rem;
+  --lead-panel-columns: minmax(0, 1.4fr) minmax(21rem, 1fr);
+  --lead-panel-overlay: linear-gradient(90deg, rgb(17 24 32 / 98%) 0%, rgb(17 24 32 / 88%) 40%, rgb(17 24 32 / 36%) 68%, rgb(17 24 32 / 78%) 100%);
+  --lead-panel-overlay-mobile: linear-gradient(180deg, rgb(17 24 32 / 96%) 0%, rgb(17 24 32 / 82%) 48%, rgb(17 24 32 / 94%) 100%);
+  --lead-grid-line: rgb(255 255 255 / 7%);
+  --lead-grid-clip: inset(0 44% 0 0);
+  --lead-form-surface: var(--primitive-white);
+  --lead-form-text: var(--primitive-ink-950);
+  --lead-form-muted: var(--primitive-gray-700);
+  --lead-form-border: rgb(255 255 255 / 72%);
+  --lead-form-control-border: var(--primitive-gray-300);
+  --lead-form-shadow: 0 1.5rem 3.75rem rgb(0 0 0 / 28%);
 
   --duration-fast: 140ms;
   --duration-base: 220ms;

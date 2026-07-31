@@ -370,6 +370,68 @@ test('Industrial Control Room CTA exposes the approved copy and form contract', 
   await expect(form.locator('.form-status')).toHaveAttribute('aria-live', 'polite');
 });
 
+test('Industrial Control Room CTA stays contained, layered, and responsive', async ({ page }) => {
+  await page.setViewportSize({ width: 1900, height: 1100 });
+  await page.goto('/');
+
+  const desktop = await page.evaluate(() => {
+    const container = document.querySelector('.lead-section > .container').getBoundingClientRect();
+    const panel = document.querySelector('.lead-panel').getBoundingClientRect();
+    const media = document.querySelector('.lead-section__media').getBoundingClientRect();
+    const inner = document.querySelector('.lead-section__inner');
+    const form = document.querySelector('.lead-form').getBoundingClientRect();
+    return {
+      container: { left: Math.round(container.left), width: Math.round(container.width) },
+      panel: { width: Math.round(panel.width), height: Math.round(panel.height) },
+      media: { width: Math.round(media.width), height: Math.round(media.height) },
+      mediaPosition: getComputedStyle(document.querySelector('.lead-section__media')).position,
+      columns: getComputedStyle(inner).gridTemplateColumns.split(' ').length,
+      radius: getComputedStyle(document.querySelector('.lead-panel')).borderRadius,
+      formWidth: Math.round(form.width)
+    };
+  });
+
+  expect(desktop.container).toEqual({ left: 230, width: 1440 });
+  expect(desktop.panel.width).toBe(1440);
+  expect(desktop.panel.height).toBeGreaterThanOrEqual(480);
+  expect(desktop.media).toEqual(desktop.panel);
+  expect(desktop.mediaPosition).toBe('absolute');
+  expect(desktop.columns).toBe(2);
+  expect(desktop.radius).toBe('12px');
+  expect(desktop.formWidth).toBeLessThanOrEqual(430);
+
+  for (const [width, expectedColumns] of [[1024, 2], [768, 1], [390, 1]]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.reload();
+    const metrics = await page.evaluate(() => {
+      const panel = document.querySelector('.lead-panel').getBoundingClientRect();
+      const media = document.querySelector('.lead-section__media').getBoundingClientRect();
+      return {
+        columns: getComputedStyle(document.querySelector('.lead-section__inner')).gridTemplateColumns.split(' ').length,
+        panelRight: Math.round(panel.right),
+        viewportWidth: document.documentElement.clientWidth,
+        scrollWidth: document.documentElement.scrollWidth,
+        mediaWidth: Math.round(media.width),
+        panelWidth: Math.round(panel.width)
+      };
+    });
+    expect(metrics.columns).toBe(expectedColumns);
+    expect(metrics.mediaWidth).toBe(metrics.panelWidth);
+    expect(metrics.panelRight).toBeLessThanOrEqual(metrics.viewportWidth);
+    expect(metrics.scrollWidth).toBe(metrics.viewportWidth);
+  }
+
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.reload();
+  const form = page.locator('#consultation-form');
+  const widthBefore = await form.evaluate((node) => Math.round(node.getBoundingClientRect().width));
+  await form.locator('button[type="submit"]').click();
+  const widthAfter = await form.evaluate((node) => Math.round(node.getBoundingClientRect().width));
+  expect(widthAfter).toBe(widthBefore);
+  await expect(form.locator('#name-error')).toContainText('Укажите имя');
+  await expect(form.locator('#phone-error')).toContainText('Введите телефон');
+});
+
 test('controls and redesigned panels share the approved soft geometry', async ({ page }) => {
   await page.goto('/');
   const geometry = await page.evaluate(() => ({

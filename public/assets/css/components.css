@@ -327,6 +327,13 @@ tbody th {
 
 .field {
   display: grid;
+  gap: var(--space-2);
+}
+
+.field__label {
+  color: var(--lead-form-text);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
 }
 
 .field input {
@@ -337,16 +344,50 @@ tbody th {
   border-radius: var(--radius-sm);
   background: var(--color-surface-page);
   color: var(--color-text-primary);
+  transition: border-color var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);
+}
+
+.lead-form .field input {
+  border-color: var(--lead-form-control-border);
+  background: var(--lead-form-surface);
+  color: var(--lead-form-text);
+}
+
+.lead-form .field input:hover {
+  border-color: var(--color-border-control);
 }
 
 .field input[aria-invalid="true"] {
   border-color: var(--color-error);
 }
 
+.field__hint {
+  color: var(--lead-form-muted);
+  font-size: var(--font-size-2xs);
+  line-height: 1.35;
+}
+
 .field__error {
   min-block-size: 0;
   color: var(--color-text-inverse);
   font-size: var(--font-size-xs);
+}
+
+.lead-form .field__error {
+  min-block-size: var(--space-4);
+  color: var(--color-error);
+}
+
+.lead-form__header h3 {
+  margin-block-end: var(--space-1);
+  color: var(--lead-form-text);
+  font-size: var(--font-size-2xl);
+}
+
+.lead-form__header p {
+  margin: 0;
+  color: var(--lead-form-muted);
+  font-size: var(--font-size-sm);
 }
 
 .consent-check {
@@ -362,6 +403,23 @@ tbody th {
   block-size: var(--space-4);
   margin-block-start: var(--space-1);
   accent-color: var(--color-action-primary);
+}
+
+.lead-form .consent-check {
+  color: var(--lead-form-muted);
+}
+
+.lead-form .consent-check a {
+  color: var(--color-action-primary);
+  font-weight: 600;
+}
+
+.lead-form .consent-check a:hover {
+  color: var(--color-action-primary-hover);
+}
+
+.lead-form .consent-check__error {
+  min-block-size: 0;
 }
 
 .honeypot {
@@ -392,9 +450,22 @@ tbody th {
   font-weight: 600;
 }
 
-.lead-form button[aria-busy="true"] {
-  cursor: wait;
-  opacity: 0.72;
+.lead-form .button {
+  inline-size: 100%;
+}
+
+.lead-form .form-status {
+  min-block-size: var(--space-5);
+  color: var(--lead-form-muted);
+}
+
+.lead-form .form-status[data-state="success"] {
+  color: var(--color-success);
+}
+
+.lead-form .form-status[data-state="error"] {
+  color: var(--color-error);
+  font-weight: 600;
 }
 
 .social-links {

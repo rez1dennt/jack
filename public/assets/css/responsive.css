@@ -78,19 +78,14 @@
     grid-template-rows: minmax(var(--spec-product-media-min-height), auto) auto auto;
   }
 
-  .lead-section {
-    grid-template-columns: 0.72fr 1.28fr;
+  .lead-section__inner {
+    grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.95fr);
+    gap: var(--space-8);
+    padding: var(--space-10);
   }
 
-  .lead-form {
-    grid-column: 1 / -1;
-    grid-template-columns: 1fr 1fr;
-    padding: var(--space-6) var(--page-gutter);
-  }
-
-  .consent-check,
-  .form-status {
-    grid-column: 1 / -1;
+  .lead-section__copy h2 {
+    font-size: clamp(var(--font-size-3xl), 4vw, var(--font-size-4xl));
   }
 }
 
@@ -271,7 +266,6 @@
   .problem-solution,
   .applications__grid,
   .specifications__grid,
-  .lead-section,
   .site-footer__grid {
     grid-template-columns: 1fr;
   }
@@ -349,27 +343,44 @@
     inline-size: 100%;
   }
 
+  .lead-panel::before {
+    background: var(--lead-panel-overlay-mobile);
+  }
+
+  .lead-panel::after {
+    clip-path: none;
+    opacity: 0.5;
+  }
+
   .lead-section__media {
-    min-block-size: 12rem;
+    min-block-size: 0;
+  }
+
+  .lead-section__media img {
+    object-position: 38% center;
+  }
+
+  .lead-section__inner {
+    min-block-size: 0;
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: var(--space-8);
+    padding: var(--space-6);
   }
 
   .lead-section__copy {
-    padding: var(--space-8) var(--page-gutter) var(--space-4);
+    padding-block-start: var(--space-8);
   }
 
-  .lead-section__copy br {
-    display: none;
+  .lead-section__copy h2 {
+    max-inline-size: 13ch;
+    font-size: clamp(var(--font-size-3xl), 8vw, var(--font-size-4xl));
   }
 
   .lead-form {
-    grid-column: auto;
-    grid-template-columns: 1fr;
-    padding: var(--space-4) var(--page-gutter) var(--space-8);
-  }
-
-  .consent-check,
-  .form-status {
-    grid-column: auto;
+    inline-size: 100%;
+    justify-self: stretch;
+    padding: var(--space-6);
   }
 
   .site-footer__background {
@@ -410,6 +421,19 @@
 }
 
 @media (max-width: 30rem) {
+  .lead-section__inner {
+    gap: var(--space-6);
+    padding: var(--space-4);
+  }
+
+  .lead-section__copy {
+    padding-block-start: var(--space-6);
+  }
+
+  .lead-form {
+    padding: var(--space-5);
+  }
+
   .capabilities {
     padding-block: var(--space-10);
   }
