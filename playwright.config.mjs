@@ -22,7 +22,7 @@ export default defineConfig({
     },
     {
       name: 'mobile',
-      use: { ...devices['iPhone 13'] }
+      use: { ...devices['Pixel 7'] }
     }
   ]
 });

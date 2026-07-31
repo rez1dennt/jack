@@ -1,0 +1,146 @@
+@font-face {
+  font-family: "Roboto Condensed Local";
+  src: url("../fonts/roboto-condensed-cyrillic-700.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+  font-family: "Roboto Condensed Local";
+  src: url("../fonts/roboto-condensed-latin-700.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 700;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Inter Local";
+  src: url("../fonts/inter-cyrillic-400.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+  font-family: "Inter Local";
+  src: url("../fonts/inter-latin-400.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Inter Local";
+  src: url("../fonts/inter-cyrillic-600.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+@font-face {
+  font-family: "Inter Local";
+  src: url("../fonts/inter-latin-600.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light;
+
+  --primitive-red-700: #c50813;
+  --primitive-red-800: #a90710;
+  --primitive-red-100: #fff0f1;
+  --primitive-ink-950: #111820;
+  --primitive-ink-900: #17212b;
+  --primitive-ink-700: #303944;
+  --primitive-gray-700: #58616a;
+  --primitive-gray-500: #8c939a;
+  --primitive-gray-300: #d5d9dd;
+  --primitive-gray-200: #e7e9eb;
+  --primitive-gray-100: #f4f5f6;
+  --primitive-white: #ffffff;
+  --primitive-blue-700: #075ea8;
+  --primitive-green-700: #237a48;
+
+  --color-surface-page: var(--primitive-white);
+  --color-surface-subtle: var(--primitive-gray-100);
+  --color-surface-elevated: var(--primitive-white);
+  --color-surface-inverse: var(--primitive-ink-900);
+  --color-text-primary: var(--primitive-ink-950);
+  --color-text-secondary: var(--primitive-gray-700);
+  --color-text-inverse: var(--primitive-white);
+  --color-action-primary: var(--primitive-red-700);
+  --color-action-primary-hover: var(--primitive-red-800);
+  --color-action-primary-soft: var(--primitive-red-100);
+  --color-border-subtle: var(--primitive-gray-200);
+  --color-border-control: var(--primitive-gray-500);
+  --color-focus: var(--primitive-blue-700);
+  --color-success: var(--primitive-green-700);
+  --color-error: var(--primitive-red-700);
+
+  --font-heading: "Roboto Condensed Local", "Arial Narrow", Arial, sans-serif;
+  --font-body: "Inter Local", Arial, sans-serif;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-display: clamp(2.45rem, 4.1vw, 4.25rem);
+  --line-height-tight: 1.12;
+  --line-height-heading: 1.2;
+  --line-height-body: 1.58;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-7: 1.75rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-14: 3.5rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --border-thin: 0.0625rem;
+  --control-height: 3rem;
+  --target-min: 2.75rem;
+  --container: 73.75rem;
+  --page-gutter: clamp(1rem, 4vw, 2.5rem);
+  --section-space: clamp(3rem, 6vw, 5.5rem);
+  --header-height: 5.5rem;
+
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-whisper: 0 0.0625rem 0.125rem rgb(17 24 32 / 7%);
+  --shadow-overlay: 0 1rem 3rem rgb(17 24 32 / 22%);
+  --focus-ring: 0 0 0 0.125rem var(--color-surface-page), 0 0 0 0.25rem var(--color-focus);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --color-surface-page: var(--primitive-ink-950);
+  --color-surface-subtle: var(--primitive-ink-900);
+  --color-surface-elevated: var(--primitive-ink-700);
+  --color-text-primary: var(--primitive-white);
+  --color-text-secondary: var(--primitive-gray-300);
+  --color-border-subtle: var(--primitive-ink-700);
+}
