@@ -290,6 +290,32 @@ test('problem and solution card exposes the approved copy and benefit structure'
   await expect(card.getByRole('link', { name: 'Узнать больше о решении' })).toHaveAttribute('href', '#equipment');
 });
 
+test('problem and solution card matches the approved desktop composition', async ({ page }) => {
+  await page.setViewportSize({ width: 1900, height: 1100 });
+  await page.goto('/');
+
+  const geometry = await page.locator('.problem-solution').evaluate((card) => {
+    const problem = card.querySelector('.problem-panel').getBoundingClientRect();
+    const media = card.querySelector('.problem-solution__media').getBoundingClientRect();
+    const solution = card.querySelector('.solution-panel').getBoundingClientRect();
+    const rect = card.getBoundingClientRect();
+    return {
+      card: { width: Math.round(rect.width), height: Math.round(rect.height) },
+      columns: [problem, media, solution].map((column) => Math.round(column.width)),
+      aligned: [problem, media, solution].every((column) => Math.abs(column.height - rect.height) <= 2),
+      radius: getComputedStyle(card).borderRadius,
+      benefits: getComputedStyle(card.querySelector('.solution-benefits')).gridTemplateColumns
+    };
+  });
+
+  expect(geometry.card.width).toBe(1440);
+  expect(geometry.card.height).toBeGreaterThanOrEqual(560);
+  expect(geometry.aligned).toBe(true);
+  expect(geometry.columns.every((width) => width >= 400)).toBe(true);
+  expect(geometry.radius).not.toBe('0px');
+  expect(geometry.benefits.split(' ').length).toBe(2);
+});
+
 test('capabilities reproduce the five-card reference composition', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 1100 });
   await page.goto('/');

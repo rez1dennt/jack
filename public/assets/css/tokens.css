@@ -145,6 +145,15 @@
   --capability-card-min-height: 25rem;
   --capability-icon-shell-size: 5.5rem;
   --applications-columns: 30% 35% 35%;
+  --problem-card-min-height: 36rem;
+  --problem-card-radius: var(--radius-md);
+  --problem-card-shadow: 0 1rem 3rem rgb(17 24 32 / 12%);
+  --problem-panel-surface: linear-gradient(145deg, var(--primitive-red-800), var(--color-action-primary));
+  --problem-panel-divider: rgb(255 255 255 / 18%);
+  --problem-icon-surface: rgb(111 0 9 / 26%);
+  --problem-panel-decoration: rgb(101 0 8 / 18%);
+  --problem-diagonal-depth: var(--space-16);
+  --solution-icon-surface: var(--color-action-primary-soft);
   --spec-product-media-min-height: 22rem;
   --spec-download-width: 82%;
   --spec-product-background: radial-gradient(circle at 50% 36%, transparent 0 34%, var(--color-border-subtle) 34.2% 34.4%, transparent 34.6% 45%, var(--color-border-subtle) 45.2% 45.4%, transparent 45.6%), var(--color-surface-elevated);
