@@ -344,34 +344,41 @@
       <img src="/assets/images/footer-stitch.jpg" width="1600" height="800" alt="" loading="lazy" decoding="async">
     </picture>
     <div class="container site-footer__grid">
-      <section>
-        <h2>Контакты</h2>
+      <section class="footer-column footer-column--contacts">
+        <h2 class="footer-heading"><span class="footer-heading__icon"><span data-icon="phone" aria-hidden="true"></span></span>Контакты</h2>
         <address class="footer-contacts">
-          <a href="tel:+78005555718">8 (800) 555-57-18</a>
-          <span>Звонок по России бесплатный</span>
-          <a href="mailto:info@jack-sewing.ru">info@jack-sewing.ru</a>
-          <a href="https://www.jack-sewing.ru">www.jack-sewing.ru</a>
-          <span>г. Москва, ул. Промышленная, 11</span>
+          <div class="footer-contact"><span class="footer-contact__icon"><span data-icon="phone" aria-hidden="true"></span></span><span><a href="tel:+78005555718">8 (800) 555-57-18</a><small>Звонок по России бесплатный</small></span></div>
+          <div class="footer-contact"><span class="footer-contact__icon"><span data-icon="mail" aria-hidden="true"></span></span><a href="mailto:info@jack-sewing.ru">info@jack-sewing.ru</a></div>
+          <div class="footer-contact"><span class="footer-contact__icon"><span data-icon="globe" aria-hidden="true"></span></span><a href="https://www.jack-sewing.ru">www.jack-sewing.ru</a></div>
+          <div class="footer-contact"><span class="footer-contact__icon"><span data-icon="pin" aria-hidden="true"></span></span><span>г. Москва, ул. Промышленная, 11</span></div>
         </address>
+        <a class="footer-help" href="#consultation-form"><span class="footer-help__icon"><span data-icon="headset" aria-hidden="true"></span></span><span><strong>Нужна помощь?</strong><small>Наши специалисты готовы ответить на ваши вопросы</small></span><span class="footer-help__arrow"><span data-icon="arrow-right" aria-hidden="true"></span></span></a>
       </section>
-      <section>
-        <h2>Меню</h2>
-        <nav aria-label="Навигация в подвале"><ul>
-          <li><a href="#equipment">Оборудование</a></li><li><a href="#solutions">Решения</a></li><li><a href="#service">Сервис</a></li><li><a href="#about">О компании</a></li><li><a href="#contacts">Контакты</a></li>
+      <section class="footer-column footer-column--menu">
+        <h2 class="footer-heading"><span class="footer-heading__icon"><span data-icon="menu" aria-hidden="true"></span></span>Меню</h2>
+        <nav class="footer-nav" aria-label="Навигация в подвале"><ul>
+          <li><a href="#equipment">Оборудование <span data-icon="arrow-right" aria-hidden="true"></span></a></li>
+          <li><a href="#solutions">Решения <span data-icon="arrow-right" aria-hidden="true"></span></a></li>
+          <li><a href="#service">Сервис <span data-icon="arrow-right" aria-hidden="true"></span></a></li>
+          <li><a href="#about">О компании <span data-icon="arrow-right" aria-hidden="true"></span></a></li>
+          <li><a href="#contacts">Контакты <span data-icon="arrow-right" aria-hidden="true"></span></a></li>
         </ul></nav>
       </section>
-      <section>
-        <h2>Мы в соцсетях</h2>
+      <section class="footer-column footer-column--social">
+        <h2 class="footer-heading"><span class="footer-heading__icon"><span data-icon="share" aria-hidden="true"></span></span>Мы в соцсетях</h2>
         <div class="social-links">
-          <span class="social-link social-link--disabled" role="img" aria-label="ВКонтакте — ссылка будет добавлена" title="Ссылка ВКонтакте будет добавлена"><span data-icon="vk" aria-hidden="true"></span></span>
-          <span class="social-link social-link--disabled" role="img" aria-label="YouTube — ссылка будет добавлена" title="Ссылка YouTube будет добавлена"><span data-icon="youtube" aria-hidden="true"></span></span>
-          <span class="social-link social-link--disabled" role="img" aria-label="Telegram — ссылка будет добавлена" title="Ссылка Telegram будет добавлена"><span data-icon="telegram" aria-hidden="true"></span></span>
+          <span class="social-link social-link--disabled" role="img" aria-label="ВКонтакте, ссылка будет добавлена" title="Ссылка ВКонтакте будет добавлена"><span data-icon="vk" aria-hidden="true"></span></span>
+          <span class="social-link social-link--disabled" role="img" aria-label="YouTube, ссылка будет добавлена" title="Ссылка YouTube будет добавлена"><span data-icon="youtube" aria-hidden="true"></span></span>
+          <span class="social-link social-link--disabled" role="img" aria-label="Telegram, ссылка будет добавлена" title="Ссылка Telegram будет добавлена"><span data-icon="telegram" aria-hidden="true"></span></span>
+        </div>
+        <div class="footer-legal">
+          <a href="/privacy.html"><span data-icon="document" aria-hidden="true"></span><span>Политика конфиденциальности</span><span data-icon="arrow-right" aria-hidden="true"></span></a>
+          <a href="/consent.html"><span data-icon="document" aria-hidden="true"></span><span>Согласие на обработку персональных данных</span><span data-icon="arrow-right" aria-hidden="true"></span></a>
         </div>
       </section>
     </div>
     <div class="container site-footer__bottom">
-      <span>© 2024 Все права защищены.</span>
-      <div><a href="/privacy.html">Политика конфиденциальности</a><a href="/consent.html">Согласие на обработку персональных данных</a></div>
+      <span>© <span class="site-footer__year">2026</span> Все права защищены.</span>
     </div>
   </footer>
 

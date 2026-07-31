@@ -214,6 +214,13 @@
 [data-icon="pdf"] { mask-image: url("../icons/pdf.svg"); -webkit-mask-image: url("../icons/pdf.svg"); }
 [data-icon="check-circle"] { mask-image: url("../icons/check-circle.svg"); -webkit-mask-image: url("../icons/check-circle.svg"); }
 [data-icon="arrow-right"] { mask-image: url("../icons/arrow-right.svg"); -webkit-mask-image: url("../icons/arrow-right.svg"); }
+[data-icon="phone"] { mask-image: url("../icons/phone.svg"); -webkit-mask-image: url("../icons/phone.svg"); }
+[data-icon="mail"] { mask-image: url("../icons/mail.svg"); -webkit-mask-image: url("../icons/mail.svg"); }
+[data-icon="globe"] { mask-image: url("../icons/globe.svg"); -webkit-mask-image: url("../icons/globe.svg"); }
+[data-icon="pin"] { mask-image: url("../icons/pin.svg"); -webkit-mask-image: url("../icons/pin.svg"); }
+[data-icon="menu"] { mask-image: url("../icons/menu.svg"); -webkit-mask-image: url("../icons/menu.svg"); }
+[data-icon="share"] { mask-image: url("../icons/share.svg"); -webkit-mask-image: url("../icons/share.svg"); }
+[data-icon="document"] { mask-image: url("../icons/document.svg"); -webkit-mask-image: url("../icons/document.svg"); }
 [data-icon="vk"] { mask-image: url("../icons/vk.svg"); -webkit-mask-image: url("../icons/vk.svg"); }
 [data-icon="youtube"] { mask-image: url("../icons/youtube.svg"); -webkit-mask-image: url("../icons/youtube.svg"); }
 [data-icon="telegram"] { mask-image: url("../icons/telegram.svg"); -webkit-mask-image: url("../icons/telegram.svg"); }

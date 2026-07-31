@@ -25,9 +25,24 @@ test('all reference sections and legal links exist', async ({ page }) => {
     await expect(page.getByText(text, { exact: false }).first()).toBeVisible();
   }
 
-  const footer = page.locator('.site-footer__bottom');
+  const footer = page.locator('.site-footer');
   await expect(footer.getByRole('link', { name: 'Политика конфиденциальности', exact: true })).toHaveAttribute('href', '/privacy.html');
   await expect(footer.getByRole('link', { name: 'Согласие на обработку персональных данных', exact: true })).toHaveAttribute('href', '/consent.html');
+});
+
+test('footer matches the approved contact navigation help and legal contract', async ({ page }) => {
+  await page.goto('/');
+  const footer = page.locator('.site-footer');
+
+  await expect(footer.locator('.footer-column')).toHaveCount(3);
+  await expect(footer.locator('.footer-contact')).toHaveCount(4);
+  await expect(footer.getByRole('link', { name: /Нужна помощь/i })).toHaveAttribute('href', '#consultation-form');
+  await expect(footer.locator('.footer-nav li')).toHaveCount(5);
+  await expect(footer.locator('.social-link')).toHaveCount(3);
+  await expect(footer.locator('.footer-legal a')).toHaveCount(2);
+  await expect(footer.locator('.site-footer__year')).toHaveText('2026');
+  await expect(footer.getByRole('link', { name: 'Политика конфиденциальности' })).toHaveAttribute('href', '/privacy.html');
+  await expect(footer.getByRole('link', { name: 'Согласие на обработку персональных данных' })).toHaveAttribute('href', '/consent.html');
 });
 
 test('optimized imagery and vector icons are served without missing assets', async ({ page }) => {
