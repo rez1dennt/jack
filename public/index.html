@@ -100,10 +100,19 @@
         <div class="problem-panel">
           <div class="problem-panel__content">
             <h2>Проблема</h2>
-            <ul class="icon-list icon-list--light">
-              <li><span class="icon-slot" data-icon="time" aria-hidden="true"></span><span>Ручная пришивка деталей<br>отнимает много времени</span></li>
-              <li><span class="icon-slot" data-icon="warning" aria-hidden="true"></span><span>Высокий риск брака<br>и отклонений</span></li>
-              <li><span class="icon-slot" data-icon="growth" aria-hidden="true"></span><span>Сложно масштабировать<br>производство</span></li>
+            <ul class="problem-list">
+              <li class="problem-item">
+                <span class="problem-item__icon"><span data-icon="time" aria-hidden="true"></span></span>
+                <div><strong>Ручная пришивка деталей<br>отнимает много времени</strong><p class="problem-item__description">Снижает производительность и увеличивает сроки</p></div>
+              </li>
+              <li class="problem-item">
+                <span class="problem-item__icon"><span data-icon="warning" aria-hidden="true"></span></span>
+                <div><strong>Высокий риск брака<br>и отклонений</strong><p class="problem-item__description">Из-за человеческого фактора страдает качество изделий</p></div>
+              </li>
+              <li class="problem-item">
+                <span class="problem-item__icon"><span data-icon="growth" aria-hidden="true"></span></span>
+                <div><strong>Сложно масштабировать<br>производство</strong><p class="problem-item__description">Ручной труд ограничивает объёмы и увеличивает затраты</p></div>
+              </li>
             </ul>
           </div>
         </div>
@@ -114,9 +123,17 @@
         </picture>
         <div class="solution-panel">
           <div class="solution-panel__content">
-            <h2>Решение Jack</h2>
-            <p>Шаблонный автомат Jack выполняет операцию строго по заданному контуру — цифровому или физическому шаблону. Машина повторяет движения без отклонений, обеспечивая высокую точность, скорость и стабильное качество.</p>
-            <a class="button button--outline" href="#equipment">Узнать больше о решении</a>
+            <p class="solution-panel__eyebrow">Наше решение</p>
+            <h2>Решение <span class="solution-panel__title-accent">Jack</span></h2>
+            <span class="solution-panel__rule" aria-hidden="true"></span>
+            <p class="solution-panel__summary">Шаблонный автомат Jack выполняет операцию строго по заданному контуру — цифровому или физическому шаблону. Машина повторяет движения без отклонений, обеспечивая высокую точность, скорость и стабильное качество.</p>
+            <div class="solution-benefits">
+              <article class="solution-benefit"><span class="solution-benefit__icon"><span data-icon="target" aria-hidden="true"></span></span><div><h3 class="solution-benefit__title">Точность до 0,1 мм</h3><p>Идеальный результат каждый раз</p></div></article>
+              <article class="solution-benefit"><span class="solution-benefit__icon"><span data-icon="shield" aria-hidden="true"></span></span><div><h3 class="solution-benefit__title">Стабильное качество</h3><p>Минимум брака и переделок</p></div></article>
+              <article class="solution-benefit"><span class="solution-benefit__icon"><span data-icon="speed" aria-hidden="true"></span></span><div><h3 class="solution-benefit__title">Высокая скорость</h3><p>Сокращение времени на операцию до 70%</p></div></article>
+              <article class="solution-benefit"><span class="solution-benefit__icon"><span data-icon="growth" aria-hidden="true"></span></span><div><h3 class="solution-benefit__title">Лёгкое масштабирование</h3><p>Рост объёмов без увеличения штата и издержек</p></div></article>
+            </div>
+            <a class="button button--solution" href="#equipment">Узнать больше о решении <span data-icon="arrow-right" aria-hidden="true"></span></a>
           </div>
         </div>
       </div>

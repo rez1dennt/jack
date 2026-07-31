@@ -268,6 +268,28 @@ test('desktop uses the reference grid composition', async ({ page }) => {
   await expect(page.locator('.capabilities__grid')).toHaveCSS('display', 'grid');
 });
 
+test('problem and solution card exposes the approved copy and benefit structure', async ({ page }) => {
+  await page.goto('/');
+
+  const card = page.locator('.problem-solution');
+  await expect(card.getByRole('heading', { name: 'Проблема', exact: true })).toBeVisible();
+  await expect(card.locator('.problem-item')).toHaveCount(3);
+  await expect(card.locator('.problem-item__description')).toHaveText([
+    'Снижает производительность и увеличивает сроки',
+    'Из-за человеческого фактора страдает качество изделий',
+    'Ручной труд ограничивает объёмы и увеличивает затраты'
+  ]);
+  await expect(card.locator('.solution-panel__eyebrow')).toHaveText('Наше решение');
+  await expect(card.locator('.solution-benefit')).toHaveCount(4);
+  await expect(card.locator('.solution-benefit__title')).toHaveText([
+    'Точность до 0,1 мм',
+    'Стабильное качество',
+    'Высокая скорость',
+    'Лёгкое масштабирование'
+  ]);
+  await expect(card.getByRole('link', { name: 'Узнать больше о решении' })).toHaveAttribute('href', '#equipment');
+});
+
 test('capabilities reproduce the five-card reference composition', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 1100 });
   await page.goto('/');
