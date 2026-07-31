@@ -1,0 +1,10 @@
+{
+  "name": "Шаблонные автоматы Jack",
+  "short_name": "Jack",
+  "lang": "ru",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#c80712",
+  "icons": []
+}
