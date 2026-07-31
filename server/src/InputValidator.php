@@ -13,7 +13,7 @@ final class InputValidator
         $phone = self::normalizePhone($input['phone'] ?? '');
         $consent = ($input['consent'] ?? null) === true;
 
-        $nameLength = mb_strlen($name, 'UTF-8');
+        $nameLength = self::unicodeLength($name);
         if ($nameLength < 2 || $nameLength > 80 || !preg_match("/^[\\p{L}\\p{M}][\\p{L}\\p{M} '\\x{2019}-]*$/u", $name)) {
             $errors['name'] = 'Укажите корректное имя длиной от 2 до 80 символов.';
         }
@@ -46,6 +46,22 @@ final class InputValidator
 
         $trimmed = preg_replace('/^\s+|\s+$/u', '', $value) ?? '';
         return preg_replace('/\s+/u', ' ', $trimmed) ?? '';
+    }
+
+    private static function unicodeLength(string $value): int
+    {
+        if (function_exists('mb_strlen')) {
+            return mb_strlen($value, 'UTF-8');
+        }
+
+        if (function_exists('iconv_strlen')) {
+            $length = iconv_strlen($value, 'UTF-8');
+            if ($length !== false) {
+                return $length;
+            }
+        }
+
+        return preg_match_all('/./us', $value, $characters) ?: 0;
     }
 
     private static function normalizePhone(mixed $value): ?string

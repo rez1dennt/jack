@@ -28,3 +28,12 @@ $invalid = InputValidator::validate([
 
 assert($invalid['ok'] === false);
 assert(isset($invalid['errors']['name'], $invalid['errors']['phone'], $invalid['errors']['consent']));
+
+$longUnicodeName = InputValidator::validate([
+    'name' => str_repeat('Я', 81),
+    'phone' => '8 (999) 123-45-67',
+    'consent' => true,
+]);
+
+assert($longUnicodeName['ok'] === false);
+assert(isset($longUnicodeName['errors']['name']));
