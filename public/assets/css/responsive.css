@@ -194,13 +194,13 @@
     box-shadow: var(--shadow-overlay);
     translate: -104% 0;
     visibility: hidden;
-    transition: translate var(--duration-base) var(--ease-out), visibility 0s linear var(--duration-base);
+    transition: translate var(--duration-base) var(--ease-out), visibility var(--duration-none) linear var(--duration-base);
   }
 
   .site-nav[data-open="true"] {
     translate: 0 0;
     visibility: visible;
-    transition-delay: 0s;
+    transition-delay: var(--duration-none);
   }
 
   .site-nav__list {
