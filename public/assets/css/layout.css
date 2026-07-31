@@ -52,43 +52,44 @@
 
 .hero {
   position: relative;
-  min-block-size: clamp(27.5rem, 31vw, 30rem);
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 76% 18%, rgb(255 255 255 / 90%), transparent 36%),
-    linear-gradient(110deg, var(--color-surface-page), var(--color-surface-subtle));
+  min-block-size: var(--hero-height);
+  background: var(--color-surface-page);
 }
 
 .hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(90deg, rgb(17 24 32 / 2%) var(--border-thin), transparent var(--border-thin));
-  background-size: var(--space-8) 100%;
-  mask-image: linear-gradient(to right, transparent, #000, transparent);
-  pointer-events: none;
+  content: none;
 }
 
 .hero__inner {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(33rem, 0.95fr) minmax(34rem, 1.25fr);
-  align-items: center;
-  min-block-size: inherit;
+  min-block-size: var(--hero-height);
+  display: block;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero__inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--hero-overlay);
+  pointer-events: none;
 }
 
 .hero__content {
   position: relative;
   z-index: 2;
-  padding-block: var(--space-16);
+  inline-size: var(--hero-copy-width);
+  padding: var(--space-16);
 }
 
 .hero h1 {
-  max-inline-size: 26ch;
+  max-inline-size: var(--hero-title-measure);
   margin-block-end: var(--space-7);
-  font-size: var(--font-size-display);
+  font-size: var(--hero-title-size);
   line-height: 1.08;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
 }
 
@@ -99,10 +100,11 @@
 }
 
 .hero__lead {
-  max-inline-size: 40rem;
-  margin-block-end: var(--space-10);
-  font-size: clamp(var(--font-size-base), 1.4vw, var(--font-size-xl));
+  max-inline-size: var(--hero-title-measure);
+  margin-block-end: var(--space-8);
+  font-size: var(--hero-lead-size);
   font-weight: 600;
+  line-height: 1.45;
 }
 
 .hero__actions {
@@ -112,16 +114,18 @@
 }
 
 .hero__media {
-  position: relative;
-  align-self: stretch;
-  inline-size: 126%;
-  margin-inline-start: -18%;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
 }
 
 .hero__media img {
   inline-size: 100%;
   block-size: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center right;
 }
 

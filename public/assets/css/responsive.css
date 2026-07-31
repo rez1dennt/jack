@@ -7,10 +7,6 @@
     gap: var(--space-5);
   }
 
-  .hero__inner {
-    grid-template-columns: minmax(24rem, 0.9fr) minmax(28rem, 1.1fr);
-  }
-
   .problem-panel__content,
   .solution-panel__content {
     inline-size: calc(100% - (var(--space-6) * 2));
@@ -32,10 +28,6 @@
 
   .site-header__contact {
     display: none;
-  }
-
-  .hero__inner {
-    grid-template-columns: minmax(23rem, 0.95fr) minmax(24rem, 1.05fr);
   }
 
   .problem-solution {
@@ -226,16 +218,24 @@
   }
 
   .hero__inner {
-    grid-template-columns: 1fr;
+    min-block-size: 0;
+    display: grid;
+    overflow: visible;
+  }
+
+  .hero__inner::after {
+    content: none;
   }
 
   .hero__content {
-    padding-block: var(--space-12) var(--space-8);
+    inline-size: auto;
+    padding: var(--space-12) 0 var(--space-8);
   }
 
   .hero h1 {
     max-inline-size: 18ch;
     font-size: clamp(2.2rem, 10.3vw, 3.3rem);
+    line-height: 1.08;
   }
 
   .hero h1 span {
@@ -247,9 +247,15 @@
   }
 
   .hero__media {
+    position: relative;
+    inset: auto;
     inline-size: calc(100% + (var(--page-gutter) * 2));
-    min-block-size: 17rem;
+    block-size: 17rem;
     margin-inline: calc(var(--page-gutter) * -1);
+  }
+
+  .hero__media img {
+    object-position: center right;
   }
 
   .problem-solution,
