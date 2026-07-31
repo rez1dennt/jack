@@ -336,6 +336,23 @@ test('specifications reproduce the table, product benefits, and download panel',
   });
 });
 
+test('controls and redesigned panels share the approved soft geometry', async ({ page }) => {
+  await page.goto('/');
+  const geometry = await page.evaluate(() => ({
+    button: getComputedStyle(document.querySelector('.button')).borderRadius,
+    input: getComputedStyle(document.querySelector('.field input')).borderRadius,
+    capability: getComputedStyle(document.querySelector('.capability')).borderRadius,
+    specifications: getComputedStyle(document.querySelector('.specifications__panel')).borderRadius
+  }));
+
+  expect(geometry).toEqual({
+    button: '8px',
+    input: '8px',
+    capability: '12px',
+    specifications: '12px'
+  });
+});
+
 test('applications keep the approved proportions and use check markers', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 1000 });
   await page.goto('/');

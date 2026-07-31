@@ -260,7 +260,7 @@
   padding: var(--space-7) var(--space-5);
   overflow: hidden;
   border: var(--border-thin) solid var(--color-border-subtle);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-md);
   background: var(--color-surface-elevated);
   box-shadow: var(--shadow-card);
   text-align: center;
@@ -424,7 +424,7 @@
 .specifications__panel {
   padding: var(--space-8);
   border: var(--border-thin) solid var(--color-border-subtle);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-md);
   background: var(--color-surface-subtle);
   box-shadow: var(--shadow-card);
 }
@@ -468,7 +468,7 @@
   padding: var(--space-4);
   overflow: hidden;
   border: var(--border-thin) solid var(--color-border-subtle);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-md);
   background: var(--spec-product-background);
 }
 

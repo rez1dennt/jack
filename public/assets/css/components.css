@@ -205,7 +205,7 @@
   max-inline-size: 100%;
   overflow-x: auto;
   border: var(--border-thin) solid var(--color-border-subtle);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-md);
   background: var(--color-surface-elevated);
 }
 
@@ -264,7 +264,7 @@ tbody th {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   overflow: hidden;
   border: var(--border-thin) solid var(--color-border-subtle);
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-md);
   background: var(--color-surface-page);
   box-shadow: var(--shadow-card);
 }
