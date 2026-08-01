@@ -114,11 +114,6 @@
     --section-gap: 1rem;
   }
 
-  .site-header {
-    position: sticky;
-    inset-block-start: 0;
-  }
-
   .site-header__inner {
     grid-template-columns: auto 1fr;
   }

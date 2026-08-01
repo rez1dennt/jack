@@ -200,6 +200,32 @@ test('phone mask supports middle deletion, selection replacement, clearing, and 
   await expect(phone).toHaveValue('+7 (921) 555-01-02');
 });
 
+test('site header stays pinned with a subtle shadow on every viewport', async ({ page }) => {
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+
+    const header = page.locator('.site-header');
+    const styles = await header.evaluate((node) => {
+      const computed = getComputedStyle(node);
+      return {
+        position: computed.position,
+        top: computed.top,
+        shadow: computed.boxShadow
+      };
+    });
+
+    expect(styles.position).toBe('sticky');
+    expect(styles.top).toBe('0px');
+    expect(styles.shadow).not.toBe('none');
+
+    await page.evaluate(() => window.scrollTo(0, 1200));
+    await expect(header).toBeInViewport();
+    const box = await header.boundingBox();
+    expect(Math.abs(box?.y ?? 999)).toBeLessThanOrEqual(1);
+  }
+});
+
 test('mobile menu opens accessibly without shifting the page and closes by Escape', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
