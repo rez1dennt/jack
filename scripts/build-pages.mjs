@@ -18,7 +18,7 @@ export function rewriteForPages(source, { basePath = '', siteUrl = '' } = {}) {
   }
 
   if (normalizedBase) {
-    output = output.replace(/(["'(])\/(?!\/)/g, `$1${normalizedBase}/`);
+    output = output.replace(/(["'])\/(?!\/)/g, `$1${normalizedBase}/`);
   }
 
   return output.replace(/<html\s+lang="ru"(?![^>]*data-static-preview)/, '<html lang="ru" data-static-preview="true"');

@@ -49,3 +49,22 @@ test('does not publish PHP endpoints or Apache configuration', async () => {
   await assert.rejects(access(join(outputDir, 'api', 'submit.php')));
   await assert.rejects(access(join(outputDir, '.htaccess')));
 });
+
+test('preserves JavaScript regular expressions while rewriting URL strings', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'jack-pages-'));
+  const sourceDir = join(root, 'public');
+  const outputDir = join(root, 'dist');
+
+  await mkdir(join(sourceDir, 'assets', 'js'), { recursive: true });
+  await writeFile(join(sourceDir, 'index.html'), '<html lang="ru"></html>');
+  await writeFile(
+    join(sourceDir, 'assets', 'js', 'app.js'),
+    "const digits = value.replace(/\\D/g, ''); fetch('/api/submit.php');"
+  );
+
+  await buildPages({ sourceDir, outputDir, basePath: '/jack' });
+
+  const script = await readFile(join(outputDir, 'assets', 'js', 'app.js'), 'utf8');
+  assert.match(script, /replace\(\/\\D\/g/);
+  assert.match(script, /fetch\('\/jack\/api\/submit\.php'\)/);
+});

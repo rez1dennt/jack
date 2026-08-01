@@ -1,7 +1,7 @@
 const PHONE_DIGIT_LIMIT = 11;
 
 function normalizeRuPhoneDigits(value = '') {
-  const rawDigits = String(value).replace(/jack/\D/g, '');
+  const rawDigits = String(value).replace(/\D/g, '');
   if (!rawDigits) return '';
 
   let digits;
@@ -51,8 +51,8 @@ export function validateLeadValues({ name = '', phone = '', consent = false } = 
 
 function canonicalDigitsBefore(value, caret) {
   const stringValue = String(value);
-  const allDigits = stringValue.replace(/jack/\D/g, '');
-  const precedingDigits = stringValue.slice(0, Math.max(0, caret)).replace(/jack/\D/g, '').length;
+  const allDigits = stringValue.replace(/\D/g, '');
+  const precedingDigits = stringValue.slice(0, Math.max(0, caret)).replace(/\D/g, '').length;
   if (!precedingDigits) return 0;
 
   const hasExplicitCountryCode = allDigits.startsWith('7') || allDigits.startsWith('8');
@@ -103,7 +103,7 @@ export function initPhoneMask(input) {
     if (digitIndex < 0 || digitIndex >= input.value.length) return;
 
     if (event.key === 'Delete' && input.value[digitIndex] === '7') {
-      const nextNationalDigit = input.value.slice(digitIndex + 1).search(/jack/\d/);
+      const nextNationalDigit = input.value.slice(digitIndex + 1).search(/\d/);
       if (nextNationalDigit >= 0) digitIndex += nextNationalDigit + 1;
     }
 
