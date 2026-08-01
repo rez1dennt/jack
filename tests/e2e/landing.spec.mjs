@@ -308,6 +308,40 @@ test('desktop uses the approved 1440px container and local sans-serif typography
   expect(metrics.containerLeft).toBe(230);
 });
 
+test('hero copy aligns with the container and keeps only responsive top padding', async ({ page }) => {
+  for (const [width, expectedTop] of [[1900, 64], [768, 48], [390, 48]]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+
+    const geometry = await page.evaluate(() => {
+      const inner = document.querySelector('.hero__inner').getBoundingClientRect();
+      const content = document.querySelector('.hero__content');
+      const contentRect = content.getBoundingClientRect();
+      const title = document.querySelector('.hero h1').getBoundingClientRect();
+      const style = getComputedStyle(content);
+      return {
+        innerLeft: Math.round(inner.left),
+        contentLeft: Math.round(contentRect.left),
+        titleLeft: Math.round(title.left),
+        paddingTop: Number.parseFloat(style.paddingTop),
+        paddingRight: Number.parseFloat(style.paddingRight),
+        paddingBottom: Number.parseFloat(style.paddingBottom),
+        paddingLeft: Number.parseFloat(style.paddingLeft),
+        viewportWidth: document.documentElement.clientWidth,
+        scrollWidth: document.documentElement.scrollWidth
+      };
+    });
+
+    expect(geometry.contentLeft).toBe(geometry.innerLeft);
+    expect(geometry.titleLeft).toBe(geometry.innerLeft);
+    expect(geometry.paddingTop).toBe(expectedTop);
+    expect(geometry.paddingRight).toBe(0);
+    expect(geometry.paddingBottom).toBe(0);
+    expect(geometry.paddingLeft).toBe(0);
+    expect(geometry.scrollWidth).toBe(geometry.viewportWidth);
+  }
+});
+
 test('hero media spans the viewport while copy stays on the 1440px grid', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 900 });
   await page.goto('/');

@@ -79,7 +79,7 @@
 .hero__content {
   position: relative;
   inline-size: var(--hero-copy-width);
-  padding: var(--space-16);
+  padding: var(--space-16) 0 0;
 }
 
 .hero h1 {
