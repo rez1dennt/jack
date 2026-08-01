@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build:pages": "node scripts/build-pages.mjs",
     "test:js": "node --test tests/js/*.test.mjs",
     "test:e2e": "playwright test",
     "test": "npm run test:js && npm run test:e2e"
