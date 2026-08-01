@@ -68,3 +68,30 @@ test('preserves JavaScript regular expressions while rewriting URL strings', asy
   assert.match(script, /replace\(\/\\D\/g/);
   assert.match(script, /fetch\('\/jack\/api\/submit\.php'\)/);
 });
+
+test('versions HTML, CSS, and module asset URLs to invalidate the Pages cache', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'jack-pages-'));
+  const sourceDir = join(root, 'public');
+  const outputDir = join(root, 'dist');
+
+  await mkdir(join(sourceDir, 'assets', 'css'), { recursive: true });
+  await mkdir(join(sourceDir, 'assets', 'js'), { recursive: true });
+  await writeFile(
+    join(sourceDir, 'index.html'),
+    '<html lang="ru"><link rel="manifest" href="/site.webmanifest"><link href="/assets/css/site.css"><script src="/assets/js/main.js"></script></html>'
+  );
+  await writeFile(join(sourceDir, 'assets', 'css', 'site.css'), '.icon{mask-image:url("../icons/time.svg")}');
+  await writeFile(join(sourceDir, 'assets', 'js', 'main.js'), "import './form.js';");
+
+  await buildPages({ sourceDir, outputDir, basePath: '/jack', assetVersion: 'icons-2' });
+
+  const index = await readFile(join(outputDir, 'index.html'), 'utf8');
+  const stylesheet = await readFile(join(outputDir, 'assets', 'css', 'site.css'), 'utf8');
+  const script = await readFile(join(outputDir, 'assets', 'js', 'main.js'), 'utf8');
+
+  assert.match(index, /\/jack\/assets\/css\/site\.css\?v=icons-2/);
+  assert.match(index, /\/jack\/assets\/js\/main\.js\?v=icons-2/);
+  assert.match(index, /\/jack\/site\.webmanifest\?v=icons-2/);
+  assert.match(stylesheet, /\.\.\/icons\/time\.svg\?v=icons-2/);
+  assert.match(script, /\.\/form\.js\?v=icons-2/);
+});

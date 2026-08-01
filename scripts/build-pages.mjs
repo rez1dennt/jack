@@ -3,13 +3,14 @@ import { extname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const TEXT_EXTENSIONS = new Set(['.css', '.html', '.js', '.json', '.svg', '.txt', '.webmanifest', '.xml']);
+const VERSIONED_ASSET_PATTERN = /((?:(?:(?:\/[A-Za-z0-9._-]+)?\/assets\/|\.\.\/(?:fonts|icons|images)\/|\.\/)[^"'()\s?#]+\.(?:avif|css|js|jpe?g|pdf|png|svg|webp|woff2)|(?:\/[A-Za-z0-9._-]+)?\/site\.webmanifest))(?=["')\s]|$)/gi;
 
 function normalizeBasePath(basePath = '') {
   const clean = String(basePath).trim().replace(/^\/+|\/+$/g, '');
   return clean ? `/${clean}` : '';
 }
 
-export function rewriteForPages(source, { basePath = '', siteUrl = '' } = {}) {
+export function rewriteForPages(source, { basePath = '', siteUrl = '', assetVersion = '' } = {}) {
   const normalizedBase = normalizeBasePath(basePath);
   let output = String(source);
 
@@ -19,6 +20,11 @@ export function rewriteForPages(source, { basePath = '', siteUrl = '' } = {}) {
 
   if (normalizedBase) {
     output = output.replace(/(["'])\/(?!\/)/g, `$1${normalizedBase}/`);
+  }
+
+  if (assetVersion) {
+    const version = encodeURIComponent(String(assetVersion));
+    output = output.replace(VERSIONED_ASSET_PATTERN, `$1?v=${version}`);
   }
 
   return output.replace(/<html\s+lang="ru"(?![^>]*data-static-preview)/, '<html lang="ru" data-static-preview="true"');
@@ -55,7 +61,7 @@ async function copyEntry(sourceDir, outputDir, relativePath, options) {
   await writeFile(outputPath, rewriteForPages(source, options));
 }
 
-export async function buildPages({ sourceDir, outputDir, basePath = '', siteUrl = '' }) {
+export async function buildPages({ sourceDir, outputDir, basePath = '', siteUrl = '', assetVersion = '' }) {
   if (!sourceDir || !outputDir) throw new TypeError('sourceDir and outputDir are required');
 
   const absoluteSource = resolve(sourceDir);
@@ -65,7 +71,7 @@ export async function buildPages({ sourceDir, outputDir, basePath = '', siteUrl 
 
   const entries = await readdir(absoluteSource, { withFileTypes: true });
   for (const entry of entries) {
-    await copyEntry(absoluteSource, absoluteOutput, entry.name, { basePath, siteUrl });
+    await copyEntry(absoluteSource, absoluteOutput, entry.name, { basePath, siteUrl, assetVersion });
   }
 }
 
@@ -80,11 +86,16 @@ if (isCommandLine) {
   const owner = readArgument('--owner', process.env.GITHUB_REPOSITORY_OWNER ?? 'rez1dennt');
   const basePath = readArgument('--base-path', `/${repository}`);
   const siteUrl = readArgument('--site-url', `https://${owner}.github.io${normalizeBasePath(basePath)}`);
+  const assetVersion = readArgument(
+    '--asset-version',
+    process.env.PAGES_ASSET_VERSION ?? new Date().toISOString().replace(/\D/g, '').slice(0, 14)
+  );
 
   await buildPages({
     sourceDir: readArgument('--source', 'public'),
     outputDir: readArgument('--output', '.pages-dist'),
     basePath,
-    siteUrl
+    siteUrl,
+    assetVersion
   });
 }
