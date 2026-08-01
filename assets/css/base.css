@@ -1,0 +1,126 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
+}
+
+body {
+  margin: 0;
+  min-inline-size: 0;
+  background: var(--color-surface-page);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-body);
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-inline-size: 100%;
+}
+
+img {
+  block-size: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: var(--border-thin);
+  text-underline-offset: var(--space-1);
+}
+
+a:hover {
+  color: var(--color-accent-foreground);
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-block-start: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: var(--line-height-heading);
+}
+
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+::selection {
+  background: var(--color-action-primary);
+  color: var(--color-text-inverse);
+}
+
+.container {
+  inline-size: min(100% - (var(--page-gutter) * 2), var(--container));
+  margin-inline: auto;
+}
+
+.sr-only {
+  position: absolute;
+  inline-size: var(--border-thin);
+  block-size: var(--border-thin);
+  padding: 0;
+  margin: calc(var(--border-thin) * -1);
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  inset-block-start: var(--space-3);
+  inset-inline-start: var(--space-3);
+  z-index: 1000;
+  translate: 0 -200%;
+  background: var(--color-surface-inverse);
+  color: var(--color-text-inverse);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-sm);
+}
+
+.skip-link:focus {
+  translate: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: var(--duration-reduced-motion) !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: var(--duration-reduced-motion) !important;
+    scroll-behavior: auto !important;
+  }
+}
