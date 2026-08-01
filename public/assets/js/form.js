@@ -144,20 +144,22 @@ async function getCsrfToken(fetchImpl) {
   return data.token;
 }
 
-export function initLeadForm(form, { fetchImpl = globalThis.fetch?.bind(globalThis) } = {}) {
-  if (!form || !fetchImpl) return () => {};
+export function initLeadForm(form, { fetchImpl = globalThis.fetch?.bind(globalThis), previewMode = false } = {}) {
+  if (!form || (!fetchImpl && !previewMode)) return () => {};
 
   const phoneInput = form.elements.namedItem('phone');
   const submitButton = form.querySelector('[type="submit"]');
   const status = form.querySelector('.form-status');
   const disposeMask = initPhoneMask(phoneInput);
   let csrfToken = '';
-  let csrfRequest = getCsrfToken(fetchImpl)
-    .then((token) => {
-      csrfToken = token;
-      return token;
-    })
-    .catch(() => '');
+  let csrfRequest = previewMode
+    ? Promise.resolve('')
+    : getCsrfToken(fetchImpl)
+      .then((token) => {
+        csrfToken = token;
+        return token;
+      })
+      .catch(() => '');
 
   const acquireCsrfToken = async () => {
     if (csrfToken) return csrfToken;
@@ -189,6 +191,14 @@ export function initLeadForm(form, { fetchImpl = globalThis.fetch?.bind(globalTh
     const firstErrorName = ['name', 'phone', 'consent'].find((name) => errors[name]);
     if (firstErrorName) {
       form.elements.namedItem(firstErrorName)?.focus();
+      return;
+    }
+
+    if (previewMode) {
+      if (status) {
+        status.textContent = 'Демо-режим: форма проверена. Отправка заявки заработает на основном хостинге.';
+        status.dataset.state = 'success';
+      }
       return;
     }
 
