@@ -166,8 +166,6 @@
   --lead-panel-columns: minmax(0, 1.4fr) minmax(21rem, 1fr);
   --lead-panel-overlay: linear-gradient(90deg, rgb(17 24 32 / 98%) 0%, rgb(17 24 32 / 88%) 40%, rgb(17 24 32 / 36%) 68%, rgb(17 24 32 / 78%) 100%);
   --lead-panel-overlay-mobile: linear-gradient(180deg, rgb(17 24 32 / 96%) 0%, rgb(17 24 32 / 82%) 48%, rgb(17 24 32 / 94%) 100%);
-  --lead-grid-line: rgb(255 255 255 / 7%);
-  --lead-grid-clip: inset(0 44% 0 0);
   --lead-form-surface: var(--primitive-white);
   --lead-form-text: var(--primitive-ink-950);
   --lead-form-muted: var(--primitive-gray-700);

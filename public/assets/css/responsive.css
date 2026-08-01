@@ -375,11 +375,6 @@
     background: var(--lead-panel-overlay-mobile);
   }
 
-  .lead-panel::after {
-    clip-path: none;
-    opacity: 0.5;
-  }
-
   .lead-section__media {
     min-block-size: 0;
   }

@@ -568,6 +568,26 @@ test('Industrial Control Room CTA exposes the approved copy and form contract', 
   await expect(form.locator('.form-status')).toHaveAttribute('aria-live', 'polite');
 });
 
+test('consultation panel keeps its contrast overlay without a decorative grid', async ({ page }) => {
+  await page.goto('/');
+
+  const layers = await page.locator('.lead-panel').evaluate((node) => {
+    const before = getComputedStyle(node, '::before');
+    const after = getComputedStyle(node, '::after');
+    return {
+      beforeContent: before.content,
+      beforeBackgroundImage: before.backgroundImage,
+      afterContent: after.content,
+      afterBackgroundImage: after.backgroundImage
+    };
+  });
+
+  expect(layers.beforeContent).not.toBe('none');
+  expect(layers.beforeBackgroundImage).not.toBe('none');
+  expect(layers.afterContent).toBe('none');
+  expect(layers.afterBackgroundImage).toBe('none');
+});
+
 test('Industrial Control Room CTA stays contained, layered, and responsive', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 1100 });
   await page.goto('/');
