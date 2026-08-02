@@ -23,9 +23,11 @@ export function initMenu(root) {
   const backgroundState = new Map();
 
   let isOpen = false;
-  let previousOverflow = '';
+  let previousRootOverflow = '';
   let previousPaddingRight = '';
+  let lockedScrollY = 0;
   let focusFrame = 0;
+  let scrollRestoreFrame = 0;
 
   const setBackgroundInert = (inert) => {
     for (const element of backgroundTargets) {
@@ -48,16 +50,22 @@ export function initMenu(root) {
   };
 
   const unlockScroll = () => {
-    restoreInlineStyle(document.body, 'overflow', previousOverflow);
+    restoreInlineStyle(document.documentElement, 'overflow', previousRootOverflow);
     restoreInlineStyle(document.body, 'padding-right', previousPaddingRight);
   };
 
+  const restoreScrollPosition = () => {
+    if (window.scrollY !== lockedScrollY) window.scrollTo(0, lockedScrollY);
+  };
+
   const lockScroll = () => {
-    previousOverflow = document.body.style.getPropertyValue('overflow');
+    const rootElement = document.documentElement;
+    previousRootOverflow = rootElement.style.getPropertyValue('overflow');
     previousPaddingRight = document.body.style.getPropertyValue('padding-right');
-    const scrollbarWidth = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
+    lockedScrollY = window.scrollY;
+    const scrollbarWidth = Math.max(0, window.innerWidth - rootElement.clientWidth);
     const currentPadding = Number.parseFloat(getComputedStyle(document.body).paddingRight) || 0;
-    document.body.style.overflow = 'hidden';
+    rootElement.style.overflow = 'hidden';
     if (scrollbarWidth > 0) document.body.style.paddingRight = `${currentPadding + scrollbarWidth}px`;
   };
 
@@ -65,6 +73,7 @@ export function initMenu(root) {
     if (!isOpen) return;
     isOpen = false;
     window.cancelAnimationFrame(focusFrame);
+    window.cancelAnimationFrame(scrollRestoreFrame);
     root.removeAttribute('data-menu-open');
     panel.removeAttribute('data-open');
     button.setAttribute('aria-expanded', 'false');
@@ -73,11 +82,17 @@ export function initMenu(root) {
     unlockScroll();
     setBackgroundInert(false);
     if (returnFocus) button.focus({ preventScroll: true });
+    restoreScrollPosition();
+    scrollRestoreFrame = window.requestAnimationFrame(() => {
+      restoreScrollPosition();
+      scrollRestoreFrame = 0;
+    });
   };
 
   const open = () => {
     if (isOpen) return;
     isOpen = true;
+    window.cancelAnimationFrame(scrollRestoreFrame);
     lockScroll();
     setBackgroundInert(true);
     root.setAttribute('data-menu-open', 'true');

@@ -133,7 +133,9 @@ test('optimized imagery and vector icons are served without missing assets', asy
 
 test('technical sheet is a real downloadable PDF', async ({ page, request }) => {
   await page.goto('/');
-  await expect(page.getByRole('link', { name: 'Скачать технический лист (PDF)' })).toHaveAttribute('download', '');
+  await expect(page.getByRole('link', {
+    name: 'Скачать технический лист PDF. Подробные характеристики и руководство'
+  })).toHaveAttribute('download', '');
 
   const response = await request.get('/assets/docs/jack-ms-100a.pdf');
   expect(response.status()).toBe(200);
@@ -232,30 +234,60 @@ test('mobile menu opens accessibly without shifting the page and closes by Escap
 
   const button = page.locator('[data-menu-button]');
   const panel = page.locator('[data-menu-panel]');
-  const anchorBefore = await page.locator('.header-cta').boundingBox();
+  await page.evaluate(() => window.scrollTo(0, 1200));
+  const before = await page.evaluate(() => ({
+    scrollY: window.scrollY,
+    scrollbarWidth: window.innerWidth - document.documentElement.clientWidth,
+    htmlOverflow: document.documentElement.style.getPropertyValue('overflow'),
+    bodyPaddingRight: document.body.style.getPropertyValue('padding-right'),
+    computedBodyPadding: Number.parseFloat(getComputedStyle(document.body).paddingRight) || 0,
+    ctaX: document.querySelector('.header-cta').getBoundingClientRect().x
+  }));
 
-  await button.click();
+  // Dispatch the click at the sticky button's current position. Playwright's
+  // actionability scroll would otherwise move a sticky element before the
+  // page's own menu handler runs, which cannot happen during a real tap.
+  await button.evaluate((element) => element.click());
   await expect(button).toHaveAttribute('aria-expanded', 'true');
   await expect(panel).toHaveAttribute('data-open', 'true');
   await expect(page.locator('[data-menu-overlay]')).toBeVisible();
-  await expect(page.locator('body')).toHaveCSS('overflow', 'hidden');
   await expect(panel.locator('a').first()).toBeFocused();
   await expect(page.locator('main')).toHaveJSProperty('inert', true);
+
+  const locked = await page.evaluate(() => ({
+    scrollY: window.scrollY,
+    htmlOverflow: getComputedStyle(document.documentElement).overflow,
+    computedBodyPadding: Number.parseFloat(getComputedStyle(document.body).paddingRight) || 0,
+    ctaX: document.querySelector('.header-cta').getBoundingClientRect().x
+  }));
+
+  expect(locked.htmlOverflow).toBe('hidden');
+  expect(locked.scrollY).toBe(before.scrollY);
+  expect(Math.round(locked.computedBodyPadding - before.computedBodyPadding)).toBe(before.scrollbarWidth);
+  expect(Math.abs(locked.ctaX - before.ctaX)).toBeLessThanOrEqual(1);
 
   await page.keyboard.press('Shift+Tab');
   await expect(button).toBeFocused();
   await page.keyboard.press('Tab');
   await expect(panel.locator('a').first()).toBeFocused();
 
-  const anchorAfter = await page.locator('.header-cta').boundingBox();
-  expect(Math.abs((anchorBefore?.x ?? 0) - (anchorAfter?.x ?? 0))).toBeLessThanOrEqual(1);
-
   await page.keyboard.press('Escape');
   await expect(button).toHaveAttribute('aria-expanded', 'false');
   await expect(panel).not.toHaveAttribute('data-open', 'true');
-  await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
   await expect(page.locator('main')).toHaveJSProperty('inert', false);
   await expect(button).toBeFocused();
+
+  const restored = await page.evaluate(() => ({
+    scrollY: window.scrollY,
+    htmlOverflow: document.documentElement.style.getPropertyValue('overflow'),
+    bodyPaddingRight: document.body.style.getPropertyValue('padding-right')
+  }));
+
+  expect(restored).toEqual({
+    scrollY: before.scrollY,
+    htmlOverflow: before.htmlOverflow,
+    bodyPaddingRight: before.bodyPaddingRight
+  });
 });
 
 test('mobile burger uses three confident two-pixel strokes', async ({ page }) => {
@@ -282,6 +314,58 @@ test('service, video, and social controls have meaningful behavior', async ({ pa
   await expect(dialog).toBeHidden();
 
   await expect(page.locator('.social-link--disabled')).toHaveCount(3);
+});
+
+test('mobile video dialog stays compact at narrow viewports', async ({ page }) => {
+  for (const viewport of [
+    { width: 390, height: 844, maxTitleLines: 2 },
+    { width: 320, height: 700, maxTitleLines: 3 },
+    { width: 280, height: 650, maxTitleLines: 3 }
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Смотреть видео' }).click();
+
+    const dialog = page.getByRole('dialog', { name: 'Обзор шаблонного автомата Jack' });
+    await expect(dialog).toBeVisible();
+    const geometry = await dialog.evaluate((element) => {
+      const lineCount = (node) => {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        return new Set([...range.getClientRects()].map((rect) => Math.round(rect.top))).size;
+      };
+      const media = element.querySelector('.video-dialog__media');
+      const content = element.querySelector('.video-dialog__content');
+      const title = content.querySelector('h2');
+      const copy = content.querySelector('p');
+      const button = content.querySelector('.button');
+      return {
+        dialogHeight: Math.round(element.getBoundingClientRect().height),
+        mediaHeight: Math.round(media.getBoundingClientRect().height),
+        contentPadding: Number.parseFloat(getComputedStyle(content).paddingTop),
+        titleFont: Number.parseFloat(getComputedStyle(title).fontSize),
+        copyFont: Number.parseFloat(getComputedStyle(copy).fontSize),
+        buttonFont: Number.parseFloat(getComputedStyle(button).fontSize),
+        titleLines: lineCount(title),
+        copyLines: lineCount(copy),
+        buttonLines: lineCount(button.firstChild),
+        buttonHeight: Math.round(button.getBoundingClientRect().height)
+      };
+    });
+
+    expect(geometry.dialogHeight).toBeLessThanOrEqual(viewport.height - 32);
+    expect(geometry.mediaHeight).toBeLessThanOrEqual(160);
+    expect(geometry.contentPadding).toBe(20);
+    expect(geometry.titleFont).toBe(24);
+    expect(geometry.copyFont).toBe(14);
+    expect(geometry.buttonFont).toBe(12);
+    expect(geometry.titleLines).toBeLessThanOrEqual(viewport.maxTitleLines);
+    expect(geometry.copyLines).toBeLessThanOrEqual(5);
+    expect(geometry.buttonLines).toBe(1);
+    expect(geometry.buttonHeight).toBeGreaterThanOrEqual(44);
+
+    await dialog.getByRole('button', { name: 'Закрыть обзор' }).click();
+  }
 });
 
 test('cookie choice is stored and suppresses the banner on return', async ({ page }) => {
@@ -649,29 +733,44 @@ test('mobile specifications show both models without horizontal scrolling', asyn
 });
 
 test('mobile technical-sheet button keeps copy readable and icons full size', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  for (const width of [390, 320]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto('/');
 
-  const geometry = await page.locator('.button--download').evaluate((button) => {
-    const lineCount = (node) => {
-      const range = document.createRange();
-      range.selectNodeContents(node);
-      return new Set([...range.getClientRects()].map((rect) => Math.round(rect.top))).size;
-    };
-    const icons = [...button.querySelectorAll(':scope > [data-icon]')].map((icon) => {
-      const rect = icon.getBoundingClientRect();
-      return [Math.round(rect.width), Math.round(rect.height)];
+    const download = page.locator('.button--download');
+    await expect(download).toHaveAttribute(
+      'aria-label',
+      'Скачать технический лист PDF. Подробные характеристики и руководство'
+    );
+    const geometry = await download.evaluate((button) => {
+      const lineCount = (node) => {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        return new Set([...range.getClientRects()].map((rect) => Math.round(rect.top))).size;
+      };
+      const icons = [...button.querySelectorAll(':scope > [data-icon]')];
+      const iconRects = icons.map((icon) => icon.getBoundingClientRect());
+      const copy = button.querySelector('.specifications__download-copy');
+      const copyRect = copy.getBoundingClientRect();
+      return {
+        height: Math.round(button.getBoundingClientRect().height),
+        icons: iconRects.map((rect) => [Math.round(rect.width), Math.round(rect.height)]),
+        titleDisplay: getComputedStyle(button.querySelector('strong')).display,
+        detailLines: lineCount(button.querySelector('small')),
+        leftIconRight: iconRects[0].right,
+        copyLeft: copyRect.left,
+        copyRight: copyRect.right,
+        rightIconLeft: iconRects[1].left
+      };
     });
-    return {
-      icons,
-      titleLines: lineCount(button.querySelector('strong')),
-      detailLines: lineCount(button.querySelector('small'))
-    };
-  });
 
-  expect(geometry.icons).toEqual([[24, 24], [24, 24]]);
-  expect(geometry.titleLines).toBe(1);
-  expect(geometry.detailLines).toBeLessThanOrEqual(2);
+    expect(geometry.height).toBeLessThanOrEqual(84);
+    expect(geometry.icons).toEqual([[24, 24], [24, 24]]);
+    expect(geometry.titleDisplay).toBe('none');
+    expect(geometry.detailLines).toBeLessThanOrEqual(width === 390 ? 2 : 3);
+    expect(geometry.leftIconRight).toBeLessThanOrEqual(geometry.copyLeft);
+    expect(geometry.copyRight).toBeLessThanOrEqual(geometry.rightIconLeft);
+  }
 });
 
 test('Industrial Control Room CTA exposes the approved copy and form contract', async ({ page }) => {
@@ -943,6 +1042,39 @@ test('applications result panel replaces the case CTA with three measurable outc
 
   expect(mobileOrder[0]).toBeLessThan(mobileOrder[1]);
   expect(mobileOrder[1]).toBeLessThan(mobileOrder[2]);
+});
+
+test('mobile result metrics use readable index rows', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 844 });
+  await page.goto('/');
+
+  const geometry = await page.locator('.case-metrics').evaluate((metrics) => {
+    const lineCount = (node) => {
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      return new Set([...range.getClientRects()].map((rect) => Math.round(rect.top))).size;
+    };
+    const metricElements = [...metrics.querySelectorAll('.case-metric')];
+    const labels = metricElements.map((metric) => metric.querySelector('dd'));
+    return {
+      containerWidth: metrics.getBoundingClientRect().width,
+      metricColumns: getComputedStyle(metrics).gridTemplateColumns.trim().split(/\s+/).length,
+      metricWidths: metricElements.map((metric) => metric.getBoundingClientRect().width),
+      metricDisplays: metricElements.map((metric) => getComputedStyle(metric).display),
+      labelLines: labels.map(lineCount),
+      labelFonts: labels.map((label) => Number.parseFloat(getComputedStyle(label).fontSize)),
+      overflowWraps: labels.map((label) => getComputedStyle(label).overflowWrap),
+      wordBreaks: labels.map((label) => getComputedStyle(label).wordBreak)
+    };
+  });
+
+  expect(geometry.metricColumns).toBe(1);
+  expect(geometry.metricWidths.every((width) => Math.abs(width - geometry.containerWidth) <= 1)).toBe(true);
+  expect(geometry.metricDisplays).toEqual(['grid', 'grid', 'grid']);
+  expect(geometry.labelLines.every((lines) => lines <= 2)).toBe(true);
+  expect(geometry.labelFonts).toEqual([14, 14, 14]);
+  expect(geometry.overflowWraps).toEqual(['normal', 'normal', 'normal']);
+  expect(geometry.wordBreaks).toEqual(['normal', 'normal', 'normal']);
 });
 
 for (const width of [1440, 1024, 768, 390, 320, 280]) {

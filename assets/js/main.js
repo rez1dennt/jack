@@ -1,7 +1,7 @@
-import { initLeadForm } from './form.js?v=controls-20260802-1';
-import { initMenu } from './menu.js?v=controls-20260802-1';
-import { initCookieBanner } from './cookies.js?v=controls-20260802-1';
-import { initVideoDialog } from './video.js?v=controls-20260802-1';
+import { initLeadForm } from './form.js?v=mobile-ui-20260802-2';
+import { initMenu } from './menu.js?v=mobile-ui-20260802-2';
+import { initCookieBanner } from './cookies.js?v=mobile-ui-20260802-2';
+import { initVideoDialog } from './video.js?v=mobile-ui-20260802-2';
 
 initLeadForm(document.querySelector('#consultation-form'), {
   previewMode: document.documentElement.dataset.staticPreview === 'true'
