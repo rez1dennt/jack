@@ -460,6 +460,84 @@
     --hero-following-space: var(--space-6);
   }
 
+  .hero__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    inline-size: 100%;
+  }
+
+  .hero__actions .button {
+    inline-size: 100%;
+    min-block-size: var(--control-height);
+  }
+
+  .specifications .table-scroll {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .specifications table,
+  .specifications thead,
+  .specifications tbody {
+    display: block;
+    min-inline-size: 0;
+  }
+
+  .specifications thead {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    clip-path: inset(50%);
+  }
+
+  .specifications tbody {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .specifications tbody tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: hidden;
+    border: var(--border-thin) solid var(--color-border-subtle);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-elevated);
+    box-shadow: var(--shadow-whisper);
+  }
+
+  .specifications tbody th {
+    grid-column: 1 / -1;
+    padding: var(--space-3);
+    border-inline-end: 0;
+    background: var(--color-surface-subtle);
+  }
+
+  .specifications tbody td {
+    min-inline-size: 0;
+    padding: var(--space-3);
+    border-block-end: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .specifications tbody td:last-child {
+    border-inline-end: 0;
+  }
+
+  .specifications tbody td::before {
+    content: attr(data-model);
+    display: block;
+    margin-block-end: var(--space-2);
+    color: var(--color-accent-foreground);
+    font-size: var(--font-size-2xs);
+    font-weight: 600;
+  }
+
   .solution-benefits {
     grid-template-columns: 1fr;
   }

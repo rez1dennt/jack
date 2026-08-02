@@ -342,6 +342,35 @@ test('hero copy aligns with the container and keeps only responsive top padding'
   }
 });
 
+test('mobile hero actions form one equal-width CTA stack', async ({ page }) => {
+  await page.setViewportSize({ width: 430, height: 932 });
+  await page.goto('/');
+
+  const geometry = await page.locator('.hero__actions .button').evaluateAll((buttons) => {
+    const rects = buttons.map((button) => button.getBoundingClientRect());
+    return {
+      widths: rects.map(({ width }) => Math.round(width)),
+      lefts: rects.map(({ left }) => Math.round(left)),
+      heights: rects.map(({ height }) => Math.round(height)),
+      verticalGap: Math.round(rects[1].top - rects[0].bottom)
+    };
+  });
+
+  expect(geometry.widths[0]).toBe(geometry.widths[1]);
+  expect(geometry.lefts[0]).toBe(geometry.lefts[1]);
+  expect(geometry.heights.every((height) => height >= 48)).toBe(true);
+  expect(geometry.verticalGap).toBe(12);
+});
+
+test('mobile hero lead keeps a word boundary when its line break is hidden', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  await expect(page.locator('.hero__lead')).toHaveText(
+    'Точное пришивание деталей по контуру: карманы, молнии, этикетки без ручного труда'
+  );
+});
+
 test('hero media spans the viewport while copy stays on the 1440px grid', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 900 });
   await page.goto('/');
@@ -563,6 +592,33 @@ test('specifications reproduce the table, product benefits, and download panel',
     panelWidth: 1440,
     radius: '12px',
     columns: 2
+  });
+});
+
+test('mobile specifications show both models without horizontal scrolling', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const firstRow = page.locator('.specifications tbody tr').first();
+  await expect(firstRow.locator('td')).toHaveText(['220 × 100 мм', '300 × 200 мм']);
+
+  const geometry = await page.evaluate(() => {
+    const wrapper = document.querySelector('.specifications .table-scroll');
+    const row = document.querySelector('.specifications tbody tr');
+    const cells = [...row.children].map((cell) => getComputedStyle(cell));
+    return {
+      overflows: wrapper.scrollWidth > wrapper.clientWidth + 1,
+      rowColumns: getComputedStyle(row).gridTemplateColumns.split(' ').length,
+      parameterColumn: cells[0].gridColumn,
+      labels: [...row.querySelectorAll('td')].map((cell) => cell.dataset.model)
+    };
+  });
+
+  expect(geometry).toEqual({
+    overflows: false,
+    rowColumns: 2,
+    parameterColumn: '1 / -1',
+    labels: ['Jack MS-100A', 'Jack JK-T2210']
   });
 });
 
