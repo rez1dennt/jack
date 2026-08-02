@@ -258,6 +258,19 @@ test('mobile menu opens accessibly without shifting the page and closes by Escap
   await expect(button).toBeFocused();
 });
 
+test('mobile burger uses three confident two-pixel strokes', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const strokeHeights = await page.locator('.menu-button__lines').evaluate((lines) => [
+    getComputedStyle(lines).height,
+    getComputedStyle(lines, '::before').height,
+    getComputedStyle(lines, '::after').height
+  ]);
+
+  expect(strokeHeights).toEqual(['2px', '2px', '2px']);
+});
+
 test('service, video, and social controls have meaningful behavior', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#service')).toHaveCount(1);
@@ -360,6 +373,19 @@ test('mobile hero actions form one equal-width CTA stack', async ({ page }) => {
   expect(geometry.lefts[0]).toBe(geometry.lefts[1]);
   expect(geometry.heights.every((height) => height >= 48)).toBe(true);
   expect(geometry.verticalGap).toBe(12);
+});
+
+test('mobile hero leaves breathing room after the CTA stack', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const gap = await page.evaluate(() => {
+    const lastAction = document.querySelector('.hero__actions .button:last-child').getBoundingClientRect();
+    const media = document.querySelector('.hero__media').getBoundingClientRect();
+    return Math.round(media.top - lastAction.bottom);
+  });
+
+  expect(gap).toBe(16);
 });
 
 test('mobile hero lead keeps a word boundary when its line break is hidden', async ({ page }) => {
@@ -620,6 +646,32 @@ test('mobile specifications show both models without horizontal scrolling', asyn
     parameterColumn: '1 / -1',
     labels: ['Jack MS-100A', 'Jack JK-T2210']
   });
+});
+
+test('mobile technical-sheet button keeps copy readable and icons full size', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const geometry = await page.locator('.button--download').evaluate((button) => {
+    const lineCount = (node) => {
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      return new Set([...range.getClientRects()].map((rect) => Math.round(rect.top))).size;
+    };
+    const icons = [...button.querySelectorAll(':scope > [data-icon]')].map((icon) => {
+      const rect = icon.getBoundingClientRect();
+      return [Math.round(rect.width), Math.round(rect.height)];
+    });
+    return {
+      icons,
+      titleLines: lineCount(button.querySelector('strong')),
+      detailLines: lineCount(button.querySelector('small'))
+    };
+  });
+
+  expect(geometry.icons).toEqual([[24, 24], [24, 24]]);
+  expect(geometry.titleLines).toBe(1);
+  expect(geometry.detailLines).toBeLessThanOrEqual(2);
 });
 
 test('Industrial Control Room CTA exposes the approved copy and form contract', async ({ page }) => {
