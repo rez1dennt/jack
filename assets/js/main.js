@@ -1,7 +1,7 @@
-import { initLeadForm } from './form.js?v=mobile-ui-20260802-2';
-import { initMenu } from './menu.js?v=mobile-ui-20260802-2';
-import { initCookieBanner } from './cookies.js?v=mobile-ui-20260802-2';
-import { initVideoDialog } from './video.js?v=mobile-ui-20260802-2';
+import { initLeadForm } from './form.js?v=modal-lock-20260802-3';
+import { initMenu } from './menu.js?v=modal-lock-20260802-3';
+import { initCookieBanner } from './cookies.js?v=modal-lock-20260802-3';
+import { initVideoDialog } from './video.js?v=modal-lock-20260802-3';
 
 initLeadForm(document.querySelector('#consultation-form'), {
   previewMode: document.documentElement.dataset.staticPreview === 'true'

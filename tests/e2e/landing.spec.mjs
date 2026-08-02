@@ -316,6 +316,56 @@ test('service, video, and social controls have meaningful behavior', async ({ pa
   await expect(page.locator('.social-link--disabled')).toHaveCount(3);
 });
 
+test('video dialog locks page scrolling without a layout jump and restores it on Escape', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const trigger = page.getByRole('button', { name: 'Смотреть видео' });
+  const dialog = page.getByRole('dialog', { name: 'Обзор шаблонного автомата Jack' });
+  await page.evaluate(() => window.scrollTo(0, 1200));
+  const before = await page.evaluate(() => ({
+    scrollY: window.scrollY,
+    scrollbarWidth: window.innerWidth - document.documentElement.clientWidth,
+    htmlOverflow: document.documentElement.style.getPropertyValue('overflow'),
+    bodyPaddingRight: document.body.style.getPropertyValue('padding-right'),
+    computedBodyPadding: Number.parseFloat(getComputedStyle(document.body).paddingRight) || 0,
+    containerX: document.querySelector('.hero__inner').getBoundingClientRect().x
+  }));
+
+  // A real tap does not run Playwright's actionability scroll before the
+  // site's handler, so dispatch the click at the page's current position.
+  await trigger.evaluate((element) => element.click());
+  await expect(dialog).toBeVisible();
+
+  const locked = await page.evaluate(() => ({
+    scrollY: window.scrollY,
+    htmlOverflow: getComputedStyle(document.documentElement).overflow,
+    computedBodyPadding: Number.parseFloat(getComputedStyle(document.body).paddingRight) || 0,
+    containerX: document.querySelector('.hero__inner').getBoundingClientRect().x
+  }));
+
+  expect(locked.htmlOverflow).toBe('hidden');
+  expect(locked.scrollY).toBe(before.scrollY);
+  expect(Math.round(locked.computedBodyPadding - before.computedBodyPadding)).toBe(before.scrollbarWidth);
+  expect(Math.abs(locked.containerX - before.containerX)).toBeLessThanOrEqual(1);
+
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(trigger).toBeFocused();
+
+  const restored = await page.evaluate(() => ({
+    scrollY: window.scrollY,
+    htmlOverflow: document.documentElement.style.getPropertyValue('overflow'),
+    bodyPaddingRight: document.body.style.getPropertyValue('padding-right')
+  }));
+
+  expect(restored).toEqual({
+    scrollY: before.scrollY,
+    htmlOverflow: before.htmlOverflow,
+    bodyPaddingRight: before.bodyPaddingRight
+  });
+});
+
 test('mobile video dialog stays compact at narrow viewports', async ({ page }) => {
   for (const viewport of [
     { width: 390, height: 844, maxTitleLines: 2 },
