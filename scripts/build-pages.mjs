@@ -19,7 +19,7 @@ export function rewriteForPages(source, { basePath = '', siteUrl = '', assetVers
   }
 
   if (normalizedBase) {
-    output = output.replace(/(["'])\/(?!\/)/g, `$1${normalizedBase}/`);
+    output = output.replace(/(["'])\/(?![\/>])/g, `$1${normalizedBase}/`);
   }
 
   if (assetVersion) {

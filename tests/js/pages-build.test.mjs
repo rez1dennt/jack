@@ -69,6 +69,23 @@ test('preserves JavaScript regular expressions while rewriting URL strings', asy
   assert.match(script, /fetch\('\/jack\/api\/submit\.php'\)/);
 });
 
+test('preserves self-closing SVG tags while rewriting root-relative URLs', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'jack-pages-'));
+  const sourceDir = join(root, 'public');
+  const outputDir = join(root, 'dist');
+  const sourceSvg = '<svg xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/></svg>';
+
+  await mkdir(join(sourceDir, 'assets', 'icons'), { recursive: true });
+  await writeFile(join(sourceDir, 'index.html'), '<html lang="ru"><img src="/assets/icons/check.svg"></html>');
+  await writeFile(join(sourceDir, 'assets', 'icons', 'check.svg'), sourceSvg);
+
+  await buildPages({ sourceDir, outputDir, basePath: '/jack' });
+
+  const publishedSvg = await readFile(join(outputDir, 'assets', 'icons', 'check.svg'), 'utf8');
+  assert.equal(publishedSvg, sourceSvg);
+  assert.doesNotMatch(publishedSvg, /\/jack\/>/);
+});
+
 test('versions HTML, CSS, and module asset URLs to invalidate the Pages cache', async () => {
   const root = await mkdtemp(join(tmpdir(), 'jack-pages-'));
   const sourceDir = join(root, 'public');
