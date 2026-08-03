@@ -131,6 +131,20 @@ test('optimized imagery and vector icons are served without missing assets', asy
   expect(failedAssets).toEqual([]);
 });
 
+test('textileopttorg logo brands the header and footer with one optimized asset', async ({ page }) => {
+  await page.goto('/');
+  const headerLogo = page.locator('.brand-logo--header');
+  const footerLogo = page.locator('.brand-logo--footer');
+
+  await expect(headerLogo).toHaveAttribute('aria-label', 'Текстильоптторг — главная');
+  await expect(footerLogo).toHaveAttribute('aria-label', 'Текстильоптторг — главная');
+  await expect(headerLogo.locator('img')).toHaveAttribute('src', '/assets/images/textileopttorg-logo.webp');
+  await expect(footerLogo.locator('img')).toHaveAttribute('src', '/assets/images/textileopttorg-logo.webp');
+  await expect(headerLogo.locator('img')).toHaveJSProperty('naturalWidth', 800);
+  await footerLogo.scrollIntoViewIfNeeded();
+  await expect(footerLogo.locator('img')).toHaveJSProperty('naturalWidth', 800);
+});
+
 test('technical sheet is a real downloadable PDF', async ({ page, request }) => {
   await page.goto('/');
   await expect(page.getByRole('link', {

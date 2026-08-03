@@ -7,5 +7,8 @@ for (const pagePath of ['/privacy.html', '/consent.html']) {
     await expect(page.getByText('[[LEGAL_NAME]]', { exact: true })).toBeVisible();
     await expect(page.getByText('[[INN]]', { exact: true })).toBeVisible();
     await expect(page.getByRole('banner').getByRole('link', { name: /вернуться/i })).toHaveAttribute('href', '/');
+    const logo = page.locator('.brand-logo--legal');
+    await expect(logo).toHaveAttribute('aria-label', 'Текстильоптторг — главная');
+    await expect(logo.locator('img')).toHaveAttribute('src', '/assets/images/textileopttorg-logo.webp');
   });
 }
