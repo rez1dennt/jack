@@ -1,7 +1,7 @@
-import { initLeadForm } from './form.js?v=no-socials-20260803-1';
-import { initMenu } from './menu.js?v=no-socials-20260803-1';
-import { initCookieBanner } from './cookies.js?v=no-socials-20260803-1';
-import { initVideoDialog } from './video.js?v=no-socials-20260803-1';
+import { initLeadForm } from './form.js?v=footer-spacing-20260803-1';
+import { initMenu } from './menu.js?v=footer-spacing-20260803-1';
+import { initCookieBanner } from './cookies.js?v=footer-spacing-20260803-1';
+import { initVideoDialog } from './video.js?v=footer-spacing-20260803-1';
 
 initLeadForm(document.querySelector('#consultation-form'), {
   previewMode: document.documentElement.dataset.staticPreview === 'true'
