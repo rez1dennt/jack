@@ -369,6 +369,30 @@ test('mobile menu drawer enters from the same right edge as the burger button', 
   expect(openButton.insetInlineEnd).toBe('16px');
 });
 
+test('open mobile menu stays above the cookie banner on a first visit', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const button = page.locator('[data-menu-button]');
+  const panel = page.locator('[data-menu-panel]');
+  const overlay = page.locator('[data-menu-overlay]');
+  const cookieBanner = page.locator('[data-cookie-banner]');
+  await expect(cookieBanner).toBeVisible();
+
+  await button.evaluate((element) => element.click());
+  await expect(panel).toHaveAttribute('data-open', 'true');
+  const layers = await page.evaluate(() => ({
+    panel: Number.parseInt(getComputedStyle(document.querySelector('[data-menu-panel]')).zIndex, 10),
+    overlay: Number.parseInt(getComputedStyle(document.querySelector('[data-menu-overlay]')).zIndex, 10),
+    cookie: Number.parseInt(getComputedStyle(document.querySelector('[data-cookie-banner]')).zIndex, 10)
+  }));
+
+  expect(layers.panel).toBeGreaterThan(layers.cookie);
+  expect(layers.overlay).toBeGreaterThan(layers.cookie);
+  await expect(cookieBanner).toHaveJSProperty('inert', true);
+  await expect(overlay).toBeVisible();
+});
+
 test('mobile burger uses three confident two-pixel strokes', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
