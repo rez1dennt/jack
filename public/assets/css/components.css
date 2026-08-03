@@ -219,14 +219,9 @@
 [data-icon="globe"] { mask-image: url("../icons/globe.svg"); -webkit-mask-image: url("../icons/globe.svg"); }
 [data-icon="pin"] { mask-image: url("../icons/pin.svg"); -webkit-mask-image: url("../icons/pin.svg"); }
 [data-icon="menu"] { mask-image: url("../icons/menu.svg"); -webkit-mask-image: url("../icons/menu.svg"); }
-[data-icon="share"] { mask-image: url("../icons/share.svg"); -webkit-mask-image: url("../icons/share.svg"); }
 [data-icon="document"] { mask-image: url("../icons/document.svg"); -webkit-mask-image: url("../icons/document.svg"); }
-[data-icon="vk"] { mask-image: url("../icons/vk.svg"); -webkit-mask-image: url("../icons/vk.svg"); }
-[data-icon="youtube"] { mask-image: url("../icons/youtube.svg"); -webkit-mask-image: url("../icons/youtube.svg"); }
-[data-icon="telegram"] { mask-image: url("../icons/telegram.svg"); -webkit-mask-image: url("../icons/telegram.svg"); }
 
-.button [data-icon],
-.social-links [data-icon] {
+.button [data-icon] {
   display: block;
   inline-size: var(--space-5);
   block-size: var(--space-5);
@@ -543,28 +538,6 @@ tbody th {
   font-weight: 600;
 }
 
-.social-links {
-  display: flex;
-  gap: var(--space-4);
-}
-
-.social-links a,
-.social-link {
-  inline-size: var(--control-height);
-  block-size: var(--control-height);
-  display: grid;
-  place-items: center;
-  border: var(--border-thin) solid var(--footer-border);
-  border-radius: 50%;
-  background: var(--footer-panel-surface);
-  color: var(--color-text-inverse);
-}
-
-.social-link--disabled {
-  cursor: not-allowed;
-  opacity: 0.72;
-}
-
 .footer-help {
   display: grid;
   grid-template-columns: var(--space-12) minmax(0, 1fr) var(--target-min);
@@ -701,12 +674,6 @@ tbody th {
   font-size: var(--font-size-2xl);
   line-height: 1;
   cursor: pointer;
-}
-
-.social-links a:hover {
-  border-color: var(--color-action-primary);
-  background: var(--color-action-primary);
-  color: var(--color-text-inverse);
 }
 
 .cookie-banner {

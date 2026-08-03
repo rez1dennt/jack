@@ -39,7 +39,9 @@ test('footer matches the approved contact navigation help and legal contract', a
   await expect(footer.locator('.footer-contact')).toHaveCount(3);
   await expect(footer.getByRole('link', { name: /Нужна помощь/i })).toHaveAttribute('href', '#consultation-form');
   await expect(footer.locator('.footer-nav li')).toHaveCount(5);
-  await expect(footer.locator('.social-link')).toHaveCount(3);
+  await expect(footer.locator('.social-link')).toHaveCount(0);
+  await expect(footer.getByText('Мы в соцсетях', { exact: true })).toHaveCount(0);
+  await expect(footer.getByRole('heading', { name: 'Документы', exact: true })).toBeVisible();
   await expect(footer.locator('.footer-legal a')).toHaveCount(3);
   await expect(footer.locator('.site-footer__year')).toHaveText('2026');
   await expect(footer.getByRole('link', { name: 'Политика конфиденциальности' })).toHaveAttribute('href', '/privacy.html');
@@ -451,7 +453,7 @@ test('mobile burger uses three confident two-pixel strokes', async ({ page }) =>
   expect(strokeHeights).toEqual(['2px', '2px', '2px']);
 });
 
-test('service, video, and social controls have meaningful behavior', async ({ page }) => {
+test('service and video controls have meaningful behavior without social placeholders', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#service')).toHaveCount(1);
 
@@ -461,7 +463,7 @@ test('service, video, and social controls have meaningful behavior', async ({ pa
   await dialog.getByRole('button', { name: 'Закрыть обзор' }).click();
   await expect(dialog).toBeHidden();
 
-  await expect(page.locator('.social-link--disabled')).toHaveCount(3);
+  await expect(page.locator('.social-link--disabled')).toHaveCount(0);
 });
 
 test('video dialog locks page scrolling without a layout jump and restores it on Escape', async ({ page }) => {
