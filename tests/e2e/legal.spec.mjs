@@ -10,6 +10,10 @@ for (const pagePath of ['/privacy.html', '/consent.html', '/requisites.html']) {
     const logo = page.locator('.brand-logo--legal');
     await expect(logo).toHaveAttribute('aria-label', 'Текстильоптторг — главная');
     await expect(logo.locator('img')).toHaveAttribute('src', '/assets/images/textileopttorg-logo.webp');
+    await expect(page.locator('link[rel="icon"]')).toHaveAttribute(
+      'href',
+      '/assets/icons/favicon.svg'
+    );
 
     await page.setViewportSize({ width: 320, height: 700 });
     await page.reload();
