@@ -905,7 +905,7 @@
 .footer-legal {
   display: grid;
   gap: var(--space-2);
-  margin-block-start: auto;
+  
   padding-block-start: var(--space-12);
 }
 
