@@ -103,9 +103,9 @@ Expected: all tests pass, with only the project's documented skips.
 
 - [ ] **Step 4: Build GitHub Pages output**
 
-Run: `$env:BUILD_VERSION='jack-m9-20260803-1'; npm run build:pages`
+Run: `npm run build:pages -- --asset-version jack-m9-20260803-1`
 
-Expected: generated public files contain `jack-m9-20260803-1`, `JACK M9`, and no `JK-T2210` in the current page.
+Expected: generated public files contain `jack-m9-20260803-1`, `JACK M9`, and no `JK-T2210` in the current page. Copy the validated `.pages-dist` output into the repository root and compare SHA-256 hashes for all copied files.
 
 - [ ] **Step 5: Commit generated output**
 
@@ -133,4 +133,3 @@ Expected: the remote accepts the fast-forward update.
 Open: `https://rez1dennt.github.io/jack/?v=jack-m9-20260803-1`
 
 Expected: the public table shows `JACK M9`, verified values, no `JK-T2210`, no mobile horizontal overflow, and no browser console errors.
-
