@@ -382,11 +382,13 @@ test('open mobile menu stays above the cookie banner on a first visit', async ({
   await button.evaluate((element) => element.click());
   await expect(panel).toHaveAttribute('data-open', 'true');
   const layers = await page.evaluate(() => ({
+    header: Number.parseInt(getComputedStyle(document.querySelector('.site-header')).zIndex, 10),
     panel: Number.parseInt(getComputedStyle(document.querySelector('[data-menu-panel]')).zIndex, 10),
     overlay: Number.parseInt(getComputedStyle(document.querySelector('[data-menu-overlay]')).zIndex, 10),
     cookie: Number.parseInt(getComputedStyle(document.querySelector('[data-cookie-banner]')).zIndex, 10)
   }));
 
+  expect(layers.header).toBeGreaterThan(layers.cookie);
   expect(layers.panel).toBeGreaterThan(layers.cookie);
   expect(layers.overlay).toBeGreaterThan(layers.cookie);
   await expect(cookieBanner).toHaveJSProperty('inert', true);
