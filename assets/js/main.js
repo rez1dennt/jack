@@ -1,7 +1,7 @@
-import { initLeadForm } from './form.js?v=brand-logo-20260803-1';
-import { initMenu } from './menu.js?v=brand-logo-20260803-1';
-import { initCookieBanner } from './cookies.js?v=brand-logo-20260803-1';
-import { initVideoDialog } from './video.js?v=brand-logo-20260803-1';
+import { initLeadForm } from './form.js?v=brand-logo-menu-20260803-2';
+import { initMenu } from './menu.js?v=brand-logo-menu-20260803-2';
+import { initCookieBanner } from './cookies.js?v=brand-logo-menu-20260803-2';
+import { initVideoDialog } from './video.js?v=brand-logo-menu-20260803-2';
 
 initLeadForm(document.querySelector('#consultation-form'), {
   previewMode: document.documentElement.dataset.staticPreview === 'true'

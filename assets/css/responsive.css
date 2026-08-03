@@ -177,7 +177,7 @@
     position: fixed;
     inset-block-start: calc((var(--header-height) - var(--target-min)) / 2);
     inset-inline-end: var(--space-4);
-    z-index: 53;
+    z-index: 103;
     color: var(--color-text-inverse);
   }
 
@@ -200,7 +200,7 @@
     inset-block: 0;
     inset-inline-start: auto;
     inset-inline-end: 0;
-    z-index: 52;
+    z-index: 102;
     inline-size: min(86vw, 23rem);
     padding: calc(var(--header-height) + var(--space-6)) var(--space-6) var(--space-8);
     background: var(--color-surface-inverse);
@@ -230,7 +230,7 @@
   .menu-overlay {
     position: fixed;
     inset: 0;
-    z-index: 51;
+    z-index: 101;
     display: block;
     border: 0;
     background: rgb(17 24 32 / 58%);
