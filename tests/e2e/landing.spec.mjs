@@ -877,6 +877,15 @@ test('specifications reproduce the table, product benefits, and download panel',
 
   await expect(page.locator('.spec-parameter')).toHaveCount(10);
   await expect(page.locator('.spec-parameter [data-icon]')).toHaveCount(10);
+  await expect(page.locator('.specifications caption')).toHaveText('Сравнение Jack MS-100A и JACK M9');
+  await expect(page.locator('.specifications thead th')).toHaveText(['Параметры', 'Jack MS-100A', 'JACK M9']);
+  await expect(page.locator('.specifications')).not.toContainText('JK-T2210');
+  await expect(page.locator('.specifications tbody tr').nth(0).locator('td').nth(1)).toHaveText('1400 × 950 мм');
+  await expect(page.locator('.specifications tbody tr').nth(1).locator('td').nth(1)).toHaveText('До 3 600 ст/мин');
+  await expect(page.locator('.specifications tbody tr').nth(7).locator('td').nth(1)).toHaveText('0.6 МПа, 3 л/мин');
+  await expect(page.locator('.specifications tbody tr').nth(8).locator('td').nth(1)).toHaveText('610/690 кг (нетто/брутто)');
+  await expect(page.locator('.specifications tbody tr').nth(9).locator('td').nth(1)).toHaveText('2200 × 1220 × 1650 мм');
+  await expect(page.locator('.specifications__note')).toContainText('M9-SS-F13-X');
   await expect(page.locator('.product-benefit')).toHaveCount(4);
   await expect(page.locator('.product-benefit h3')).toHaveText([
     'Высокая точность',
@@ -906,30 +915,34 @@ test('specifications reproduce the table, product benefits, and download panel',
 });
 
 test('mobile specifications show both models without horizontal scrolling', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  for (const width of [390, 320]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto('/');
 
-  const firstRow = page.locator('.specifications tbody tr').first();
-  await expect(firstRow.locator('td')).toHaveText(['220 × 100 мм', '300 × 200 мм']);
+    const firstRow = page.locator('.specifications tbody tr').first();
+    await expect(firstRow.locator('td')).toHaveText(['220 × 100 мм', '1400 × 950 мм']);
 
-  const geometry = await page.evaluate(() => {
-    const wrapper = document.querySelector('.specifications .table-scroll');
-    const row = document.querySelector('.specifications tbody tr');
-    const cells = [...row.children].map((cell) => getComputedStyle(cell));
-    return {
-      overflows: wrapper.scrollWidth > wrapper.clientWidth + 1,
-      rowColumns: getComputedStyle(row).gridTemplateColumns.split(' ').length,
-      parameterColumn: cells[0].gridColumn,
-      labels: [...row.querySelectorAll('td')].map((cell) => cell.dataset.model)
-    };
-  });
+    const geometry = await page.evaluate(() => {
+      const wrapper = document.querySelector('.specifications .table-scroll');
+      const row = document.querySelector('.specifications tbody tr');
+      const cells = [...row.children].map((cell) => getComputedStyle(cell));
+      return {
+        overflows: wrapper.scrollWidth > wrapper.clientWidth + 1,
+        bodyOverflows: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+        rowColumns: getComputedStyle(row).gridTemplateColumns.split(' ').length,
+        parameterColumn: cells[0].gridColumn,
+        labels: [...row.querySelectorAll('td')].map((cell) => cell.dataset.model)
+      };
+    });
 
-  expect(geometry).toEqual({
-    overflows: false,
-    rowColumns: 2,
-    parameterColumn: '1 / -1',
-    labels: ['Jack MS-100A', 'Jack JK-T2210']
-  });
+    expect(geometry).toEqual({
+      overflows: false,
+      bodyOverflows: false,
+      rowColumns: 2,
+      parameterColumn: '1 / -1',
+      labels: ['Jack MS-100A', 'JACK M9']
+    });
+  }
 });
 
 test('mobile technical-sheet button keeps copy readable and icons full size', async ({ page }) => {
