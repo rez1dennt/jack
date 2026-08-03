@@ -10,5 +10,12 @@ for (const pagePath of ['/privacy.html', '/consent.html']) {
     const logo = page.locator('.brand-logo--legal');
     await expect(logo).toHaveAttribute('aria-label', 'Текстильоптторг — главная');
     await expect(logo.locator('img')).toHaveAttribute('src', '/assets/images/textileopttorg-logo.webp');
+
+    await page.setViewportSize({ width: 280, height: 700 });
+    await page.reload();
+    const hasOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+    );
+    expect(hasOverflow).toBe(false);
   });
 }

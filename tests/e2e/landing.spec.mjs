@@ -145,6 +145,33 @@ test('textileopttorg logo brands the header and footer with one optimized asset'
   await expect(footerLogo.locator('img')).toHaveJSProperty('naturalWidth', 800);
 });
 
+test('brand logos preserve their ratio without overflowing site chrome', async ({ page }) => {
+  for (const width of [1440, 768, 390, 320, 280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    const geometry = await page.evaluate(() => {
+      const header = document.querySelector('.site-header').getBoundingClientRect();
+      const headerLogo = document.querySelector('.brand-logo--header img').getBoundingClientRect();
+      const footerLogo = document.querySelector('.brand-logo--footer img').getBoundingClientRect();
+      return {
+        headerHeight: Math.round(header.height),
+        headerLogoWidth: Math.round(headerLogo.width),
+        headerLogoRatio: headerLogo.width / headerLogo.height,
+        footerLogoWidth: Math.round(footerLogo.width),
+        footerLogoRatio: footerLogo.width / footerLogo.height,
+        overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth
+      };
+    });
+
+    expect(geometry.overflow).toBe(false);
+    expect(geometry.headerLogoRatio).toBeCloseTo(800 / 434, 2);
+    expect(geometry.footerLogoRatio).toBeCloseTo(800 / 434, 2);
+    if (width <= 768) expect(geometry.headerHeight).toBe(72);
+    expect(geometry.headerLogoWidth).toBeLessThanOrEqual(width <= 768 ? 88 : 112);
+    expect(geometry.footerLogoWidth).toBeLessThanOrEqual(width <= 480 ? 148 : 176);
+  }
+});
+
 test('technical sheet is a real downloadable PDF', async ({ page, request }) => {
   await page.goto('/');
   await expect(page.getByRole('link', {

@@ -7,6 +7,10 @@
     gap: var(--space-5);
   }
 
+  .brand-logo--header {
+    inline-size: 6rem;
+  }
+
   .problem-panel__content,
   .solution-panel__content {
     inline-size: calc(100% - (var(--space-6) * 2));
@@ -24,7 +28,7 @@
   }
 
   .site-header__inner {
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: auto minmax(0, 1fr) auto;
   }
 
   .site-nav__list {
@@ -115,13 +119,22 @@
   }
 
   .site-header__inner {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr auto;
+  }
+
+  .brand-logo--header {
+    inline-size: 5.5rem;
+  }
+
+  .header-cta {
+    display: none;
   }
 
   .menu-button {
     inline-size: var(--target-min);
     block-size: var(--target-min);
     display: grid;
+    justify-self: end;
     place-items: center;
     border: 0;
     border-radius: var(--radius-sm);
@@ -459,6 +472,14 @@
 @media (max-width: 30rem) {
   :root {
     --hero-following-space: var(--space-6);
+  }
+
+  .brand-logo--footer {
+    inline-size: 9.25rem;
+  }
+
+  .brand-logo--legal {
+    inline-size: 5.5rem;
   }
 
   .hero__actions {

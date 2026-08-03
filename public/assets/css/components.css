@@ -767,24 +767,28 @@ tbody th {
   gap: var(--space-6);
 }
 
-.site-logo {
-  display: grid;
-  line-height: 1;
+.brand-logo {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
   text-decoration: none;
 }
 
-.site-logo__word {
-  color: var(--color-accent-foreground);
-  font-family: var(--font-heading);
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
+.brand-logo img {
+  inline-size: 100%;
+  block-size: auto;
+  display: block;
+  object-fit: contain;
 }
 
-.site-logo__sub {
-  margin-block-start: var(--space-1);
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-xs);
-  letter-spacing: 0.08em;
+.brand-logo--header,
+.brand-logo--legal {
+  inline-size: 7rem;
+}
+
+.brand-logo--footer {
+  inline-size: min(100%, 11rem);
+  margin-block-end: var(--space-6);
 }
 
 .legal-content {
