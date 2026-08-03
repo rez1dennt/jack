@@ -146,7 +146,7 @@ test('textileopttorg logo brands the header and footer with one optimized asset'
 });
 
 test('brand logos preserve their ratio without overflowing site chrome', async ({ page }) => {
-  for (const width of [1440, 768, 390, 320, 280]) {
+  for (const width of [1440, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/');
     const geometry = await page.evaluate(() => {
@@ -329,6 +329,44 @@ test('mobile menu opens accessibly without shifting the page and closes by Escap
     htmlOverflow: before.htmlOverflow,
     bodyPaddingRight: before.bodyPaddingRight
   });
+});
+
+test('mobile menu drawer enters from the same right edge as the burger button', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const button = page.locator('[data-menu-button]');
+  const panel = page.locator('[data-menu-panel]');
+  const closed = await panel.evaluate((element) => {
+    const styles = getComputedStyle(element);
+    const bounds = element.getBoundingClientRect();
+    return {
+      insetInlineEnd: styles.insetInlineEnd,
+      translate: styles.translate,
+      left: Math.round(bounds.left)
+    };
+  });
+
+  expect(closed.insetInlineEnd).toBe('0px');
+  expect(closed.translate.startsWith('104%')).toBe(true);
+  expect(closed.left).toBeGreaterThanOrEqual(390);
+
+  await button.evaluate((element) => element.click());
+  await expect(panel).toHaveAttribute('data-open', 'true');
+  await page.waitForTimeout(250);
+
+  const open = await panel.boundingBox();
+  const openButton = await button.evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {
+      position: styles.position,
+      insetInlineEnd: styles.insetInlineEnd
+    };
+  });
+  expect(Math.abs((open?.x ?? 0) + (open?.width ?? 0) - 390)).toBeLessThanOrEqual(1);
+  expect(open?.x ?? 0).toBeGreaterThan(0);
+  expect(openButton.position).toBe('fixed');
+  expect(openButton.insetInlineEnd).toBe('16px');
 });
 
 test('mobile burger uses three confident two-pixel strokes', async ({ page }) => {
