@@ -145,6 +145,31 @@ test('textileopttorg logo brands the header and footer with one optimized asset'
   await expect(footerLogo.locator('img')).toHaveJSProperty('naturalWidth', 800);
 });
 
+test('textileopttorg logo is transparent outside its rounded frame', async ({ page }) => {
+  await page.goto('/');
+
+  const alpha = await page.evaluate(async () => {
+    const image = new Image();
+    image.src = '/assets/images/textileopttorg-logo.webp';
+    await image.decode();
+
+    const canvas = document.createElement('canvas');
+    canvas.width = image.naturalWidth;
+    canvas.height = image.naturalHeight;
+    const context = canvas.getContext('2d', { willReadFrequently: true });
+    context.drawImage(image, 0, 0);
+
+    const at = (x, y) => context.getImageData(x, y, 1, 1).data[3];
+    return {
+      corners: [at(0, 0), at(799, 0), at(0, 433), at(799, 433)],
+      lowerInterior: at(400, 390)
+    };
+  });
+
+  expect(alpha.corners).toEqual([0, 0, 0, 0]);
+  expect(alpha.lowerInterior).toBeGreaterThanOrEqual(250);
+});
+
 test('brand logos preserve their ratio without overflowing site chrome', async ({ page }) => {
   for (const width of [1440, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 900 });
