@@ -9,9 +9,9 @@
 }
 
 .site-header__inner {
-  min-block-size: var(--header-height);
+  min-block-size: calc(var(--header-height) - var(--border-thin));
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
   align-items: center;
   gap: var(--space-8);
 }
