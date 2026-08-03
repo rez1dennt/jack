@@ -801,7 +801,7 @@
   min-inline-size: 0;
 }
 
-.footer-column--social {
+.footer-column--documents {
   display: flex;
   flex-direction: column;
 }

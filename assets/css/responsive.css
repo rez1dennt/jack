@@ -59,7 +59,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .footer-column--social {
+  .footer-column--documents {
     grid-column: 1 / -1;
   }
 
@@ -438,7 +438,7 @@
     padding-block: var(--space-10) var(--space-6);
   }
 
-  .footer-column--social {
+  .footer-column--documents {
     grid-column: auto;
   }
 
