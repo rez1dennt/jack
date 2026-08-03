@@ -18,8 +18,8 @@ return [
         'password' => '[[GOOGLE_APP_PASSWORD]]',
         'encryption' => 'tls',
         'from_email' => '[[SMTP_USERNAME]]',
-        'from_name' => 'Jack Sewing',
-        'to_email' => '[[LEAD_RECIPIENT]]',
-        'to_name' => 'Менеджер',
+        'from_name' => 'Текстиль Опт Торг',
+        'to_email' => 'tekstilopttorg@mail.ru',
+        'to_name' => 'Отдел продаж',
     ],
 ];

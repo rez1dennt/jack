@@ -3,4 +3,5 @@
   <url><loc>https://[[DOMAIN]]/</loc><priority>1.0</priority></url>
   <url><loc>https://[[DOMAIN]]/privacy.html</loc><priority>0.3</priority></url>
   <url><loc>https://[[DOMAIN]]/consent.html</loc><priority>0.3</priority></url>
+  <url><loc>https://[[DOMAIN]]/requisites.html</loc><priority>0.3</priority></url>
 </urlset>

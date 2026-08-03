@@ -53,6 +53,32 @@ test('SEO metadata and semantic essentials are present', async ({ page }) => {
   expect(diagnostics).toEqual({ duplicateIds: [], imagesWithoutAlt: 0, unlabeledControls: 0 });
 });
 
+test('organization details are published in structured data', async ({ page }) => {
+  await page.goto('/');
+
+  const organization = JSON.parse(
+    await page.locator('script[type="application/ld+json"]').first().textContent()
+  );
+
+  expect(organization).toMatchObject({
+    '@type': 'Organization',
+    name: 'ООО «Текстиль Опт Торг»',
+    legalName: 'ООО «Текстиль Опт Торг»',
+    taxID: '2130136574',
+    identifier: 'ОГРН 1142130005731',
+    telephone: '+79276677307',
+    email: 'tekstilopttorg@mail.ru',
+    address: {
+      '@type': 'PostalAddress',
+      postalCode: '429500',
+      addressRegion: 'Чувашская Республика',
+      addressLocality: 'пос. Кугеси',
+      streetAddress: 'ул. Шоршелская, д. 2',
+      addressCountry: 'RU'
+    }
+  });
+});
+
 test('keyboard skip link reaches main content and focus is visible', async ({ page }) => {
   await page.goto('/');
   await page.keyboard.press('Tab');

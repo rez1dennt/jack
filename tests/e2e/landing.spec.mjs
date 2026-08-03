@@ -28,6 +28,7 @@ test('all reference sections and legal links exist', async ({ page }) => {
   const footer = page.locator('.site-footer');
   await expect(footer.getByRole('link', { name: 'Политика конфиденциальности', exact: true })).toHaveAttribute('href', '/privacy.html');
   await expect(footer.getByRole('link', { name: 'Согласие на обработку персональных данных', exact: true })).toHaveAttribute('href', '/consent.html');
+  await expect(footer.getByRole('link', { name: 'Реквизиты организации', exact: true })).toHaveAttribute('href', '/requisites.html');
 });
 
 test('footer matches the approved contact navigation help and legal contract', async ({ page }) => {
@@ -35,14 +36,31 @@ test('footer matches the approved contact navigation help and legal contract', a
   const footer = page.locator('.site-footer');
 
   await expect(footer.locator('.footer-column')).toHaveCount(3);
-  await expect(footer.locator('.footer-contact')).toHaveCount(4);
+  await expect(footer.locator('.footer-contact')).toHaveCount(3);
   await expect(footer.getByRole('link', { name: /Нужна помощь/i })).toHaveAttribute('href', '#consultation-form');
   await expect(footer.locator('.footer-nav li')).toHaveCount(5);
   await expect(footer.locator('.social-link')).toHaveCount(3);
-  await expect(footer.locator('.footer-legal a')).toHaveCount(2);
+  await expect(footer.locator('.footer-legal a')).toHaveCount(3);
   await expect(footer.locator('.site-footer__year')).toHaveText('2026');
   await expect(footer.getByRole('link', { name: 'Политика конфиденциальности' })).toHaveAttribute('href', '/privacy.html');
   await expect(footer.getByRole('link', { name: 'Согласие на обработку персональных данных' })).toHaveAttribute('href', '/consent.html');
+  await expect(footer.getByRole('link', { name: 'Реквизиты организации' })).toHaveAttribute('href', '/requisites.html');
+});
+
+test('landing exposes the supplied organization contacts', async ({ page }) => {
+  await page.goto('/');
+  const header = page.locator('.site-header');
+  const footer = page.locator('.site-footer');
+
+  await expect(header.locator('.header-phone')).toHaveAttribute('href', 'tel:+79276677307');
+  await expect(header.locator('.header-phone')).toHaveText('8 (927) 667-73-07');
+  await expect(header.locator('.site-header__contact span')).toHaveText('Консультация по оборудованию');
+  await expect(footer.getByRole('link', { name: '8 (927) 667-73-07' })).toHaveAttribute('href', 'tel:+79276677307');
+  await expect(footer.getByRole('link', { name: 'tekstilopttorg@mail.ru' })).toHaveAttribute('href', 'mailto:tekstilopttorg@mail.ru');
+  await expect(footer.getByText(/пос\. Кугеси, ул\. Шоршелская, д\. 2/)).toBeVisible();
+  await expect(page.getByText('8 (800) 555-57-18', { exact: true })).toHaveCount(0);
+  await expect(page.getByText('info@jack-sewing.ru', { exact: true })).toHaveCount(0);
+  await expect(page.getByText(/Промышленная, 11/)).toHaveCount(0);
 });
 
 test('footer accent text keeps WCAG AA contrast on the industrial background', async ({ page }) => {
