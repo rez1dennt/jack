@@ -1,11 +1,27 @@
 import { test, expect } from '@playwright/test';
 
-test('navigation targets the company service and about sections', async ({ page }) => {
+test('navigation follows the real landing section order', async ({ page }) => {
   await page.goto('/');
 
   const header = page.locator('.site-header');
-  await expect(header.locator('a[href="#service"]')).toHaveText('Сервис');
-  await expect(header.locator('a[href="#about"]')).toHaveText('О компании');
+  const navigation = await header.locator('.site-nav__list a').evaluateAll((links) => links.map((link) => ({
+    text: link.textContent.trim(),
+    href: link.getAttribute('href')
+  })));
+  expect(navigation).toEqual([
+    { text: 'Решения', href: '#solutions' },
+    { text: 'Возможности', href: '#capabilities' },
+    { text: 'Сервис', href: '#service' },
+    { text: 'Оборудование', href: '#equipment' },
+    { text: 'О компании', href: '#about' },
+    { text: 'Контакты', href: '#contacts' }
+  ]);
+
+  const sectionOrder = await page.locator('main > section').evaluateAll((sections) => sections.map((section) => section.id).filter(Boolean));
+  expect(sectionOrder.indexOf('solutions')).toBeLessThan(sectionOrder.indexOf('capabilities'));
+  expect(sectionOrder.indexOf('capabilities')).toBeLessThan(sectionOrder.indexOf('service'));
+  expect(sectionOrder.indexOf('service')).toBeLessThan(sectionOrder.indexOf('equipment'));
+  expect(sectionOrder.indexOf('equipment')).toBeLessThan(sectionOrder.indexOf('about'));
   await expect(page.locator('#service')).toContainText('Почему выбирают Текстиль Опт Торг');
   await expect(page.locator('#about')).toContainText('О компании');
 });
@@ -29,7 +45,10 @@ test('machine specifications are model-specific and keyboard accessible', async 
 
   const j6Tab = page.getByRole('tab', { name: 'JACK J6', exact: true });
   const m9Tab = page.getByRole('tab', { name: 'JACK M9', exact: true });
+  const modelImage = page.locator('[data-model-image]');
   await expect(j6Tab).toHaveAttribute('aria-selected', 'true');
+  await expect(modelImage).toHaveAttribute('src', '/assets/images/jack-j6.webp');
+  await expect(modelImage).toHaveAttribute('alt', /JACK J6/);
   await expect(page.getByRole('tabpanel', { name: 'JACK J6' })).toContainText('До 210 мм');
   await expect(page.getByRole('tabpanel', { name: 'JACK J6' })).toContainText('120 Вт');
   await expect(page.getByRole('tabpanel', { name: 'JACK J6' })).toContainText('До 3 000 ст/мин');
@@ -38,6 +57,9 @@ test('machine specifications are model-specific and keyboard accessible', async 
   await page.keyboard.press('ArrowRight');
   await expect(m9Tab).toBeFocused();
   await expect(m9Tab).toHaveAttribute('aria-selected', 'true');
+  await expect(modelImage).toHaveAttribute('src', '/assets/images/jack-m9.webp');
+  await expect(modelImage).toHaveAttribute('alt', /JACK M9/);
+  await expect.poll(() => modelImage.evaluate((image) => image.complete && image.naturalWidth > 0)).toBe(true);
   await expect(page.getByRole('tabpanel', { name: 'JACK M9' })).toContainText('1400 × 950 мм');
   await expect(page.getByRole('tabpanel', { name: 'JACK M9' })).toContainText('До 3 600 ст/мин');
   await expect(page.getByRole('tabpanel', { name: 'JACK M9' })).toContainText('610 / 690 кг');

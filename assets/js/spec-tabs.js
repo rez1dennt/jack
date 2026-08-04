@@ -3,6 +3,19 @@ export function initSpecTabs(tablist) {
 
   const tabs = [...tablist.querySelectorAll('[role="tab"]')];
   if (!tabs.length) return () => {};
+  const modelImage = tablist.closest('.specifications')?.querySelector('[data-model-image]');
+
+  const updateModelImage = (tab) => {
+    if (!modelImage || !tab.dataset.imageSrc) return;
+
+    modelImage.src = tab.dataset.imageSrc;
+    modelImage.alt = tab.dataset.imageAlt || tab.textContent.trim();
+
+    const width = Number.parseInt(tab.dataset.imageWidth, 10);
+    const height = Number.parseInt(tab.dataset.imageHeight, 10);
+    if (Number.isFinite(width)) modelImage.width = width;
+    if (Number.isFinite(height)) modelImage.height = height;
+  };
 
   const selectTab = (tab, { focus = false } = {}) => {
     for (const current of tabs) {
@@ -12,6 +25,7 @@ export function initSpecTabs(tablist) {
       const panel = document.getElementById(current.getAttribute('aria-controls'));
       if (panel) panel.hidden = !selected;
     }
+    updateModelImage(tab);
     if (focus) tab.focus();
   };
 

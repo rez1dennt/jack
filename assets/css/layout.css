@@ -542,8 +542,8 @@
   inline-size: var(--space-4);
   block-size: var(--space-4);
   background: var(--color-action-primary);
-  mask: url("../icons/check-circle.svg?v=client-audit-20260804-1") center / contain no-repeat;
-  -webkit-mask: url("../icons/check-circle.svg?v=client-audit-20260804-1") center / contain no-repeat;
+  mask: url("../icons/check-circle.svg?v=model-images-order-20260804-1") center / contain no-repeat;
+  -webkit-mask: url("../icons/check-circle.svg?v=model-images-order-20260804-1") center / contain no-repeat;
 }
 
 .case-metrics {

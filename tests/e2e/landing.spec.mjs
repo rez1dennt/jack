@@ -39,7 +39,7 @@ test('footer matches the approved contact navigation help and legal contract', a
   await expect(footer.locator('.footer-column')).toHaveCount(3);
   await expect(footer.locator('.footer-contact')).toHaveCount(3);
   await expect(footer.getByRole('link', { name: /Нужна помощь/i })).toHaveAttribute('href', '#lead-form');
-  await expect(footer.locator('.footer-nav li')).toHaveCount(5);
+  await expect(footer.locator('.footer-nav li')).toHaveCount(6);
   await expect(footer.locator('.social-link')).toHaveCount(0);
   await expect(footer.getByText('Мы в соцсетях', { exact: true })).toHaveCount(0);
   await expect(footer.getByRole('heading', { name: 'Документы', exact: true })).toBeVisible();
@@ -1180,9 +1180,9 @@ test('major sections use the approved 1440px grid and responsive desktop spacing
         problemToCapabilities: gap(problemOuter, capabilities),
         capabilitiesToApplications: gap(capabilities, applications),
         applicationsToReasons: gap(applications, reasons),
-        reasonsToAbout: gap(reasons, about),
-        aboutToSpecifications: gap(about, specifications),
-        specificationsToLead: gap(specifications, lead),
+        reasonsToSpecifications: gap(reasons, specifications),
+        specificationsToAbout: gap(specifications, about),
+        aboutToLead: gap(about, lead),
         leadToFooter: gap(lead, footer)
       }
     };
@@ -1195,9 +1195,9 @@ test('major sections use the approved 1440px grid and responsive desktop spacing
     problemToCapabilities: 24,
     capabilitiesToApplications: 24,
     applicationsToReasons: 24,
-    reasonsToAbout: 24,
-    aboutToSpecifications: 24,
-    specificationsToLead: 24,
+    reasonsToSpecifications: 24,
+    specificationsToAbout: 24,
+    aboutToLead: 24,
     leadToFooter: 24
   });
 });

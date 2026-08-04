@@ -70,9 +70,10 @@
 
       <nav class="site-nav" id="site-menu" aria-label="Основная навигация" data-menu-panel>
         <ul class="site-nav__list">
-          <li><a href="#equipment">Оборудование</a></li>
           <li><a href="#solutions">Решения</a></li>
+          <li><a href="#capabilities">Возможности</a></li>
           <li><a href="#service">Сервис</a></li>
+          <li><a href="#equipment">Оборудование</a></li>
           <li><a href="#about">О компании</a></li>
           <li><a href="#contacts">Контакты</a></li>
         </ul>
@@ -154,7 +155,7 @@
       </div>
     </section>
 
-    <section class="capabilities" aria-labelledby="capabilities-title">
+    <section class="capabilities" id="capabilities" aria-labelledby="capabilities-title">
       <div class="container">
         <header class="capabilities__header">
           <h2 class="capabilities__heading" id="capabilities-title">Что <span class="capabilities__heading-accent">умеет</span></h2>
@@ -243,27 +244,6 @@
       </div>
     </section>
 
-    <section class="about-company" id="about" aria-labelledby="about-title">
-      <div class="container about-company__grid">
-        <picture class="about-company__media">
-          <img src="/assets/images/company-demo.webp" width="1200" height="1600" alt="Обучение работе на промышленном оборудовании JACK в Текстиль Опт Торг" loading="lazy" decoding="async">
-        </picture>
-        <div class="about-company__content">
-          <p class="section-eyebrow">О компании</p>
-          <h2 id="about-title">Оборудование и сопровождение для швейного производства</h2>
-          <p>ООО «Текстиль Опт Торг» работает с 2003 года и помогает предприятиям комплектовать производство. В ассортименте компании — более 5 000 товаров от 60 брендов.</p>
-          <p>С компанией работают более 1 800 оптовых покупателей из 30 регионов России, Беларуси и Казахстана. Клиент получает персонального менеджера и комплект документов для закупок, в том числе по 44-ФЗ.</p>
-          <dl class="about-company__metrics">
-            <div><dt>2003</dt><dd>год начала работы</dd></div>
-            <div><dt>1 800+</dt><dd>оптовых покупателей</dd></div>
-            <div><dt>30</dt><dd>регионов России</dd></div>
-            <div><dt>60</dt><dd>брендов в ассортименте</dd></div>
-          </dl>
-          <a class="button button--outline" href="#lead-form">Обсудить задачу</a>
-        </div>
-      </div>
-    </section>
-
     <section class="specifications" id="equipment" aria-labelledby="specifications-title">
       <div class="container">
         <div class="specifications__panel">
@@ -271,8 +251,8 @@
             <div class="specifications__table-wrap">
               <h2 id="specifications-title">Технические <span>характеристики</span></h2>
               <div class="model-tabs" role="tablist" aria-label="Модель оборудования">
-                <button id="tab-j6" class="model-tab" type="button" role="tab" aria-selected="true" aria-controls="panel-j6" tabindex="0">JACK J6</button>
-                <button id="tab-m9" class="model-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-m9" tabindex="-1">JACK M9</button>
+                <button id="tab-j6" class="model-tab" type="button" role="tab" aria-selected="true" aria-controls="panel-j6" tabindex="0" data-image-src="/assets/images/jack-j6.webp" data-image-alt="Автомат для изготовления прорезных карманов JACK J6" data-image-width="707" data-image-height="575">JACK J6</button>
+                <button id="tab-m9" class="model-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-m9" tabindex="-1" data-image-src="/assets/images/jack-m9.webp" data-image-alt="Промышленный шаблонный автомат JACK M9" data-image-width="800" data-image-height="614">JACK M9</button>
               </div>
               <div id="panel-j6" class="model-panel" role="tabpanel" aria-labelledby="tab-j6">
                 <div class="table-scroll">
@@ -326,9 +306,7 @@
             </div>
             <div class="specifications__product">
               <picture>
-                <source srcset="/assets/images/spec-machine.avif" type="image/avif">
-                <source srcset="/assets/images/spec-machine.webp" type="image/webp">
-                <img src="/assets/images/spec-machine.png" width="1000" height="750" alt="Промышленное швейное оборудование JACK" loading="lazy" decoding="async">
+                <img data-model-image src="/assets/images/jack-j6.webp" width="707" height="575" alt="Автомат для изготовления прорезных карманов JACK J6" loading="lazy" decoding="async">
               </picture>
               <div class="product-benefits" aria-label="Преимущества оборудования JACK J6 и M9">
                 <article class="product-benefit"><span data-icon="target" aria-hidden="true"></span><h3>Высокая точность</h3><p>Идеальная строчка даже на сложных материалах</p></article>
@@ -347,6 +325,27 @@
       </div>
     </section>
 
+    <section class="about-company" id="about" aria-labelledby="about-title">
+      <div class="container about-company__grid">
+        <picture class="about-company__media">
+          <img src="/assets/images/company-demo.webp" width="1200" height="1600" alt="Обучение работе на промышленном оборудовании JACK в Текстиль Опт Торг" loading="lazy" decoding="async">
+        </picture>
+        <div class="about-company__content">
+          <p class="section-eyebrow">О компании</p>
+          <h2 id="about-title">Оборудование и сопровождение для швейного производства</h2>
+          <p>ООО «Текстиль Опт Торг» работает с 2003 года и помогает предприятиям комплектовать производство. В ассортименте компании — более 5 000 товаров от 60 брендов.</p>
+          <p>С компанией работают более 1 800 оптовых покупателей из 30 регионов России, Беларуси и Казахстана. Клиент получает персонального менеджера и комплект документов для закупок, в том числе по 44-ФЗ.</p>
+          <dl class="about-company__metrics">
+            <div><dt>2003</dt><dd>год начала работы</dd></div>
+            <div><dt>1 800+</dt><dd>оптовых покупателей</dd></div>
+            <div><dt>30</dt><dd>регионов России</dd></div>
+            <div><dt>60</dt><dd>брендов в ассортименте</dd></div>
+          </dl>
+          <a class="button button--outline" href="#lead-form">Обсудить задачу</a>
+        </div>
+      </div>
+    </section>
+
     <section class="lead-section" id="lead-form" aria-labelledby="lead-title">
       <div class="container">
         <div class="lead-panel">
@@ -359,7 +358,7 @@
           <div class="lead-section__inner">
             <div class="lead-section__copy">
               <span class="lead-section__eyebrow">Расчёт проекта</span>
-              <h2 id="lead-title">Ускорьте производство с Jack</h2>
+              <h2 id="lead-title">Ускорьте производство с Текстиль Опт Торг</h2>
               <p>Опишите задачу. Специалист подберёт конфигурацию оборудования под ваши операции и материалы.</p>
               <ul class="lead-section__points" aria-label="Преимущества консультации">
                 <li class="lead-section__point"><span data-icon="check-circle" aria-hidden="true"></span>Бесплатная консультация</li>
@@ -420,9 +419,10 @@
       <section class="footer-column footer-column--menu">
         <h2 class="footer-heading"><span class="footer-heading__icon"><span data-icon="menu" aria-hidden="true"></span></span>Меню</h2>
         <nav class="footer-nav" aria-label="Навигация в подвале"><ul>
-          <li><a href="#equipment">Оборудование <span data-icon="arrow-right" aria-hidden="true"></span></a></li>
           <li><a href="#solutions">Решения <span data-icon="arrow-right" aria-hidden="true"></span></a></li>
+          <li><a href="#capabilities">Возможности <span data-icon="arrow-right" aria-hidden="true"></span></a></li>
           <li><a href="#service">Сервис <span data-icon="arrow-right" aria-hidden="true"></span></a></li>
+          <li><a href="#equipment">Оборудование <span data-icon="arrow-right" aria-hidden="true"></span></a></li>
           <li><a href="#about">О компании <span data-icon="arrow-right" aria-hidden="true"></span></a></li>
           <li><a href="#contacts">Контакты <span data-icon="arrow-right" aria-hidden="true"></span></a></li>
         </ul></nav>
