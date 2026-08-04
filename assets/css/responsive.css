@@ -448,7 +448,6 @@
   }
 
   .lead-section__copy h2 {
-    max-inline-size: 13ch;
     font-size: clamp(var(--font-size-3xl), 8vw, var(--font-size-4xl));
   }
 
