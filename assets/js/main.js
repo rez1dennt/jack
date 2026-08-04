@@ -1,7 +1,8 @@
-import { initLeadForm } from './form.js?v=jack-m9-20260803-1';
-import { initMenu } from './menu.js?v=jack-m9-20260803-1';
-import { initCookieBanner } from './cookies.js?v=jack-m9-20260803-1';
-import { initVideoDialog } from './video.js?v=jack-m9-20260803-1';
+import { initLeadForm } from './form.js?v=client-audit-20260804-1';
+import { initMenu } from './menu.js?v=client-audit-20260804-1';
+import { initCookieBanner } from './cookies.js?v=client-audit-20260804-1';
+import { initVideoDialog } from './video.js?v=client-audit-20260804-1';
+import { initSpecTabs } from './spec-tabs.js?v=client-audit-20260804-1';
 
 initLeadForm(document.querySelector('#consultation-form'), {
   previewMode: document.documentElement.dataset.staticPreview === 'true'
@@ -9,3 +10,4 @@ initLeadForm(document.querySelector('#consultation-form'), {
 initMenu(document.querySelector('[data-menu-root]'));
 initCookieBanner(document.querySelector('[data-cookie-banner]'));
 initVideoDialog(document.querySelector('[data-video-button]'), document.querySelector('[data-video-dialog]'));
+initSpecTabs(document.querySelector('.model-tabs'));

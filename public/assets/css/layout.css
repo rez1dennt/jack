@@ -111,6 +111,14 @@
   gap: var(--space-5);
 }
 
+.hero__proof {
+  max-inline-size: 38rem;
+  margin: calc(var(--space-4) * -1) 0 var(--space-5);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
 .hero__media {
   position: absolute;
   inset: 0;
@@ -135,6 +143,7 @@
 .capabilities,
 .applications,
 .reasons,
+.about-company,
 .specifications {
   margin-block-end: var(--section-gap);
 }
@@ -321,6 +330,7 @@
 .capabilities,
 .applications,
 .reasons,
+.about-company,
 .specifications {
   border-block-end: var(--border-thin) solid var(--color-border-subtle);
 }
@@ -466,6 +476,10 @@
   object-fit: cover;
 }
 
+.applications__media--portrait img {
+  object-position: center 38%;
+}
+
 .case-card {
   background: linear-gradient(125deg, var(--color-surface-page), var(--color-surface-subtle));
 }
@@ -483,6 +497,53 @@
 
 .case-card p {
   margin-block-end: var(--space-5);
+}
+
+.section-eyebrow {
+  margin: 0 0 var(--space-3);
+  color: var(--color-accent-foreground);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.case-card--demo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.case-card--demo .button {
+  align-self: flex-start;
+  margin-block-start: var(--space-2);
+}
+
+.demo-points {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  list-style: none;
+}
+
+.demo-points li {
+  position: relative;
+  padding-inline-start: var(--space-6);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.demo-points li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0.3em;
+  inline-size: var(--space-4);
+  block-size: var(--space-4);
+  background: var(--color-action-primary);
+  mask: url("../icons/check-circle.svg") center / contain no-repeat;
+  -webkit-mask: url("../icons/check-circle.svg") center / contain no-repeat;
 }
 
 .case-metrics {
@@ -544,8 +605,97 @@
   line-height: 1.4;
 }
 
+.reason strong {
+  display: block;
+  margin-block-end: var(--space-1);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+}
+
+.reason div p {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 400;
+}
+
 .reasons .section-title {
   margin-block-end: var(--space-4);
+}
+
+.reasons .section-title span {
+  color: var(--color-accent-foreground);
+}
+
+.about-company {
+  padding-block: var(--space-8);
+  border-block-end: var(--border-thin) solid var(--color-border-subtle);
+}
+
+.about-company__grid {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.78fr) minmax(0, 1.22fr);
+  gap: var(--space-10);
+  align-items: stretch;
+  overflow: hidden;
+  border: var(--border-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow-card);
+}
+
+.about-company__media {
+  min-block-size: 34rem;
+  overflow: hidden;
+}
+
+.about-company__media img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+}
+
+.about-company__content {
+  align-self: center;
+  padding: var(--space-10) var(--space-10) var(--space-10) 0;
+}
+
+.about-company__content h2 {
+  max-inline-size: 18ch;
+  margin-block-end: var(--space-6);
+  font-size: var(--font-size-4xl);
+  text-transform: uppercase;
+}
+
+.about-company__content > p:not(.section-eyebrow) {
+  max-inline-size: 68ch;
+  color: var(--color-text-secondary);
+}
+
+.about-company__metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-8) 0;
+}
+
+.about-company__metrics div {
+  padding-block-start: var(--space-3);
+  border-block-start: calc(var(--border-thin) * 2) solid var(--color-action-primary);
+}
+
+.about-company__metrics dt {
+  color: var(--color-accent-foreground);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+}
+
+.about-company__metrics dd {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.35;
 }
 
 .specifications {

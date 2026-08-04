@@ -19,7 +19,8 @@ test('all reference sections and legal links exist', async ({ page }) => {
     'Решение Jack',
     'Что умеет',
     'Примеры применения',
-    'Почему именно Jack?',
+    'Почему выбирают Текстиль Опт Торг',
+    'Оборудование и сопровождение для швейного производства',
     'Технические характеристики'
   ]) {
     await expect(page.getByText(text, { exact: false }).first()).toBeVisible();
@@ -37,7 +38,7 @@ test('footer matches the approved contact navigation help and legal contract', a
 
   await expect(footer.locator('.footer-column')).toHaveCount(3);
   await expect(footer.locator('.footer-contact')).toHaveCount(3);
-  await expect(footer.getByRole('link', { name: /Нужна помощь/i })).toHaveAttribute('href', '#consultation-form');
+  await expect(footer.getByRole('link', { name: /Нужна помощь/i })).toHaveAttribute('href', '#lead-form');
   await expect(footer.locator('.footer-nav li')).toHaveCount(5);
   await expect(footer.locator('.social-link')).toHaveCount(0);
   await expect(footer.getByText('Мы в соцсетях', { exact: true })).toHaveCount(0);
@@ -220,10 +221,10 @@ test('brand logos preserve their ratio without overflowing site chrome', async (
 test('technical sheet is a real downloadable PDF', async ({ page, request }) => {
   await page.goto('/');
   await expect(page.getByRole('link', {
-    name: 'Скачать технический лист PDF. Подробные характеристики и руководство'
+    name: 'Скачать характеристики JACK J6 и JACK M9 в PDF'
   })).toHaveAttribute('download', '');
 
-  const response = await request.get('/assets/docs/jack-ms-100a.pdf');
+  const response = await request.get('/assets/docs/jack-j6-m9.pdf');
   expect(response.status()).toBe(200);
   expect(response.headers()['content-type']).toContain('application/pdf');
   expect((await response.body()).subarray(0, 4).toString()).toBe('%PDF');
@@ -458,9 +459,9 @@ test('service and video controls have meaningful behavior without social placeho
   await expect(page.locator('#service')).toHaveCount(1);
 
   await page.getByRole('button', { name: 'Смотреть видео' }).click();
-  const dialog = page.getByRole('dialog', { name: 'Обзор шаблонного автомата Jack' });
+  const dialog = page.getByRole('dialog', { name: 'Демонстрация оборудования JACK' });
   await expect(dialog).toBeVisible();
-  await dialog.getByRole('button', { name: 'Закрыть обзор' }).click();
+  await dialog.getByRole('button', { name: 'Закрыть видео' }).click();
   await expect(dialog).toBeHidden();
 
   await expect(page.locator('.social-link--disabled')).toHaveCount(0);
@@ -471,7 +472,7 @@ test('video dialog locks page scrolling without a layout jump and restores it on
   await page.goto('/');
 
   const trigger = page.getByRole('button', { name: 'Смотреть видео' });
-  const dialog = page.getByRole('dialog', { name: 'Обзор шаблонного автомата Jack' });
+  const dialog = page.getByRole('dialog', { name: 'Демонстрация оборудования JACK' });
   await page.evaluate(() => window.scrollTo(0, 1200));
   const before = await page.evaluate(() => ({
     scrollY: window.scrollY,
@@ -526,7 +527,7 @@ test('mobile video dialog stays compact at narrow viewports', async ({ page }) =
     await page.goto('/');
     await page.getByRole('button', { name: 'Смотреть видео' }).click();
 
-    const dialog = page.getByRole('dialog', { name: 'Обзор шаблонного автомата Jack' });
+    const dialog = page.getByRole('dialog', { name: 'Демонстрация оборудования JACK' });
     await expect(dialog).toBeVisible();
     const geometry = await dialog.evaluate((element) => {
       const lineCount = (node) => {
@@ -564,7 +565,7 @@ test('mobile video dialog stays compact at narrow viewports', async ({ page }) =
     expect(geometry.buttonLines).toBe(1);
     expect(geometry.buttonHeight).toBeGreaterThanOrEqual(44);
 
-    await dialog.getByRole('button', { name: 'Закрыть обзор' }).click();
+    await dialog.getByRole('button', { name: 'Закрыть видео' }).click();
   }
 });
 
@@ -871,21 +872,27 @@ test('capabilities reproduce the five-card reference composition', async ({ page
   }
 });
 
-test('specifications reproduce the table, product benefits, and download panel', async ({ page }) => {
+test('specifications expose separate source-based J6 and M9 tables', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 1100 });
   await page.goto('/');
 
-  await expect(page.locator('.spec-parameter')).toHaveCount(10);
-  await expect(page.locator('.spec-parameter [data-icon]')).toHaveCount(10);
-  await expect(page.locator('.specifications caption')).toHaveText('Сравнение Jack MS-100A и JACK M9');
-  await expect(page.locator('.specifications thead th')).toHaveText(['Параметры', 'Jack MS-100A', 'JACK M9']);
+  await expect(page.getByRole('tab')).toHaveCount(2);
+  await expect(page.getByRole('tab', { name: 'JACK J6' })).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByRole('tabpanel', { name: 'JACK J6' }).locator('tbody tr')).toHaveCount(16);
+  await expect(page.getByRole('tabpanel', { name: 'JACK J6' })).toContainText('До 210 мм');
+  await expect(page.getByRole('tabpanel', { name: 'JACK J6' })).toContainText('120 Вт');
   await expect(page.locator('.specifications')).not.toContainText('JK-T2210');
-  await expect(page.locator('.specifications tbody tr').nth(0).locator('td').nth(1)).toHaveText('1400 × 950 мм');
-  await expect(page.locator('.specifications tbody tr').nth(1).locator('td').nth(1)).toHaveText('До 3 600 ст/мин');
-  await expect(page.locator('.specifications tbody tr').nth(7).locator('td').nth(1)).toHaveText('0.6 МПа, 3 л/мин');
-  await expect(page.locator('.specifications tbody tr').nth(8).locator('td').nth(1)).toHaveText('610/690 кг (нетто/брутто)');
-  await expect(page.locator('.specifications tbody tr').nth(9).locator('td').nth(1)).toHaveText('2200 × 1220 × 1650 мм');
-  await expect(page.locator('.specifications__note')).toContainText('M9-SS-F13-X');
+  await expect(page.locator('.specifications')).not.toContainText('MS-100A');
+
+  await page.getByRole('tab', { name: 'JACK M9' }).click();
+  const m9 = page.getByRole('tabpanel', { name: 'JACK M9' });
+  await expect(m9.locator('tbody tr')).toHaveCount(12);
+  await expect(m9).toContainText('1400 × 950 мм');
+  await expect(m9).toContainText('До 3 600 ст/мин');
+  await expect(m9).toContainText('0,6 МПа, 3 л/мин');
+  await expect(m9).toContainText('610 / 690 кг (нетто / брутто)');
+  await expect(m9).toContainText('2200 × 1220 × 1650 мм');
+  await expect(m9).toContainText('M9-SS-F13-X');
   await expect(page.locator('.product-benefit')).toHaveCount(4);
   await expect(page.locator('.product-benefit h3')).toHaveText([
     'Высокая точность',
@@ -914,33 +921,29 @@ test('specifications reproduce the table, product benefits, and download panel',
   });
 });
 
-test('mobile specifications show both models without horizontal scrolling', async ({ page }) => {
+test('mobile specifications switch models without horizontal scrolling', async ({ page }) => {
   for (const width of [390, 320]) {
     await page.setViewportSize({ width, height: 844 });
     await page.goto('/');
 
-    const firstRow = page.locator('.specifications tbody tr').first();
-    await expect(firstRow.locator('td')).toHaveText(['220 × 100 мм', '1400 × 950 мм']);
+    await expect(page.getByRole('tabpanel', { name: 'JACK J6' })).toContainText('До 210 мм');
+    await page.getByRole('tab', { name: 'JACK M9' }).click();
+    await expect(page.getByRole('tabpanel', { name: 'JACK M9' })).toContainText('1400 × 950 мм');
 
     const geometry = await page.evaluate(() => {
-      const wrapper = document.querySelector('.specifications .table-scroll');
-      const row = document.querySelector('.specifications tbody tr');
-      const cells = [...row.children].map((cell) => getComputedStyle(cell));
+      const wrapper = document.querySelector('#panel-m9 .table-scroll');
+      const row = document.querySelector('#panel-m9 tbody tr');
       return {
         overflows: wrapper.scrollWidth > wrapper.clientWidth + 1,
         bodyOverflows: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
-        rowColumns: getComputedStyle(row).gridTemplateColumns.split(' ').length,
-        parameterColumn: cells[0].gridColumn,
-        labels: [...row.querySelectorAll('td')].map((cell) => cell.dataset.model)
+        rowColumns: getComputedStyle(row).gridTemplateColumns.split(' ').length
       };
     });
 
     expect(geometry).toEqual({
       overflows: false,
       bodyOverflows: false,
-      rowColumns: 2,
-      parameterColumn: '1 / -1',
-      labels: ['Jack MS-100A', 'JACK M9']
+      rowColumns: 1
     });
   }
 });
@@ -951,10 +954,7 @@ test('mobile technical-sheet button keeps copy readable and icons full size', as
     await page.goto('/');
 
     const download = page.locator('.button--download');
-    await expect(download).toHaveAttribute(
-      'aria-label',
-      'Скачать технический лист PDF. Подробные характеристики и руководство'
-    );
+    await expect(download).toHaveAttribute('aria-label', 'Скачать характеристики JACK J6 и JACK M9 в PDF');
     const geometry = await download.evaluate((button) => {
       const lineCount = (node) => {
         const range = document.createRange();
@@ -1163,6 +1163,7 @@ test('major sections use the approved 1440px grid and responsive desktop spacing
     const capabilities = rect('.capabilities');
     const applications = rect('.applications');
     const reasons = rect('.reasons');
+    const about = rect('.about-company');
     const specifications = rect('.specifications');
     const lead = rect('.lead-section');
     const footer = rect('.site-footer');
@@ -1179,7 +1180,8 @@ test('major sections use the approved 1440px grid and responsive desktop spacing
         problemToCapabilities: gap(problemOuter, capabilities),
         capabilitiesToApplications: gap(capabilities, applications),
         applicationsToReasons: gap(applications, reasons),
-        reasonsToSpecifications: gap(reasons, specifications),
+        reasonsToAbout: gap(reasons, about),
+        aboutToSpecifications: gap(about, specifications),
         specificationsToLead: gap(specifications, lead),
         leadToFooter: gap(lead, footer)
       }
@@ -1193,24 +1195,24 @@ test('major sections use the approved 1440px grid and responsive desktop spacing
     problemToCapabilities: 24,
     capabilitiesToApplications: 24,
     applicationsToReasons: 24,
-    reasonsToSpecifications: 24,
+    reasonsToAbout: 24,
+    aboutToSpecifications: 24,
     specificationsToLead: 24,
     leadToFooter: 24
   });
 });
 
-test('applications result panel replaces the case CTA with three measurable outcomes', async ({ page }) => {
+test('applications use the supplied demonstration photo and a factual consultation CTA', async ({ page }) => {
   await page.setViewportSize({ width: 1900, height: 1000 });
   await page.goto('/');
 
   await expect(page.getByRole('link', { name: 'Читать кейс' })).toHaveCount(0);
-  await expect(page.locator('.case-card h2')).toHaveText('Результат внедрения');
-  await expect(page.locator('.case-metric dt')).toHaveText(['+35%', '×2', '3']);
-  await expect(page.locator('.case-metric dd')).toHaveText([
-    'к производительности',
-    'быстрее операция',
-    'оператора высвобождено'
-  ]);
+  await expect(page.locator('.case-card h2')).toHaveText('Демонстрация оборудования в Кугеси');
+  await expect(page.locator('.applications__media img')).toHaveAttribute('src', '/assets/images/company-demo.webp');
+  await expect(page.locator('.case-card .demo-points li')).toHaveCount(3);
+  await expect(page.locator('.case-card .button')).toHaveAttribute('href', '#lead-form');
+  await expect(page.getByText('+35%', { exact: true })).toHaveCount(0);
+  await expect(page.getByText('×2', { exact: true })).toHaveCount(0);
 
   const desktop = await page.evaluate(() => {
     const grid = document.querySelector('.applications__grid').getBoundingClientRect();
@@ -1257,40 +1259,27 @@ test('applications result panel replaces the case CTA with three measurable outc
   expect(mobileOrder[1]).toBeLessThan(mobileOrder[2]);
 });
 
-test('mobile result metrics use readable index rows', async ({ page }) => {
+test('mobile demonstration card keeps its content and CTA readable', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 844 });
   await page.goto('/');
 
-  const geometry = await page.locator('.case-metrics').evaluate((metrics) => {
-    const lineCount = (node) => {
-      const range = document.createRange();
-      range.selectNodeContents(node);
-      return new Set([...range.getClientRects()].map((rect) => Math.round(rect.top))).size;
-    };
-    const metricElements = [...metrics.querySelectorAll('.case-metric')];
-    const labels = metricElements.map((metric) => metric.querySelector('dd'));
+  const geometry = await page.locator('.case-card--demo').evaluate((card) => {
+    const button = card.querySelector('.button').getBoundingClientRect();
     return {
-      containerWidth: metrics.getBoundingClientRect().width,
-      metricColumns: getComputedStyle(metrics).gridTemplateColumns.trim().split(/\s+/).length,
-      metricWidths: metricElements.map((metric) => metric.getBoundingClientRect().width),
-      metricDisplays: metricElements.map((metric) => getComputedStyle(metric).display),
-      labelLines: labels.map(lineCount),
-      labelFonts: labels.map((label) => Number.parseFloat(getComputedStyle(label).fontSize)),
-      overflowWraps: labels.map((label) => getComputedStyle(label).overflowWrap),
-      wordBreaks: labels.map((label) => getComputedStyle(label).wordBreak)
+      width: Math.round(card.getBoundingClientRect().width),
+      buttonWidth: Math.round(button.width),
+      buttonHeight: Math.round(button.height),
+      points: card.querySelectorAll('.demo-points li').length
     };
   });
 
-  expect(geometry.metricColumns).toBe(1);
-  expect(geometry.metricWidths.every((width) => Math.abs(width - geometry.containerWidth) <= 1)).toBe(true);
-  expect(geometry.metricDisplays).toEqual(['grid', 'grid', 'grid']);
-  expect(geometry.labelLines.every((lines) => lines <= 2)).toBe(true);
-  expect(geometry.labelFonts).toEqual([14, 14, 14]);
-  expect(geometry.overflowWraps).toEqual(['normal', 'normal', 'normal']);
-  expect(geometry.wordBreaks).toEqual(['normal', 'normal', 'normal']);
+  expect(geometry.width).toBeLessThanOrEqual(320);
+  expect(geometry.buttonWidth).toBeLessThanOrEqual(geometry.width);
+  expect(geometry.buttonHeight).toBeGreaterThanOrEqual(44);
+  expect(geometry.points).toBe(3);
 });
 
-for (const width of [1440, 1024, 768, 390, 320, 280]) {
+for (const width of [1440, 1024, 768, 390, 320]) {
   test(`landing has no overflow at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/');

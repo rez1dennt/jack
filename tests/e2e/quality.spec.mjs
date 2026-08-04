@@ -108,5 +108,5 @@ test('layout remains usable at a 200 percent desktop-equivalent width', async ({
     () => document.documentElement.scrollWidth > document.documentElement.clientWidth
   );
   expect(overflow).toBe(false);
-  await expect(page.locator('.table-scroll')).toHaveCSS('overflow-x', 'auto');
+  await expect(page.locator('.model-panel:not([hidden]) .table-scroll')).toHaveCSS('overflow-x', 'auto');
 });

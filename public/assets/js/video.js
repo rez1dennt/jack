@@ -7,6 +7,7 @@ export function initVideoDialog(button, dialog) {
   if (!button || !(dialog instanceof HTMLDialogElement)) return () => {};
 
   const closeControls = [...dialog.querySelectorAll('[data-video-close]')];
+  const player = dialog.querySelector('video');
 
   let isScrollLocked = false;
   let previousRootOverflow = '';
@@ -69,7 +70,13 @@ export function initVideoDialog(button, dialog) {
   const closeFromBackdrop = (event) => {
     if (event.target === dialog) close();
   };
-  const handleClose = () => finishClose();
+  const handleClose = () => {
+    if (player) {
+      player.pause();
+      player.currentTime = 0;
+    }
+    finishClose();
+  };
 
   button.addEventListener('click', open);
   for (const control of closeControls) control.addEventListener('click', close);

@@ -279,6 +279,59 @@
   background: var(--color-surface-elevated);
 }
 
+.model-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-block-end: var(--space-4);
+  overflow: hidden;
+  border: var(--border-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-elevated);
+}
+
+.model-tab {
+  min-block-size: var(--control-height);
+  padding: var(--space-3) var(--space-5);
+  border: 0;
+  background: transparent;
+  color: var(--color-text-primary);
+  font: 700 var(--font-size-sm) / 1 var(--font-body);
+  cursor: pointer;
+}
+
+.model-tab + .model-tab {
+  border-inline-start: var(--border-thin) solid var(--color-border-subtle);
+}
+
+.model-tab[aria-selected="true"] {
+  background: var(--color-action-primary);
+  color: var(--color-text-inverse);
+}
+
+.model-tab:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: var(--border-thin) solid var(--color-focus);
+  outline-offset: calc(var(--border-thin) * -3);
+}
+
+.model-panel[hidden] {
+  display: none;
+}
+
+.model-panel table {
+  min-inline-size: 0;
+  table-layout: fixed;
+}
+
+.model-panel th:first-child {
+  inline-size: 36%;
+}
+
+.model-panel td {
+  text-align: start;
+}
+
 table {
   inline-size: 100%;
   min-inline-size: 38rem;
@@ -642,10 +695,14 @@ tbody th {
   grid-template-columns: 1.15fr 0.85fr;
 }
 
-.video-dialog__media img {
+.video-dialog__media {
   inline-size: 100%;
   block-size: 100%;
-  object-fit: cover;
+  min-block-size: 24rem;
+  display: block;
+  border: 0;
+  background: var(--color-surface-inverse);
+  object-fit: contain;
 }
 
 .video-dialog__content {

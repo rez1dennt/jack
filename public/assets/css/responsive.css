@@ -19,6 +19,19 @@
   .applications__grid {
     grid-template-columns: 0.9fr 1.1fr 1fr;
   }
+
+  .about-company__grid {
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: var(--space-8);
+  }
+
+  .about-company__content {
+    padding: var(--space-8) var(--space-8) var(--space-8) 0;
+  }
+
+  .about-company__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 64rem) {
@@ -299,6 +312,7 @@
 
   .problem-solution,
   .applications__grid,
+  .about-company__grid,
   .specifications__grid,
   .site-footer__grid {
     grid-template-columns: 1fr;
@@ -357,6 +371,23 @@
 
   .applications__media {
     min-block-size: 18rem;
+  }
+
+  .applications__media--portrait {
+    min-block-size: 30rem;
+  }
+
+  .about-company__media {
+    min-block-size: 28rem;
+    max-block-size: 36rem;
+  }
+
+  .about-company__content {
+    padding: var(--space-8);
+  }
+
+  .about-company__content h2 {
+    font-size: var(--font-size-3xl);
   }
 
   .case-card {
@@ -460,6 +491,7 @@
 
   .video-dialog__media {
     max-block-size: 16rem;
+    min-block-size: 0;
   }
 
   .cookie-banner__actions {
@@ -590,7 +622,7 @@
 
   .specifications tbody tr {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     overflow: hidden;
     border: var(--border-thin) solid var(--color-border-subtle);
     border-radius: var(--radius-md);
@@ -600,12 +632,17 @@
 
   .specifications tbody th {
     grid-column: 1 / -1;
+    inline-size: 100%;
+    display: block;
     padding: var(--space-3);
     border-inline-end: 0;
     background: var(--color-surface-subtle);
   }
 
   .specifications tbody td {
+    grid-column: 1 / -1;
+    inline-size: 100%;
+    display: block;
     min-inline-size: 0;
     padding: var(--space-3);
     border-block-end: 0;
@@ -617,13 +654,10 @@
     border-inline-end: 0;
   }
 
-  .specifications tbody td::before {
-    content: attr(data-model);
-    display: block;
-    margin-block-end: var(--space-2);
-    color: var(--color-accent-foreground);
-    font-size: var(--font-size-2xs);
-    font-weight: 600;
+  .specifications tbody td::before { content: none; }
+
+  .model-panel th:first-child {
+    inline-size: auto;
   }
 
   .solution-benefits {
@@ -688,6 +722,10 @@
   .case-metrics {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+
+  .about-company__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .case-metric {
