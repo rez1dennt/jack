@@ -113,6 +113,11 @@ test('company reasons keep the open divider row and use the enlarged scale', asy
   await page.goto('/');
 
   await expect(page.locator('#reasons-title')).toHaveText('Почему выбирают Текстиль Опт Торг');
+  await expect(page.locator('.reasons__grid')).toContainText('Надёжность и качество от мирового бренда');
+  await expect(page.locator('.reasons__grid')).toContainText('Техническая поддержка Гарантия и сервисное обслуживание');
+  await expect(page.locator('.reasons__grid')).toContainText('Обучение операторов Помощь в запуске производства');
+  await expect(page.locator('.reasons__grid')).toContainText('Разработка индивидуальных шаблонов под вашу задачу');
+  await expect(page.locator('.reasons__grid')).not.toContainText('Более 1 800 клиентов');
 
   const metrics = await page.locator('.reasons').evaluate((section) => {
     const grid = section.querySelector('.reasons__grid');
@@ -139,7 +144,7 @@ test('company reasons keep the open divider row and use the enlarged scale', asy
   expect(metrics.sectionHeight).toBeGreaterThanOrEqual(220);
   expect(metrics.reasonHeight).toBeGreaterThanOrEqual(112);
   expect(metrics.columns).toBe(4);
-  expect(metrics.iconWidth).toBeGreaterThanOrEqual(56);
+  expect(metrics.iconWidth).toBe(48);
   expect(metrics.titleSize).toBeGreaterThanOrEqual(18);
   expect(metrics.copySize).toBeGreaterThanOrEqual(14);
   expect(metrics.background).toBe('rgba(0, 0, 0, 0)');

@@ -590,7 +590,7 @@
   align-items: center;
   gap: var(--space-5);
   min-block-size: 7rem;
-  padding-inline: var(--space-6);
+  padding-inline: var(--space-5);
   border-inline-end: var(--border-thin) solid var(--color-border-subtle);
 }
 
