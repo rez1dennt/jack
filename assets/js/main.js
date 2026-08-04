@@ -1,8 +1,8 @@
-import { initLeadForm } from './form.js?v=model-images-order-20260804-2';
-import { initMenu } from './menu.js?v=model-images-order-20260804-2';
-import { initCookieBanner } from './cookies.js?v=model-images-order-20260804-2';
-import { initVideoDialog } from './video.js?v=model-images-order-20260804-2';
-import { initSpecTabs } from './spec-tabs.js?v=model-images-order-20260804-2';
+import { initLeadForm } from './form.js?v=reasons-enlarged-20260804-1';
+import { initMenu } from './menu.js?v=reasons-enlarged-20260804-1';
+import { initCookieBanner } from './cookies.js?v=reasons-enlarged-20260804-1';
+import { initVideoDialog } from './video.js?v=reasons-enlarged-20260804-1';
+import { initSpecTabs } from './spec-tabs.js?v=reasons-enlarged-20260804-1';
 
 initLeadForm(document.querySelector('#consultation-form'), {
   previewMode: document.documentElement.dataset.staticPreview === 'true'

@@ -107,3 +107,42 @@ test('capability copy does not use hard-coded line breaks', async ({ page }) => 
   await page.goto('/');
   await expect(page.locator('.capability br')).toHaveCount(0);
 });
+
+test('company reasons keep the open divider row and use the enlarged scale', async ({ page }) => {
+  await page.setViewportSize({ width: 1900, height: 1000 });
+  await page.goto('/');
+
+  await expect(page.locator('#reasons-title')).toHaveText('Почему выбирают Текстиль Опт Торг');
+
+  const metrics = await page.locator('.reasons').evaluate((section) => {
+    const grid = section.querySelector('.reasons__grid');
+    const reason = section.querySelector('.reason');
+    const icon = reason.querySelector(':scope > span');
+    const title = reason.querySelector('strong');
+    const copy = reason.querySelector('p');
+    const gridStyle = getComputedStyle(grid);
+    const reasonStyle = getComputedStyle(reason);
+
+    return {
+      sectionHeight: Math.round(section.getBoundingClientRect().height),
+      reasonHeight: Math.round(reason.getBoundingClientRect().height),
+      columns: gridStyle.gridTemplateColumns.split(' ').length,
+      iconWidth: Math.round(icon.getBoundingClientRect().width),
+      titleSize: Number.parseFloat(getComputedStyle(title).fontSize),
+      copySize: Number.parseFloat(getComputedStyle(copy).fontSize),
+      background: reasonStyle.backgroundColor,
+      radius: reasonStyle.borderRadius,
+      divider: reasonStyle.borderInlineEndWidth
+    };
+  });
+
+  expect(metrics.sectionHeight).toBeGreaterThanOrEqual(220);
+  expect(metrics.reasonHeight).toBeGreaterThanOrEqual(112);
+  expect(metrics.columns).toBe(4);
+  expect(metrics.iconWidth).toBeGreaterThanOrEqual(56);
+  expect(metrics.titleSize).toBeGreaterThanOrEqual(18);
+  expect(metrics.copySize).toBeGreaterThanOrEqual(14);
+  expect(metrics.background).toBe('rgba(0, 0, 0, 0)');
+  expect(metrics.radius).toBe('0px');
+  expect(metrics.divider).toBe('1px');
+});
