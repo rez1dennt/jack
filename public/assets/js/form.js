@@ -176,6 +176,7 @@ export function initLeadForm(form, { fetchImpl = globalThis.fetch?.bind(globalTh
     const values = {
       name: form.elements.namedItem('name')?.value ?? '',
       phone: phoneInput?.value ?? '',
+      task: form.elements.namedItem('task')?.value ?? '',
       consent: Boolean(form.elements.namedItem('consent')?.checked)
     };
     const errors = validateLeadValues(values);
@@ -211,6 +212,7 @@ export function initLeadForm(form, { fetchImpl = globalThis.fetch?.bind(globalTh
       const payload = {
         name: values.name.trim(),
         phone: normalizeRuPhone(values.phone),
+        task: values.task.trim(),
         consent: true,
         company_website: form.elements.namedItem('company_website')?.value ?? '',
         csrf_token: csrfToken
@@ -227,14 +229,14 @@ export function initLeadForm(form, { fetchImpl = globalThis.fetch?.bind(globalTh
       const result = await response.json().catch(() => ({}));
       if (!response.ok || result.ok !== true) {
         if (response.status === 422 && result.errors && typeof result.errors === 'object') {
-          for (const name of ['name', 'phone', 'consent']) {
+          for (const name of ['name', 'phone', 'task', 'consent']) {
             showFieldError(form, name, typeof result.errors[name] === 'string' ? result.errors[name] : '');
           }
           if (status) {
             status.textContent = 'Проверьте поля формы и отправьте заявку ещё раз.';
             status.dataset.state = 'error';
           }
-          const firstServerError = ['name', 'phone', 'consent'].find((name) => result.errors[name]);
+          const firstServerError = ['name', 'phone', 'task', 'consent'].find((name) => result.errors[name]);
           form.elements.namedItem(firstServerError)?.focus();
           return;
         }

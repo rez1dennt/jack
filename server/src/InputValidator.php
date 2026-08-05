@@ -5,12 +5,14 @@ namespace JackLanding;
 
 final class InputValidator
 {
-    /** @return array{ok: bool, data?: array{name: string, phone: string, consent: true}, errors?: array<string, string>} */
+    /** @return array{ok: bool, data?: array{name: string, phone: string, task: string, consent: true}, errors?: array<string, string>} */
     public static function validate(array $input): array
     {
         $errors = [];
         $name = self::normalizeName($input['name'] ?? '');
         $phone = self::normalizePhone($input['phone'] ?? '');
+        $taskValue = $input['task'] ?? '';
+        $task = self::normalizeTask($taskValue);
         $consent = ($input['consent'] ?? null) === true;
 
         $nameLength = self::unicodeLength($name);
@@ -19,6 +21,9 @@ final class InputValidator
         }
         if ($phone === null) {
             $errors['phone'] = 'Укажите российский телефон в формате +7XXXXXXXXXX.';
+        }
+        if (!is_string($taskValue) || self::unicodeLength($task) > 1000) {
+            $errors['task'] = 'Описание задачи не должно превышать 1000 символов.';
         }
         if (!$consent) {
             $errors['consent'] = 'Необходимо согласие на обработку персональных данных.';
@@ -33,6 +38,7 @@ final class InputValidator
             'data' => [
                 'name' => $name,
                 'phone' => $phone,
+                'task' => $task,
                 'consent' => true,
             ],
         ];
@@ -46,6 +52,19 @@ final class InputValidator
 
         $trimmed = preg_replace('/^\s+|\s+$/u', '', $value) ?? '';
         return preg_replace('/\s+/u', ' ', $trimmed) ?? '';
+    }
+
+    private static function normalizeTask(mixed $value): string
+    {
+        if (!is_string($value)) {
+            return '';
+        }
+
+        $normalized = str_replace(["\r\n", "\r"], "\n", $value);
+        $normalized = preg_replace('/[^\S\n]+/u', ' ', $normalized) ?? '';
+        $normalized = preg_replace('/ *\n */u', "\n", $normalized) ?? '';
+        $normalized = preg_replace('/\n{3,}/u', "\n\n", $normalized) ?? '';
+        return trim($normalized);
     }
 
     private static function unicodeLength(string $value): int

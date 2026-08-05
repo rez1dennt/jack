@@ -765,7 +765,7 @@ test('problem and solution card exposes the approved copy and benefit structure'
   await expect(card.locator('.solution-panel__eyebrow')).toHaveText('Наше решение');
   await expect(card.locator('.solution-benefit')).toHaveCount(4);
   await expect(card.locator('.solution-benefit__title')).toHaveText([
-    'Точность до 0,1 мм',
+    'Точное позиционирование по заданному контуру',
     'Стабильное качество',
     'Высокая скорость',
     'Лёгкое масштабирование'
@@ -997,7 +997,7 @@ test('Industrial Control Room CTA exposes the approved copy and form contract', 
   await expect(panel).toHaveCount(1);
   await expect(panel.locator('.lead-section__media')).toHaveCount(1);
   await expect(section.locator('.lead-section__eyebrow')).toHaveText('Расчёт проекта');
-  await expect(section.getByRole('heading', { level: 2 })).toHaveText('Ускорьте производство с Jack');
+  await expect(section.getByRole('heading', { level: 2 })).toHaveText('Ускорьте производство с Текстиль Опт Торг');
   await expect(section.locator('.lead-section__copy > p')).toHaveText(
     'Опишите задачу. Специалист подберёт конфигурацию оборудования под ваши операции и материалы.'
   );
@@ -1013,9 +1013,14 @@ test('Industrial Control Room CTA exposes the approved copy and form contract', 
 
   await expect(form.locator('.lead-form__header h3')).toHaveText('Получить консультацию');
   await expect(form.locator('.lead-form__header p')).toHaveText('Оставьте контакты для связи со специалистом');
-  await expect(form.locator('.field__label')).toHaveText(['Ваше имя', 'Телефон']);
+  await expect(form.locator('.field__label')).toHaveText([
+    'Ваше имя',
+    'Телефон',
+    'Какую операцию нужно автоматизировать'
+  ]);
   await expect(form.locator('[name="name"]')).toHaveAttribute('aria-describedby', 'name-error');
   await expect(form.locator('[name="phone"]')).toHaveAttribute('aria-describedby', 'phone-hint phone-error');
+  await expect(form.locator('[name="task"]')).toHaveAttribute('aria-describedby', 'task-hint task-error');
   await expect(form.locator('[name="consent"]')).toHaveAttribute('aria-describedby', 'consent-error');
   await expect(form.getByRole('button', { name: 'Обсудить задачу' })).toHaveCount(1);
   await expect(form.locator('[name="company_website"]')).toHaveCount(1);

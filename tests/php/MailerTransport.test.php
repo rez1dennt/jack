@@ -29,6 +29,7 @@ $transport = new MailerTransport(
 $transport->sendLead([
     'name' => 'Анна <b>Иванова</b>',
     'phone' => '+7 (999) 123-45-67',
+    'task' => 'Карманы <script>alert(1)</script>',
     'consent_at' => '2026-07-31T18:00:00+04:00',
     'consent_document_version' => '2026-07-31',
 ]);
@@ -46,7 +47,10 @@ assert($captured->getToAddresses()[0][0] === 'manager@example.com');
 assert($captured->getToAddresses()[0][1] === 'Менеджер');
 assert(str_contains($captured->Body, 'Анна &lt;b&gt;Иванова&lt;/b&gt;'));
 assert(!str_contains($captured->Body, '<b>Иванова</b>'));
+assert(str_contains($captured->Body, 'Карманы &lt;script&gt;alert(1)&lt;/script&gt;'));
+assert(!str_contains($captured->Body, '<script>alert(1)</script>'));
 assert(str_contains($captured->AltBody, 'Анна <b>Иванова</b>'));
+assert(str_contains($captured->AltBody, 'Карманы <script>alert(1)</script>'));
 assert(str_contains($captured->Body, '2026-07-31T18:00:00+04:00'));
 assert(str_contains($captured->Body, '2026-07-31'));
 assert(str_contains($captured->Subject, 'Новая заявка'));

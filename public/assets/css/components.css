@@ -459,7 +459,8 @@ tbody th {
   font-weight: 600;
 }
 
-.field input {
+.field input,
+.field textarea {
   min-block-size: var(--control-height);
   inline-size: 100%;
   padding-inline: var(--space-4);
@@ -470,17 +471,28 @@ tbody th {
   transition: border-color var(--duration-fast) var(--ease-out), background-color var(--duration-fast) var(--ease-out);
 }
 
-.lead-form .field input {
+.field textarea {
+  min-block-size: 6.5rem;
+  padding-block: var(--space-3);
+  resize: vertical;
+  font: inherit;
+  line-height: 1.45;
+}
+
+.lead-form .field input,
+.lead-form .field textarea {
   border-color: var(--lead-form-control-border);
   background: var(--lead-form-surface);
   color: var(--lead-form-text);
 }
 
-.lead-form .field input:hover {
+.lead-form .field input:hover,
+.lead-form .field textarea:hover {
   border-color: var(--color-border-control);
 }
 
-.field input[aria-invalid="true"] {
+.field input[aria-invalid="true"],
+.field textarea[aria-invalid="true"] {
   border-color: var(--color-error);
 }
 

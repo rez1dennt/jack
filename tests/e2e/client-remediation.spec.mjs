@@ -40,6 +40,70 @@ test('client supplied company facts replace unsupported case claims', async ({ p
   await expect(page.getByText(/до 70%/i)).toHaveCount(0);
 });
 
+test('client sales corrections are explicit, credible, and complete', async ({ page }) => {
+  await page.goto('/');
+
+  const solution = page.locator('#solutions');
+  await expect(solution).toContainText('Точное позиционирование по заданному контуру');
+  await expect(solution).not.toContainText('0,1 мм');
+  await expect(page.locator('.product-benefit').filter({ hasText: 'Скорость и стабильность' }))
+    .toContainText('До 3 600 ст/мин (JACK M9)');
+
+  const form = page.locator('#consultation-form');
+  await expect(form.locator('[name="task"]')).toHaveAttribute('maxlength', '1000');
+  await expect(form.locator('[name="task"]')).not.toHaveAttribute('required', '');
+  await expect(form.locator('label').filter({ hasText: 'Какую операцию нужно автоматизировать' })).toHaveCount(1);
+
+  await expect(page.locator('.specifications__budget-note'))
+    .toContainText('Стоимость рассчитывается индивидуально под конфигурацию');
+  await expect(page.locator('.specifications__budget-note')).toContainText('лизинг');
+  await expect(page.locator('.specifications__budget-note')).toContainText('рассрочка');
+
+  const economics = page.locator('.economics');
+  await expect(economics).toContainText('1 440');
+  await expect(economics).toContainText('160');
+  await expect(economics).toContainText('18 месяцев');
+  await expect(economics).toContainText('20 секунд');
+  await expect(economics).toContainText('100 000 ₽');
+  await expect(economics).toContainText('1,8 млн ₽');
+  await expect(economics).toContainText('не является коммерческим предложением');
+  await expect(economics.getByRole('link', { name: 'Получить расчёт для производства' })).toHaveAttribute('href', '#lead-form');
+
+  const companyImage = page.locator('.about-company__media img');
+  await expect(companyImage).toHaveAttribute('src', '/assets/images/company-team.webp');
+  await expect.poll(() => companyImage.evaluate((image) => getComputedStyle(image).objectFit)).toBe('contain');
+  await expect(page.locator('.applications__media img')).toHaveAttribute('src', '/assets/images/company-demo.webp');
+  await companyImage.scrollIntoViewIfNeeded();
+  await expect.poll(() => companyImage.evaluate((image) => image.complete && image.naturalWidth > 0)).toBe(true);
+});
+
+test('economics block and task field reflow without mobile overflow', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const economics = page.locator('.economics');
+  await economics.scrollIntoViewIfNeeded();
+  const geometry = await economics.evaluate((section) => ({
+    viewport: document.documentElement.clientWidth,
+    pageWidth: document.documentElement.scrollWidth,
+    sectionWidth: Math.round(section.getBoundingClientRect().width),
+    resultColumns: getComputedStyle(section.querySelector('.economics__results')).gridTemplateColumns.split(' ').length
+  }));
+  expect(geometry.pageWidth).toBeLessThanOrEqual(geometry.viewport + 1);
+  expect(geometry.sectionWidth).toBeLessThanOrEqual(geometry.viewport);
+  expect(geometry.resultColumns).toBe(1);
+
+  const task = page.locator('#consultation-form [name="task"]');
+  await expect(task).toBeVisible();
+  const taskGeometry = await task.evaluate((element) => {
+    const field = element.closest('.field').getBoundingClientRect();
+    const control = element.getBoundingClientRect();
+    return { fieldWidth: Math.round(field.width), controlWidth: Math.round(control.width) };
+  });
+  expect(taskGeometry.controlWidth).toBeLessThanOrEqual(taskGeometry.fieldWidth);
+  expect(taskGeometry.controlWidth).toBeGreaterThan(250);
+});
+
 test('machine specifications are model-specific and keyboard accessible', async ({ page }) => {
   await page.goto('/');
 

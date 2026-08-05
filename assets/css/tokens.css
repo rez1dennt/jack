@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Roboto Condensed Local"; /* ds-allow-hardcode: @font-face descriptors cannot use var() */
-  src: url("../fonts/roboto-condensed-cyrillic-700.woff2?v=reasons-copy-restored-20260804-3") format("woff2");
+  src: url("../fonts/roboto-condensed-cyrillic-700.woff2?v=client-sales-remediation-20260805-1") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 700;
@@ -9,7 +9,7 @@
 
 @font-face {
   font-family: "Roboto Condensed Local"; /* ds-allow-hardcode: @font-face descriptors cannot use var() */
-  src: url("../fonts/roboto-condensed-latin-700.woff2?v=reasons-copy-restored-20260804-3") format("woff2");
+  src: url("../fonts/roboto-condensed-latin-700.woff2?v=client-sales-remediation-20260805-1") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 700;
@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: "Inter Local"; /* ds-allow-hardcode: @font-face descriptors cannot use var() */
-  src: url("../fonts/inter-cyrillic-400.woff2?v=reasons-copy-restored-20260804-3") format("woff2");
+  src: url("../fonts/inter-cyrillic-400.woff2?v=client-sales-remediation-20260805-1") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 400;
@@ -27,7 +27,7 @@
 
 @font-face {
   font-family: "Inter Local"; /* ds-allow-hardcode: @font-face descriptors cannot use var() */
-  src: url("../fonts/inter-latin-400.woff2?v=reasons-copy-restored-20260804-3") format("woff2");
+  src: url("../fonts/inter-latin-400.woff2?v=client-sales-remediation-20260805-1") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 400;
@@ -36,7 +36,7 @@
 
 @font-face {
   font-family: "Inter Local"; /* ds-allow-hardcode: @font-face descriptors cannot use var() */
-  src: url("../fonts/inter-cyrillic-600.woff2?v=reasons-copy-restored-20260804-3") format("woff2");
+  src: url("../fonts/inter-cyrillic-600.woff2?v=client-sales-remediation-20260805-1") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 600;
@@ -45,7 +45,7 @@
 
 @font-face {
   font-family: "Inter Local"; /* ds-allow-hardcode: @font-face descriptors cannot use var() */
-  src: url("../fonts/inter-latin-600.woff2?v=reasons-copy-restored-20260804-3") format("woff2");
+  src: url("../fonts/inter-latin-600.woff2?v=client-sales-remediation-20260805-1") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 600;

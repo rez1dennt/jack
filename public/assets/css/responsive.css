@@ -378,8 +378,9 @@
   }
 
   .about-company__media {
-    min-block-size: 28rem;
-    max-block-size: 36rem;
+    min-block-size: 0;
+    max-block-size: none;
+    aspect-ratio: 750 / 630;
   }
 
   .about-company__content {
@@ -449,6 +450,51 @@
 
   .lead-section__copy h2 {
     font-size: clamp(var(--font-size-3xl), 8vw, var(--font-size-4xl));
+  }
+
+  .economics__panel {
+    padding: var(--space-6);
+  }
+
+  .economics__header,
+  .economics__comparison {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  .economics__header {
+    align-items: start;
+  }
+
+  .economics__throughput {
+    min-block-size: 0;
+    padding: var(--space-6);
+  }
+
+  .economics__ratio {
+    grid-template-columns: auto 1fr;
+    justify-self: center;
+    align-items: center;
+    text-align: start;
+  }
+
+  .economics__ratio span br {
+    display: none;
+  }
+
+  .economics__results {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  .economics__footer {
+    align-items: stretch;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .economics__footer .button {
+    inline-size: 100%;
   }
 
   .lead-form {
