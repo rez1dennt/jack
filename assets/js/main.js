@@ -1,8 +1,8 @@
-import { initLeadForm } from './form.js?v=client-sales-remediation-20260805-1';
-import { initMenu } from './menu.js?v=client-sales-remediation-20260805-1';
-import { initCookieBanner } from './cookies.js?v=client-sales-remediation-20260805-1';
-import { initVideoDialog } from './video.js?v=client-sales-remediation-20260805-1';
-import { initSpecTabs } from './spec-tabs.js?v=client-sales-remediation-20260805-1';
+import { initLeadForm } from './form.js?v=model-speed-sync-20260805-1';
+import { initMenu } from './menu.js?v=model-speed-sync-20260805-1';
+import { initCookieBanner } from './cookies.js?v=model-speed-sync-20260805-1';
+import { initVideoDialog } from './video.js?v=model-speed-sync-20260805-1';
+import { initSpecTabs } from './spec-tabs.js?v=model-speed-sync-20260805-1';
 
 initLeadForm(document.querySelector('#consultation-form'), {
   previewMode: document.documentElement.dataset.staticPreview === 'true'

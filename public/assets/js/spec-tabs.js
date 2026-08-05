@@ -3,7 +3,9 @@ export function initSpecTabs(tablist) {
 
   const tabs = [...tablist.querySelectorAll('[role="tab"]')];
   if (!tabs.length) return () => {};
-  const modelImage = tablist.closest('.specifications')?.querySelector('[data-model-image]');
+  const specifications = tablist.closest('.specifications');
+  const modelImage = specifications?.querySelector('[data-model-image]');
+  const modelSpeed = specifications?.querySelector('[data-model-speed]');
 
   const updateModelImage = (tab) => {
     if (!modelImage || !tab.dataset.imageSrc) return;
@@ -17,6 +19,11 @@ export function initSpecTabs(tablist) {
     if (Number.isFinite(height)) modelImage.height = height;
   };
 
+  const updateModelSpeed = (tab) => {
+    if (!modelSpeed || !tab.dataset.speedCopy) return;
+    modelSpeed.textContent = tab.dataset.speedCopy;
+  };
+
   const selectTab = (tab, { focus = false } = {}) => {
     for (const current of tabs) {
       const selected = current === tab;
@@ -26,6 +33,7 @@ export function initSpecTabs(tablist) {
       if (panel) panel.hidden = !selected;
     }
     updateModelImage(tab);
+    updateModelSpeed(tab);
     if (focus) tab.focus();
   };
 

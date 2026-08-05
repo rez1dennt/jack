@@ -110,9 +110,11 @@ test('machine specifications are model-specific and keyboard accessible', async 
   const j6Tab = page.getByRole('tab', { name: 'JACK J6', exact: true });
   const m9Tab = page.getByRole('tab', { name: 'JACK M9', exact: true });
   const modelImage = page.locator('[data-model-image]');
+  const modelSpeed = page.locator('[data-model-speed]');
   await expect(j6Tab).toHaveAttribute('aria-selected', 'true');
   await expect(modelImage).toHaveAttribute('src', '/assets/images/jack-j6.webp');
   await expect(modelImage).toHaveAttribute('alt', /JACK J6/);
+  await expect(modelSpeed).toHaveText('До 3 000 ст/мин (JACK J6)');
   await expect(page.getByRole('tabpanel', { name: 'JACK J6' })).toContainText('До 210 мм');
   await expect(page.getByRole('tabpanel', { name: 'JACK J6' })).toContainText('120 Вт');
   await expect(page.getByRole('tabpanel', { name: 'JACK J6' })).toContainText('До 3 000 ст/мин');
@@ -123,10 +125,15 @@ test('machine specifications are model-specific and keyboard accessible', async 
   await expect(m9Tab).toHaveAttribute('aria-selected', 'true');
   await expect(modelImage).toHaveAttribute('src', '/assets/images/jack-m9.webp');
   await expect(modelImage).toHaveAttribute('alt', /JACK M9/);
+  await expect(modelSpeed).toHaveText('До 3 600 ст/мин (JACK M9)');
   await expect.poll(() => modelImage.evaluate((image) => image.complete && image.naturalWidth > 0)).toBe(true);
   await expect(page.getByRole('tabpanel', { name: 'JACK M9' })).toContainText('1400 × 950 мм');
   await expect(page.getByRole('tabpanel', { name: 'JACK M9' })).toContainText('До 3 600 ст/мин');
   await expect(page.getByRole('tabpanel', { name: 'JACK M9' })).toContainText('610 / 690 кг');
+
+  await page.keyboard.press('ArrowLeft');
+  await expect(j6Tab).toBeFocused();
+  await expect(modelSpeed).toHaveText('До 3 000 ст/мин (JACK J6)');
   await expect(page.locator('.specifications')).not.toContainText('MS-100A');
 });
 
