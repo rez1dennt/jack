@@ -880,15 +880,15 @@
   gap: var(--space-6);
 }
 
-.button--economics {
+.economics .button--economics {
   flex: 0 0 auto;
   border-color: var(--economics-accent);
   background: var(--economics-accent);
   color: var(--economics-surface);
 }
 
-.button--economics:hover,
-.button--economics:focus-visible {
+.economics .button--economics:hover,
+.economics .button--economics:focus-visible {
   border-color: var(--economics-accent-hover);
   background: var(--economics-accent-hover);
   color: var(--economics-surface);

@@ -41,3 +41,11 @@ test('all canonical pages use the building 1 address', async () => {
   const index = await readProjectFile('public/index.html');
   assert.match(index, /"streetAddress": "ул\. Шоршелская, д\. 2, к\. 1"/);
 });
+
+test('economics CTA keeps its scoped dark-section colors over the base button rule', async () => {
+  const css = await readProjectFile('public/assets/css/layout.css');
+
+  assert.match(css, /\.economics \.button--economics\s*\{/);
+  assert.match(css, /\.economics \.button--economics:hover/);
+  assert.match(css, /\.economics \.button--economics:focus-visible/);
+});
