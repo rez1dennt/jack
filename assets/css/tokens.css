@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Roboto Condensed Local"; /* ds-allow-hardcode: @font-face descriptors cannot use var() */
-  src: url("../fonts/roboto-condensed-cyrillic-700.woff2?v=model-speed-sync-20260805-1") format("woff2");
+  src: url("../fonts/roboto-condensed-cyrillic-700.woff2?v=economics-short-20260806-1") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 700;
@@ -9,7 +9,7 @@
 
 @font-face {
   font-family: "Roboto Condensed Local"; /* ds-allow-hardcode: @font-face descriptors cannot use var() */
-  src: url("../fonts/roboto-condensed-latin-700.woff2?v=model-speed-sync-20260805-1") format("woff2");
+  src: url("../fonts/roboto-condensed-latin-700.woff2?v=economics-short-20260806-1") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 700;
@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: "Inter Local"; /* ds-allow-hardcode: @font-face descriptors cannot use var() */
-  src: url("../fonts/inter-cyrillic-400.woff2?v=model-speed-sync-20260805-1") format("woff2");
+  src: url("../fonts/inter-cyrillic-400.woff2?v=economics-short-20260806-1") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 400;
@@ -27,7 +27,7 @@
 
 @font-face {
   font-family: "Inter Local"; /* ds-allow-hardcode: @font-face descriptors cannot use var() */
-  src: url("../fonts/inter-latin-400.woff2?v=model-speed-sync-20260805-1") format("woff2");
+  src: url("../fonts/inter-latin-400.woff2?v=economics-short-20260806-1") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 400;
@@ -36,7 +36,7 @@
 
 @font-face {
   font-family: "Inter Local"; /* ds-allow-hardcode: @font-face descriptors cannot use var() */
-  src: url("../fonts/inter-cyrillic-600.woff2?v=model-speed-sync-20260805-1") format("woff2");
+  src: url("../fonts/inter-cyrillic-600.woff2?v=economics-short-20260806-1") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 600;
@@ -45,7 +45,7 @@
 
 @font-face {
   font-family: "Inter Local"; /* ds-allow-hardcode: @font-face descriptors cannot use var() */
-  src: url("../fonts/inter-latin-600.woff2?v=model-speed-sync-20260805-1") format("woff2");
+  src: url("../fonts/inter-latin-600.woff2?v=economics-short-20260806-1") format("woff2");
   font-display: swap;
   font-style: normal;
   font-weight: 600;
@@ -71,6 +71,8 @@
   --primitive-white: #ffffff;
   --primitive-blue-700: #075ea8;
   --primitive-green-700: #237a48;
+  --primitive-navy-850: #0e2338;
+  --primitive-orange-500: #f07419;
 
   --color-surface-page: var(--primitive-white);
   --color-surface-subtle: var(--primitive-gray-100);
@@ -184,6 +186,12 @@
   --footer-image-width: 56%;
   --footer-overlay: linear-gradient(90deg, rgb(17 24 32 / 100%) 0%, rgb(17 24 32 / 96%) 38%, rgb(17 24 32 / 68%) 62%, rgb(17 24 32 / 24%) 100%);
   --footer-grid-columns: minmax(0, 1fr) minmax(0, 0.72fr) minmax(0, 1.45fr);
+  --economics-surface: var(--primitive-navy-850);
+  --economics-accent: var(--primitive-orange-500);
+  --economics-accent-hover: color-mix(in srgb, var(--economics-accent) 88%, var(--primitive-ink-950));
+  --economics-text: var(--primitive-white);
+  --economics-muted: var(--primitive-gray-300);
+  --economics-rule: color-mix(in srgb, var(--economics-text) 22%, transparent);
 
   --duration-fast: 140ms;
   --duration-base: 220ms;
