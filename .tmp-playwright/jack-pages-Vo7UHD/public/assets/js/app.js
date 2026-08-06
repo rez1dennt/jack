@@ -1,0 +1,1 @@
+const digits = value.replace(/\D/g, ''); fetch('/api/submit.php');

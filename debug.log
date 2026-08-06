@@ -1,0 +1,16 @@
+[0801/114121.173:ERROR:net\socket\tcp_socket_win.cc:1069] connect failed: 10055
+[0801/115336.544:ERROR:net\socket\tcp_socket_win.cc:1069] connect failed: 10055
+[0801/115341.326:ERROR:net\socket\tcp_socket_win.cc:1069] connect failed: 10055
+[0801/120547.224:ERROR:net\socket\tcp_socket_win.cc:1069] connect failed: 10055
+[0803/111309.892:ERROR:net\socket\tcp_socket_win.cc:1069] connect failed: 10055
+[0804/163027.609:ERROR:net\socket\tcp_socket_win.cc:1069] connect failed: 10055
+[0804/163316.620:ERROR:net\socket\tcp_socket_win.cc:1069] connect failed: 10055
+[0804/163346.446:ERROR:net\socket\tcp_socket_win.cc:1069] connect failed: 10055
+[0804/171701.010:WARNING:services\audio\sync_reader.cc:154] ASR: No room in socket buffer.: Идет закрытие канала. (0xE8)
+[0804/171714.059:WARNING:services\audio\sync_reader.cc:154] ASR: No room in socket buffer.: Идет закрытие канала. (0xE8)
+[0804/173438.611:WARNING:services\audio\sync_reader.cc:154] ASR: No room in socket buffer.: Идет закрытие канала. (0xE8)
+[0804/174320.588:WARNING:services\audio\sync_reader.cc:154] ASR: No room in socket buffer.: Идет закрытие канала. (0xE8)
+[0805/205248.161:WARNING:services\audio\sync_reader.cc:154] ASR: No room in socket buffer.: Идет закрытие канала. (0xE8)
+[0805/205259.600:WARNING:services\audio\sync_reader.cc:154] ASR: No room in socket buffer.: Идет закрытие канала. (0xE8)
+[0805/205308.731:WARNING:services\audio\sync_reader.cc:154] ASR: No room in socket buffer.: Идет закрытие канала. (0xE8)
+[0805/205329.812:WARNING:services\audio\sync_reader.cc:154] ASR: No room in socket buffer.: Идет закрытие канала. (0xE8)
