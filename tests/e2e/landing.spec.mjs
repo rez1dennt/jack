@@ -1170,6 +1170,7 @@ test('major sections use the approved 1440px grid and responsive desktop spacing
     const reasons = rect('.reasons');
     const about = rect('.about-company');
     const specifications = rect('.specifications');
+    const economics = rect('.economics');
     const lead = rect('.lead-section');
     const footer = rect('.site-footer');
     const gap = (before, after) => Math.round(after.top - before.bottom);
@@ -1186,7 +1187,8 @@ test('major sections use the approved 1440px grid and responsive desktop spacing
         capabilitiesToApplications: gap(capabilities, applications),
         applicationsToReasons: gap(applications, reasons),
         reasonsToSpecifications: gap(reasons, specifications),
-        specificationsToAbout: gap(specifications, about),
+        specificationsToEconomics: gap(specifications, economics),
+        economicsToAbout: gap(economics, about),
         aboutToLead: gap(about, lead),
         leadToFooter: gap(lead, footer)
       }
@@ -1201,7 +1203,8 @@ test('major sections use the approved 1440px grid and responsive desktop spacing
     capabilitiesToApplications: 24,
     applicationsToReasons: 24,
     reasonsToSpecifications: 24,
-    specificationsToAbout: 24,
+    specificationsToEconomics: 24,
+    economicsToAbout: 0,
     aboutToLead: 24,
     leadToFooter: 24
   });

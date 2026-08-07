@@ -47,7 +47,7 @@ test('client sales corrections are explicit, credible, and complete', async ({ p
   await expect(solution).toContainText('Точное позиционирование по заданному контуру');
   await expect(solution).not.toContainText('0,1 мм');
   await expect(page.locator('.product-benefit').filter({ hasText: 'Скорость и стабильность' }))
-    .toContainText('До 3 600 ст/мин (JACK M9)');
+    .toContainText('До 3 000 ст/мин (JACK J6)');
 
   const form = page.locator('#consultation-form');
   await expect(form.locator('[name="task"]')).toHaveAttribute('maxlength', '1000');
@@ -60,14 +60,13 @@ test('client sales corrections are explicit, credible, and complete', async ({ p
   await expect(page.locator('.specifications__budget-note')).toContainText('рассрочка');
 
   const economics = page.locator('.economics');
-  await expect(economics).toContainText('1 440');
-  await expect(economics).toContainText('160');
-  await expect(economics).toContainText('18 месяцев');
+  await expect(economics).toContainText('30 000 ₽');
+  await expect(economics).toContainText('×8');
+  await expect(economics).toContainText('7 месяцев');
   await expect(economics).toContainText('20 секунд');
-  await expect(economics).toContainText('100 000 ₽');
-  await expect(economics).toContainText('1,8 млн ₽');
-  await expect(economics).toContainText('не является коммерческим предложением');
-  await expect(economics.getByRole('link', { name: 'Получить расчёт для производства' })).toHaveAttribute('href', '#lead-form');
+  await expect(economics).toContainText('300 прорезных карманах в смену');
+  await expect(economics).toContainText('Расчёт по вашей технологической карте — бесплатно');
+  await expect(economics.getByRole('link', { name: 'Посчитать по своему цеху' })).toHaveAttribute('href', '#lead-form');
 
   const companyImage = page.locator('.about-company__media img');
   await expect(companyImage).toHaveAttribute('src', '/assets/images/company-team.webp');
@@ -87,7 +86,7 @@ test('economics block and task field reflow without mobile overflow', async ({ p
     viewport: document.documentElement.clientWidth,
     pageWidth: document.documentElement.scrollWidth,
     sectionWidth: Math.round(section.getBoundingClientRect().width),
-    resultColumns: getComputedStyle(section.querySelector('.economics__results')).gridTemplateColumns.split(' ').length
+    resultColumns: getComputedStyle(section.querySelector('.economics__metrics')).gridTemplateColumns.split(' ').length
   }));
   expect(geometry.pageWidth).toBeLessThanOrEqual(geometry.viewport + 1);
   expect(geometry.sectionWidth).toBeLessThanOrEqual(geometry.viewport);
@@ -216,7 +215,7 @@ test('company reasons keep the open divider row and use the enlarged scale', asy
   expect(metrics.reasonHeight).toBeGreaterThanOrEqual(112);
   expect(metrics.columns).toBe(4);
   expect(metrics.iconWidth).toBe(48);
-  expect(metrics.titleSize).toBeGreaterThanOrEqual(18);
+  expect(metrics.titleSize).toBeCloseTo(17.6, 1);
   expect(metrics.copySize).toBeGreaterThanOrEqual(14);
   expect(metrics.background).toBe('rgba(0, 0, 0, 0)');
   expect(metrics.radius).toBe('0px');

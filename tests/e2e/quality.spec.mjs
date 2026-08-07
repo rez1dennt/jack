@@ -73,7 +73,7 @@ test('organization details are published in structured data', async ({ page }) =
       postalCode: '429500',
       addressRegion: 'Чувашская Республика',
       addressLocality: 'пос. Кугеси',
-      streetAddress: 'ул. Шоршелская, д. 2',
+      streetAddress: 'ул. Шоршелская, д. 2, к. 1',
       addressCountry: 'RU'
     }
   });
