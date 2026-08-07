@@ -8,15 +8,15 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 $captured = null;
 $config = [
-    'host' => 'smtp.gmail.com',
-    'port' => 587,
-    'username' => 'sender@example.com',
-    'password' => 'sixteen-character-app-password',
-    'encryption' => 'tls',
-    'from_email' => 'sender@example.com',
-    'from_name' => 'Jack Sewing',
-    'to_email' => 'manager@example.com',
-    'to_name' => 'Менеджер',
+    'host' => 'smtp.mail.ru',
+    'port' => 465,
+    'username' => 'tekstilopttorg@mail.ru',
+    'password' => 'synthetic-mailru-app-password',
+    'encryption' => 'ssl',
+    'from_email' => 'tekstilopttorg@mail.ru',
+    'from_name' => 'Текстиль Опт Торг',
+    'to_email' => 'tekstilopttorg@mail.ru',
+    'to_name' => 'Отдел продаж',
 ];
 
 $transport = new MailerTransport(
@@ -35,16 +35,16 @@ $transport->sendLead([
 ]);
 
 assert($captured instanceof PHPMailer);
-assert($captured->Host === 'smtp.gmail.com');
-assert($captured->Port === 587);
+assert($captured->Host === 'smtp.mail.ru');
+assert($captured->Port === 465);
 assert($captured->SMTPAuth === true);
-assert($captured->SMTPSecure === PHPMailer::ENCRYPTION_STARTTLS);
-assert($captured->Username === 'sender@example.com');
-assert($captured->Password === 'sixteen-character-app-password');
-assert($captured->From === 'sender@example.com');
-assert($captured->FromName === 'Jack Sewing');
-assert($captured->getToAddresses()[0][0] === 'manager@example.com');
-assert($captured->getToAddresses()[0][1] === 'Менеджер');
+assert($captured->SMTPSecure === PHPMailer::ENCRYPTION_SMTPS);
+assert($captured->Username === 'tekstilopttorg@mail.ru');
+assert($captured->Password === 'synthetic-mailru-app-password');
+assert($captured->From === 'tekstilopttorg@mail.ru');
+assert($captured->FromName === 'Текстиль Опт Торг');
+assert($captured->getToAddresses()[0][0] === 'tekstilopttorg@mail.ru');
+assert($captured->getToAddresses()[0][1] === 'Отдел продаж');
 assert(str_contains($captured->Body, 'Анна &lt;b&gt;Иванова&lt;/b&gt;'));
 assert(!str_contains($captured->Body, '<b>Иванова</b>'));
 assert(str_contains($captured->Body, 'Карманы &lt;script&gt;alert(1)&lt;/script&gt;'));

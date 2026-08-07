@@ -11,13 +11,13 @@ return [
         'rate_limit_window_seconds' => 600,
     ],
     'smtp' => [
-        'host' => 'smtp.gmail.com',
-        'port' => 587,
-        'username' => '[[SMTP_USERNAME]]',
-        // Не пароль аккаунта: пароль приложения Google хранится только в server/config.php.
-        'password' => '[[GOOGLE_APP_PASSWORD]]',
-        'encryption' => 'tls',
-        'from_email' => '[[SMTP_USERNAME]]',
+        'host' => 'smtp.mail.ru',
+        'port' => 465,
+        'username' => 'tekstilopttorg@mail.ru',
+        // Пароль для внешнего приложения Mail.ru хранится только в server/config.php.
+        'password' => '[[MAILRU_APP_PASSWORD]]',
+        'encryption' => 'ssl',
+        'from_email' => 'tekstilopttorg@mail.ru',
         'from_name' => 'Текстиль Опт Торг',
         'to_email' => 'tekstilopttorg@mail.ru',
         'to_name' => 'Отдел продаж',
